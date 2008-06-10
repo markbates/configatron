@@ -7,10 +7,6 @@ describe "The configatron method" do
     configatron.reset!
   end
   
-  it "should be available in the Kernel" do
-    configatron
-  end
-  
   it "should raise NoMethodError if the parameter doesn't exist" do
     lambda{configatron.i_dont_exist}.should raise_error(NoMethodError)
   end
