@@ -30,6 +30,17 @@ describe "The configatron method" do
     configatron.say_hello == "Hello World"
   end
   
+  it "should allow previously defined parameters to be redefined" do
+    configatron do |config|
+      config.foo = :bar
+    end
+    configatron.foo.should == :bar
+    configatron do |config|
+      config.foo = "fubar"
+    end
+    configatron.foo.should == "fubar"
+  end
+  
   describe "namespace" do
     
     it "should let you 'namespace' a set of configuration parameters" do
