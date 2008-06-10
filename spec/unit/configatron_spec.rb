@@ -35,8 +35,8 @@ end
 describe Configatron do
   
   it "should be a Singleton" do
-    lambda{Configatron.new}.should raise_error(NoMethodError)
-    Configatron.instance.should == Configatron.instance
+    lambda{Configatron::Configuration.new}.should raise_error(NoMethodError)
+    Configatron::Configuration.instance.should == Configatron::Configuration.instance
   end
   
   it "reset! should remove all added methods" do
