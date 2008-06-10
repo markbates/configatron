@@ -23,6 +23,11 @@ module Configatron
     end
   
     def reset!
+      reset
+      @_nil_for_missing = false
+    end
+    
+    def reset
       @_storage_list.each do |storage|
         storage.parameters.each do |k,v|
           Configatron::Configuration.instance_eval do
@@ -33,7 +38,6 @@ module Configatron
           end
         end
       end
-      @_nil_for_missing = false
     end
   
     def method_missing(sym, *args)
