@@ -32,11 +32,53 @@ describe Configatron::Configuration do
   describe "revert" do
     
     it "should roll back 1 level by default" do
-      pending
+      configatron.should_not respond_to(:bart)
+      configatron.should_not respond_to(:homer)
+      
+      configatron do |config|
+        config.bart = "Bart Simpson"
+      end
+      configatron do |config|
+        config.homer = "Homer Simpson"
+      end
+      
+      configatron.should respond_to(:bart)
+      configatron.should respond_to(:homer)
+      
+      configatron.bart.should == "Bart Simpson"
+      configatron.homer.should == "Homer Simpson"
+      
+      configatron.revert
+      
+      configatron.should respond_to(:bart)
+      configatron.should_not respond_to(:homer)
+      configatron.bart.should == "Bart Simpson"
+      lambda{configatron.homer}.should raise_error(NoMethodError)
     end
     
     it "should roll back n levels if specified" do
-      pending
+      configatron.should_not respond_to(:bart)
+      configatron.should_not respond_to(:homer)
+      
+      configatron do |config|
+        config.bart = "Bart Simpson"
+      end
+      configatron do |config|
+        config.homer = "Homer Simpson"
+      end
+      
+      configatron.should respond_to(:bart)
+      configatron.should respond_to(:homer)
+      
+      configatron.bart.should == "Bart Simpson"
+      configatron.homer.should == "Homer Simpson"
+      
+      configatron.revert(2)
+      
+      configatron.should_not respond_to(:bart)
+      configatron.should_not respond_to(:homer)
+      lambda{configatron.bart}.should raise_error(NoMethodError)
+      lambda{configatron.homer}.should raise_error(NoMethodError)
     end
     
   end

@@ -37,6 +37,7 @@ module Configatron
     def reset!
       reset
       @_nil_for_missing = false
+      @_storage_list = []
     end
     
     def reset
@@ -50,6 +51,12 @@ module Configatron
           end
         end
       end
+    end
+    
+    def revert(step = 1)
+      reset
+      step.times {@_storage_list.pop}
+      reload
     end
   
     def method_missing(sym, *args)
