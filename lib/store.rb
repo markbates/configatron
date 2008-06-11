@@ -3,8 +3,8 @@ module Configatron
   
     attr_reader :parameters
   
-    def initialize
-      @parameters = {}
+    def initialize(parameters = {})
+      @parameters = parameters
     end
   
     def method_missing(sym, *args)

@@ -21,6 +21,18 @@ module Configatron
       @_storage_list << storage
       load_methods(storage)
     end
+    
+    def configure_from_hash(parameters)
+      storage = Configatron::Store.new(parameters)
+      @_storage_list << storage
+      load_methods(storage)
+    end
+    
+    def reload
+      @_storage_list.each do |storage|
+        load_methods(storage)
+      end
+    end
   
     def reset!
       reset
