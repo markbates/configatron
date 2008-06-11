@@ -29,6 +29,18 @@ describe Configatron::Configuration do
     
   end
   
+  describe "revert" do
+    
+    it "should roll back 1 level by default" do
+      pending
+    end
+    
+    it "should roll back n levels if specified" do
+      pending
+    end
+    
+  end
+  
   describe "reset" do
   
     it "should remove all added methods" do
