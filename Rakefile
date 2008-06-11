@@ -13,7 +13,7 @@ require 'pathname'
 
 GEM_VERSION = "0.0.1"
 GEM_NAME = "configatron"
-GEM_RUBYFORGE_PROJECT = "configatron"
+GEM_RUBYFORGE_PROJECT = "magrathea"
 
 gem_spec = Gem::Specification.new do |s|
   s.name = GEM_NAME
@@ -21,16 +21,13 @@ gem_spec = Gem::Specification.new do |s|
   s.summary = "#{GEM_NAME}"
   s.description = "#{GEM_NAME} was developed by: markbates"
   s.author = "markbates"
-  #s.email = ""
-  #s.homepage = ""
+  s.email = "mark@mackframework.com"
+  s.homepage = "http://www.mackframework.com"
 
   s.test_files = FileList['test/**/*']
 
   s.files = FileList['lib/**/*.rb', 'README', 'doc/**/*.*', 'bin/**/*.*']
   s.require_paths << 'lib'
-  
-  # This has been removed in RubyGems in 1.0, so I would STRONGLY recommend not using it!
-  s.autorequire = "configatron"
 
   #s.bindir = "bin"
   #s.executables << "configatron"

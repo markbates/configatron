@@ -2,17 +2,14 @@ module Configatron
   class Configuration
     include Singleton
   
-    def initialize
+    # If nil_for_missing is set to true nil will be returned if the configuration
+    # parameter doesn't exist. If set to false, default, then a NoMethodError exception
+    # will be raised.
+    attr_accessor :nil_for_missing
+  
+    def initialize # :nodoc:
       @_storage_list = []
       @_nil_for_missing = false
-    end
-  
-    def nil_for_missing
-      @_nil_for_missing
-    end
-  
-    def nil_for_missing=(x)
-      @_nil_for_missing = x
     end
   
     def configure
@@ -36,7 +33,7 @@ module Configatron
   
     def reset!
       reset
-      @_nil_for_missing = false
+      self.nil_for_missing = false
       @_storage_list = []
     end
     
