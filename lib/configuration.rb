@@ -1,4 +1,5 @@
 module Configatron
+  # The central class for managing the configurations.
   class Configuration
     include Singleton
   
@@ -12,6 +13,7 @@ module Configatron
       @_nil_for_missing = false
     end
   
+    # Yields a new Configatron::Store class.
     def configure
       storage = Configatron::Store.new
       yield storage
@@ -19,24 +21,30 @@ module Configatron
       load_methods(storage)
     end
     
+    # Used to load configuration settings from a Hash.
     def configure_from_hash(parameters)
       storage = Configatron::Store.new(parameters)
       @_storage_list << storage
       load_methods(storage)
     end
     
+    # Replays the history of configurations.
     def reload
       @_storage_list.each do |storage|
         load_methods(storage)
       end
     end
   
+    # Does a hard reset of the Configatron::Configuration class. 
+    # All methods are undefined, the list of configuration parameters
+    # is emptied, and the nil_for_missing method gets reset to false.
     def reset!
       reset
       self.nil_for_missing = false
       @_storage_list = []
     end
     
+    # All methods are undefined.
     def reset
       @_storage_list.each do |storage|
         storage.parameters.each do |k,v|
@@ -50,6 +58,7 @@ module Configatron
       end
     end
     
+    # Peels back n number of configuration parameters.
     def revert(step = 1)
       reset
       step.times {@_storage_list.pop}

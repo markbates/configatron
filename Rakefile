@@ -24,7 +24,7 @@ gem_spec = Gem::Specification.new do |s|
   s.email = "mark@mackframework.com"
   s.homepage = "http://www.mackframework.com"
 
-  s.test_files = FileList['test/**/*']
+  s.test_files = FileList['test/**/*', 'spec/**/*']
 
   s.files = FileList['lib/**/*.rb', 'README', 'doc/**/*.*', 'bin/**/*.*']
   s.require_paths << 'lib'
@@ -87,11 +87,11 @@ end
 Rake::RDocTask.new do |rd|
   rd.main = "README"
   files = Dir.glob("**/*.rb")
-  files = files.collect {|f| f unless f.match("test/") || f.match("doc/") }.compact
+  files = files.collect {|f| f unless f.match("test/") || f.match("doc/") || f.match("spec/") }.compact
   files << "README"
   rd.rdoc_files = files
   rd.rdoc_dir = "doc"
   rd.options << "--line-numbers"
   rd.options << "--inline-source"
-  rd.title = "configatron"
+  rd.title = "Configatron"
 end

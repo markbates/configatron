@@ -1,3 +1,77 @@
-README
-========================================================================
-configatron was developed by: markbates
+=Configatron
+
+Configatron makes configuring your applications and scripts incredibly easy. No longer is a there a need to use constants or global variables. Now you can use a simple and painless system to configure your life. And, because it's all Ruby, you can do any crazy thing you would like to!
+
+==Examples
+
+===Simple
+  configatron do |config|
+    config.email = "mark@mackframework.com"
+    config.database_url = "postgres://localhost/mack_framework_rocks"
+    # etc...
+  end
+  
+Now, anywhere in your code you can do the following:
+
+  configatron.email # => "mark@mackframework.com"
+  configatron.database_url # => "postgres://localhost/mack_framework_rocks"
+
+Viola! Simple as can be.
+
+Now you're saying, what if I want to have a 'default' set of options, but then override them later, based on other information? Simple again. Let's use our above example. We've configured our 'database_url' option to be "postgres://localhost/mack_framework_rocks". The problem with that is that is our production database url, not our development url. Fair enough, all you have to do is redeclare it:
+
+  configatron do |config|
+    config.database_url = "postgres://localhost/mack_framework_rocks_development"
+  end
+  
+becomes:
+
+  configatron.email # => "mark@mackframework.com"
+  configatron.database_url # => "postgres://localhost/mack_framework_rocks_development"
+  
+Notice how our other configuration parameters haven't changed? Cool, eh?
+
+===Namespaces
+
+The question that should be on your lips is what I need to have namespaced configuration parameters. It's easy! Configatron allows you to create namespaces.
+
+  configatron do |config|
+    config.website_url = "http://www.mackframework.com"
+    config.email do |email|
+      email.pop do |pop|
+        pop.address = "pop.example.com"
+        pop.port = "110"
+        # etc ...
+      end
+      email.smtp do |smtp|
+        smtp.address = "smtp.example.com"
+        smtp.port = "25"
+        # etc ...
+      end
+    end
+    # etc...
+  end
+
+becomes:
+
+  configatron.email.pop.address # => "pop.example.com"
+  configatron.email.smtp.address # => "smtp.example.com"
+  configatron.website_url # => "http://www.mackframework.com"
+  
+Configatron allows you to nest namespaces to your hearts content! Just keep going, it's that easy.
+
+Enjoy!
+
+==Contact
+Please mail bugs, suggestions and patches to <bugs@mackframework.com>.
+
+On the web at: http://www.mackframework.com
+
+==License and Copyright
+Copyright (C) 2008 Mark Bates, http://www.mackframework.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
