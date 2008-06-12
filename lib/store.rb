@@ -21,8 +21,8 @@ module Configatron
         @parameters[sym.to_s.gsub("=", '').to_sym] = *args
       else
         val = @parameters[sym]
-        return val unless val.nil? || configatron.nil_for_missing
-        raise NoMethodError.new(sym.to_s)
+        return val unless val.nil?
+        return handle_missing_parameter(sym)
       end
     end
     

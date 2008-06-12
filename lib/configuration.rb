@@ -67,11 +67,7 @@ module Configatron
     end
   
     def method_missing(sym, *args)
-      if self.nil_for_missing
-        return nil
-      else
-        raise NoMethodError.new(sym.to_s)
-      end
+      handle_missing_parameter(sym)
     end
     
     private
