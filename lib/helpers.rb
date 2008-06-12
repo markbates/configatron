@@ -13,5 +13,11 @@ module Configatron
       end
     end
     
+    def retrieve(name, default_value = nil)
+      return self.send(name) if exists?(name)
+      return default_value unless default_value.nil?
+      handle_missing_parameter(name)
+    end
+    
   end # Helpers
 end # Configatron 
