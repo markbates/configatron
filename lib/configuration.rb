@@ -2,6 +2,7 @@ module Configatron
   # The central class for managing the configurations.
   class Configuration
     include Singleton
+    include Configatron::Helpers
   
     # If nil_for_missing is set to true nil will be returned if the configuration
     # parameter doesn't exist. If set to false, default, then a NoMethodError exception

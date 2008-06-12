@@ -1,7 +1,8 @@
 module Configatron
   # Used to store each of the 'sets' of configuration parameters.
   class Store
-  
+    include Configatron::Helpers
+    
     # The actual key/pair parameter values.
     attr_reader :parameters
   
@@ -23,6 +24,11 @@ module Configatron
         return val unless val.nil? || configatron.nil_for_missing
         raise NoMethodError.new(sym.to_s)
       end
+    end
+    
+    def exists?(name)
+      return true unless @parameters[name.to_sym].nil?
+      super(name)
     end
     
     # Used to create 'namespaces' around a set of configuration parameters.
