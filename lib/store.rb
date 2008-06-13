@@ -33,9 +33,15 @@ module Configatron
     
     # Used to create 'namespaces' around a set of configuration parameters.
     def namespace(name)
-      ns = Configatron::Store.new
-      yield ns
-      @parameters[name.to_sym] = ns
+      if exists?(name)
+        yield self.send(name.to_sym)
+      elsif configatron.exists?(name)
+        yield configatron.send(name.to_sym)
+      else
+        ns = Configatron::Store.new
+        yield ns
+        @parameters[name.to_sym] = ns
+      end
     end
   
   end # Store

@@ -43,6 +43,26 @@ describe Configatron::Store do
       configatron.foo.apples.granny_smith.should == "Granny Smith"
     end
     
+    it "should not override all parameters when you namespace" do
+      configatron do |config|
+        config.namespace(:foo) do |foo|
+          foo.bar = :bar
+          foo.name = "mark"
+        end
+      end
+      configatron.foo.bar.should == :bar
+      configatron.foo.name.should == "mark"
+      
+      configatron do |config|
+        config.namespace(:foo) do |foo|
+          foo.name = "mark bates"
+        end
+      end
+      
+      configatron.foo.bar.should == :bar
+      configatron.foo.name.should == "mark bates"
+    end
+    
   end
   
 end
