@@ -18,8 +18,10 @@ module Configatron
     def configure
       storage = Configatron::Store.new
       yield storage
-      @_storage_list << storage
-      load_methods(storage)
+      unless storage.parameters.empty?
+        @_storage_list << storage
+        load_methods(storage)
+      end
     end
     
     # Used to load configuration settings from a Hash.
