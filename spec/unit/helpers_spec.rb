@@ -56,6 +56,10 @@ describe Configatron::Helpers do
       lambda{configatron.email.retrieve(:name)}.should raise_error(NoMethodError)
     end
     
+    it "should return nil if the default value is nil" do
+      configatron.retrieve(:name, nil).should == nil
+    end
+    
   end
   
 end

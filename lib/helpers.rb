@@ -13,9 +13,9 @@ module Configatron
       end
     end
     
-    def retrieve(name, default_value = nil)
+    def retrieve(name, default_value = ArgumentError)
       return self.send(name) if exists?(name)
-      return default_value unless default_value.nil?
+      return default_value unless default_value == ArgumentError
       handle_missing_parameter(name)
     end
     
