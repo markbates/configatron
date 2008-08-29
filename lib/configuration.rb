@@ -68,7 +68,7 @@ module Configatron
       reload
     end
   
-    def method_missing(sym, *args)
+    def method_missing(sym, *args) # :nodoc:
       handle_missing_parameter(sym)
     end
     

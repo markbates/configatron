@@ -37,13 +37,13 @@ The question that should be on your lips is what I need to have namespaced confi
 
   configatron do |config|
     config.website_url = "http://www.mackframework.com"
-    config.email do |email|
-      email.pop do |pop|
+    config.namespace(:email) do |email|
+      email.namespace(:pop) do |pop|
         pop.address = "pop.example.com"
         pop.port = "110"
         # etc ...
       end
-      email.smtp do |smtp|
+      email.namespace(:smtp) do |smtp|
         smtp.address = "smtp.example.com"
         smtp.port = "25"
         # etc ...

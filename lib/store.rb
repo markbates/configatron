@@ -26,6 +26,7 @@ module Configatron
       end
     end
     
+    # Checks whether or not configuration parameter exists.
     def exists?(name)
       return true unless @parameters[name.to_sym].nil?
       super(name)
