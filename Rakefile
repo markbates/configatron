@@ -11,15 +11,11 @@ require 'spec'
 require 'spec/rake/spectask'
 require 'pathname'
 
-GEM_VERSION = "0.0.1"
-GEM_NAME = "configatron"
-GEM_RUBYFORGE_PROJECT = "magrathea"
-
-gem_spec = Gem::Specification.new do |s|
-  s.name = GEM_NAME
-  s.version = GEM_VERSION
-  s.summary = "#{GEM_NAME}"
-  s.description = "#{GEM_NAME} was developed by: markbates"
+@gem_spec = Gem::Specification.new do |s|
+  s.name = "configatron"
+  s.version = "1.0.0"
+  s.summary = "A powerful Ruby configuration system."
+  s.description = "Configatron was developed by: markbates"
   s.author = "markbates"
   s.email = "mark@mackframework.com"
   s.homepage = "http://www.mackframework.com"
@@ -35,17 +31,17 @@ gem_spec = Gem::Specification.new do |s|
   #s.add_dependency("", "")
   #s.add_dependency("", "")
   #s.extensions << ""
-  #s.extra_rdoc_files = ["README"]
-  #s.has_rdoc = true
+  s.extra_rdoc_files = ["README"]
+  s.has_rdoc = true
   #s.platform = "Gem::Platform::Ruby"
   #s.required_ruby_version = ">= 1.8.5"
   #s.requirements << "An ice cold beer."
   #s.requirements << "Some free time!"
-  #s.rubyforge_project = "configatron"
+  s.rubyforge_project = "magrathea"
 end
 
 # rake package
-Rake::GemPackageTask.new(gem_spec) do |pkg|
+Rake::GemPackageTask.new(@gem_spec) do |pkg|
   pkg.need_zip = false
   pkg.need_tar = false
   rm_f FileList['pkg/**/*.*']
@@ -59,21 +55,22 @@ end
 
 desc "Install the gem"
 task :install => :package do |t|
-  puts `sudo gem install pkg/#{GEM_NAME}-#{GEM_VERSION}.gem`
+  puts `sudo gem install --local pkg/#{@gem_spec.name}-#{@gem_spec.version}.gem --no-update-sources`
 end
 
 desc "Release the gem"
 task :release => :install do |t|
   begin
     rf = RubyForge.new
+    rf.configure
     rf.login
     begin
-      rf.add_release(GEM_RUBYFORGE_PROJECT, GEM_NAME, GEM_VERSION, File.join("pkg", "#{GEM_NAME}-#{GEM_VERSION}.gem"))
+      rf.add_release(@gem_spec.rubyforge_project, @gem_spec.name, @gem_spec.version, File.join("pkg", "#{@gem_spec.name}-#{@gem_spec.version}.gem"))
     rescue Exception => e
       if e.message.match("Invalid package_id") || e.message.match("no <package_id> configured for")
         puts "You need to create the package!"
-        rf.create_package(GEM_RUBYFORGE_PROJECT, GEM_NAME)
-        rf.add_release(GEM_RUBYFORGE_PROJECT, GEM_NAME, GEM_VERSION, File.join("pkg", "#{GEM_NAME}-#{GEM_VERSION}.gem"))
+        rf.create_package(@gem_spec.rubyforge_project, @gem_spec.name)
+        rf.add_release(@gem_spec.rubyforge_project, @gem_spec.name, @gem_spec.version, File.join("pkg", "#{@gem_spec.name}-#{@gem_spec.version}.gem"))
       else
         raise e
       end
