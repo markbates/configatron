@@ -29,6 +29,27 @@ describe Configatron::Configuration do
     
   end
   
+  describe "configure_from_yaml" do
+    
+    it "should take a path to YAML file and use it configure configatron" do
+      configatron.should_not respond_to(:family_guy)
+      configatron.should_not respond_to(:lois)
+      
+      configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'family_guy.yml'))
+      
+      configatron.should respond_to(:family_guy)
+      configatron.should respond_to(:lois)
+      
+      configatron.family_guy.should == "Peter Griffin"
+      configatron.lois.should == "Lois Griffin"
+    end
+    
+    it "should silently file if the file doesn't exist" do
+      lambda {configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'i_dont_exist.yml'))}.should_not raise_error(Errno::ENOENT)
+    end
+    
+  end
+  
   describe "revert" do
     
     it "should roll back 1 level by default" do
