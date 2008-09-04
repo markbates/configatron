@@ -34,7 +34,9 @@ module Configatron
     # Used to load configuration settings from a YAML file.
     def configure_from_yaml(path)
       begin
-        configure_from_hash(YAML.load(File.open(path)))
+        storage = Configatron::YamlStore.new(path)
+        @_storage_list << storage
+        load_methods(storage)
       rescue Errno::ENOENT => e
         puts e.message
         # file doesn't exist.
@@ -44,6 +46,7 @@ module Configatron
     # Replays the history of configurations.
     def reload
       @_storage_list.each do |storage|
+        storage.reload
         load_methods(storage)
       end
     end

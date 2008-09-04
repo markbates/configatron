@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'pathname'
 require Pathname(__FILE__).dirname.expand_path.parent + 'spec_helper'
 
@@ -31,6 +32,16 @@ describe Configatron::Configuration do
   
   describe "configure_from_yaml" do
     
+    before :each do
+      configatron.reset!
+      @futurama = File.join(File.dirname(__FILE__), 'futurama.yml')
+      FileUtils.rm_f(@futurama)
+    end
+
+    after :each do
+      FileUtils.rm_f(@futurama)
+    end
+    
     it "should take a path to YAML file and use it configure configatron" do
       configatron.should_not respond_to(:family_guy)
       configatron.should_not respond_to(:lois)
@@ -46,6 +57,35 @@ describe Configatron::Configuration do
     
     it "should silently file if the file doesn't exist" do
       lambda {configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'i_dont_exist.yml'))}.should_not raise_error(Errno::ENOENT)
+    end
+    
+    it "should re-read the file during a reload" do
+      File.open(@futurama, 'w') do |f|
+        f.puts 'bender: robot'
+        f.puts 'fry: human'
+      end
+      
+      configatron.should_not respond_to(:bender)
+      configatron.should_not respond_to(:fry)
+      
+      configatron.configure_from_yaml(@futurama)
+      
+      configatron.should respond_to(:bender)
+      configatron.should respond_to(:fry)
+      
+      configatron.bender.should == 'robot'
+      configatron.fry.should == 'human'
+      
+      File.open(@futurama, 'w') do |f|
+        f.puts 'bender: Bending Robot'
+        f.puts 'fry: Human Male'
+      end
+      
+      configatron.reload
+      
+      configatron.bender.should == 'Bending Robot'
+      configatron.fry.should == 'Human Male'
+      
     end
     
   end

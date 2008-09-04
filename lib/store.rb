@@ -44,6 +44,11 @@ module Configatron
         @parameters[name.to_sym] = ns
       end
     end
+    
+    # Called when a reload is called on configatron. Useful for subclasses that 
+    # may need to read a file in, etc...
+    def reload
+    end
   
   end # Store
 end # Configatron
