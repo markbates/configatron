@@ -88,6 +88,33 @@ describe Configatron::Configuration do
       
     end
     
+    it "should namespace hashes" do
+      
+      configatron.should_not respond_to(:cartoon)
+      
+      File.open(@futurama, 'w') do |f|
+        f.puts %{
+cartoon:
+  characters:
+    fry: human
+    leela: mutant
+    bender: robot
+  transportation: space ship
+  fans:
+    one: Mark Bates
+    two: Dylan Bates
+        }
+      end
+      
+      configatron.configure_from_yaml(@futurama)
+      
+      configatron.should respond_to(:cartoon)
+      
+      configatron.cartoon.characters.fry.should == 'human'
+      configatron.cartoon.transportation.should == 'space ship'
+      
+    end
+    
   end
   
   describe "revert" do
