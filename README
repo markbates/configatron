@@ -31,6 +31,21 @@ becomes:
   
 Notice how our other configuration parameters haven't changed? Cool, eh?
 
+===Hash/YAML
+You can configure configatron from a hash as well:
+
+  configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})
+  
+  configatron.email.pop.address # => 'pop.example.com'
+  configatron.email.pop.port # => 110
+  # and so on...
+  
+Notice how they're all namespaced for your as well. The same holds true for YAML files:
+
+  configuration.configure_from_yaml('/path/to/file.yml')
+  
+When the 'reload' method is called on configatron then the YAML file will be re-read in case changes have been made.
+
 ===Namespaces
 
 The question that should be on your lips is what I need to have namespaced configuration parameters. It's easy! Configatron allows you to create namespaces.
@@ -59,6 +74,19 @@ becomes:
   configatron.website_url # => "http://www.mackframework.com"
   
 Configatron allows you to nest namespaces to your hearts content! Just keep going, it's that easy.
+
+Of course you can update a single parameter n levels deep as well:
+
+  configatron do |config|
+    config.namespace(:email) do |email|
+      email.namespace(:pop) do |pop|
+        pop.address = "pop2.example.com"
+      end
+    end
+  end
+  
+  configatron.email.pop.address # => "pop2.example.com"
+  configatron.email.smtp.address # => "smtp.example.com"
 
 Enjoy!
 
