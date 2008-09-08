@@ -91,6 +91,9 @@ module Configatron
         if k.is_a?(Configatron::Store)
           load_methods(k)
         else
+          if v.is_a?(Hash)
+            v = (store.parameters[k] = Configatron::Store.new(v))
+          end
           Configatron::Configuration.instance_eval do
             define_method(k) do
               v

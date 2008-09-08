@@ -8,7 +8,11 @@ module Configatron
   
     # Takes an optional Hash to configure parameters.
     def initialize(parameters = {})
-      @parameters = parameters
+      @parameters = parameters.inject({}) do |m,pair|
+        sym = pair.first.is_a?(Symbol) ? pair.first : pair.first.intern
+        m[sym] = pair.last
+        m
+      end
     end
   
     # If a method is called with an = at the end, then that method name, minus

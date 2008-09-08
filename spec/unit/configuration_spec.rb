@@ -30,6 +30,47 @@ describe Configatron::Configuration do
     
   end
   
+  describe "hashes to namespace" do
+    
+    before :each do
+      configatron.reset!
+      @futurama = File.join(File.dirname(__FILE__), 'futurama.yml')
+      FileUtils.rm_f(@futurama)
+    end
+
+    after :each do
+      FileUtils.rm_f(@futurama)
+    end
+    
+    it "should namespace hashes" do
+      
+      configatron.should_not respond_to(:cartoon)
+      
+      File.open(@futurama, 'w') do |f|
+        f.puts %{
+cartoon:
+  characters:
+    fry: human
+    leela: mutant
+    bender: robot
+  transportation: space ship
+  fans:
+    one: Mark Bates
+    two: Dylan Bates
+        }
+      end
+      
+      configatron.configure_from_yaml(@futurama)
+      
+      configatron.should respond_to(:cartoon)
+      configatron.cartoon.should be_an_instance_of(Configatron::Store)
+      
+      configatron.cartoon.characters.fry.should == 'human'
+      configatron.cartoon.transportation.should == 'space ship'
+      
+    end
+  end
+  
   describe "configure_from_yaml" do
     
     before :each do
@@ -55,7 +96,7 @@ describe Configatron::Configuration do
       configatron.lois.should == "Lois Griffin"
     end
     
-    it "should silently file if the file doesn't exist" do
+    it "should silently fail if the file doesn't exist" do
       lambda {configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'i_dont_exist.yml'))}.should_not raise_error(Errno::ENOENT)
     end
     
