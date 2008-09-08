@@ -21,6 +21,9 @@ module Configatron
         @parameters[sym.to_s.gsub("=", '').to_sym] = *args
       else
         val = @parameters[sym]
+        if val.is_a? Hash
+          val = (@parameters[sym] = Configatron::Store.new(val))
+        end
         return val unless val.nil?
         return handle_missing_parameter(sym)
       end
