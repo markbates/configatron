@@ -259,4 +259,24 @@ cartoon:
     
   end
   
+  describe 'to_hash' do
+    it "should convert entire configuration to a hash" do
+      hash = {:foo => 'bar', :baz => {:quux => 'foobar'}}
+      
+      configatron.configure_from_hash(hash)
+      
+      configatron.to_hash.should == hash
+    end
+    
+    it 'should convert the configration with multiple calls to configure' do
+      hash1 = {:foo => 'bar', :baz => {:quux => 'foobar'}}
+      hash2 = {:foo => 'notbar', :beep => 'boop'}
+      
+      configatron.configure_from_hash(hash1)
+      configatron.configure_from_hash(hash2)
+      
+      configatron.to_hash.should == hash1.merge(hash2)
+    end
+  end
+  
 end

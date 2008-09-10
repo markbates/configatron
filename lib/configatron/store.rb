@@ -56,6 +56,19 @@ module Configatron
     # may need to read a file in, etc...
     def reload
     end
+    
+    def to_hash
+      @parameters.inject({}) do |acc, (k,v)|
+        case v
+        when Configatron::Store
+          acc[k] = v.to_hash
+        else
+          acc[k] = v
+        end
+        
+        acc
+      end
+    end
   
   end # Store
 end # Configatron

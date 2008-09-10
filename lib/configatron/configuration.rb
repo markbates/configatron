@@ -85,6 +85,10 @@ module Configatron
       handle_missing_parameter(sym)
     end
     
+    def to_hash
+      @_storage_list.inject({}) { |acc, storage| acc.merge(storage.to_hash) }
+    end
+    
     private
     def load_methods(store)
       store.parameters.each do |k,v|

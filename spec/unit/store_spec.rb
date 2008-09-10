@@ -62,7 +62,30 @@ describe Configatron::Store do
       configatron.foo.bar.should == :bar
       configatron.foo.name.should == "mark bates"
     end
-    
   end
   
+  describe 'to_hash' do
+    it "should convert the store to a hash" do
+      configatron do |config|
+        config.namespace :baz do |baz|
+          baz.foo = 'bar'
+        end
+      end
+      
+      configatron.baz.to_hash.should == {:foo => 'bar'}
+    end
+    
+    it 'should support multiple nesting levels in the store' do
+      configatron do |config|
+        config.namespace :baz do |baz|
+          baz.foo = 'bar'
+          baz.namespace :quux do |quux|
+            quux.foob = 'barbaz'
+          end
+        end
+      end
+      
+      configatron.baz.to_hash.should == {:foo => 'bar', :quux => {:foob => 'barbaz'}}
+    end
+  end
 end
