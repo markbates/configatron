@@ -28,6 +28,23 @@ describe Configatron::Configuration do
       configatron.homer.should == "Homer Simpson"
     end
     
+    it "doesn't wipe out existing configurations" do
+      configatron do |c|
+        c.namespace(:mack) do |mack|
+          mack.one = 1
+          mack.two = 2
+          mack.three = 3
+        end
+        c.a = 'a'
+        c.b = 'b'
+      end
+      configatron.to_hash.should == {:mack => {:one => 1, :two => 2, :three => 3}, :a => 'a', :b => 'b'}
+      configatron.configure_from_hash(:mack => {:one => 'one'}, :b => 'bee')
+      configatron.to_hash.should == {:mack => {:one => 'one', :two => 2, :three => 3}, :a => 'a', :b => 'bee'}
+      configatron.revert
+      configatron.to_hash.should == {:mack => {:one => 1, :two => 2, :three => 3}, :a => 'a', :b => 'b'}
+    end
+    
   end
   
   describe "hashes to namespace" do

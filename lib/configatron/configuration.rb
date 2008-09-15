@@ -26,6 +26,7 @@ module Configatron
     
     # Used to load configuration settings from a Hash.
     def configure_from_hash(parameters)
+      parameters = self.to_hash.recursive_merge(parameters)
       storage = Configatron::Store.new(parameters)
       @_storage_list << storage
       load_methods(storage)
