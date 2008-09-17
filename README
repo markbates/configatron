@@ -5,28 +5,24 @@ Configatron makes configuring your applications and scripts incredibly easy. No 
 ==Examples
 
 ===Simple
-  configatron do |config|
-    config.email = "mark@mackframework.com"
-    config.database_url = "postgres://localhost/mack_framework_rocks"
-    # etc...
-  end
+  configatron.email = 'me@example.com'
+  configatron.database_url = "postgres://localhost/mack_framework_rocks"
   
 Now, anywhere in your code you can do the following:
 
-  configatron.email # => "mark@mackframework.com"
+  configatron.email # => "me@example.com"
   configatron.database_url # => "postgres://localhost/mack_framework_rocks"
 
 Viola! Simple as can be.
 
 Now you're saying, what if I want to have a 'default' set of options, but then override them later, based on other information? Simple again. Let's use our above example. We've configured our 'database_url' option to be "postgres://localhost/mack_framework_rocks". The problem with that is that is our production database url, not our development url. Fair enough, all you have to do is redeclare it:
 
-  configatron do |config|
-    config.database_url = "postgres://localhost/mack_framework_rocks_development"
-  end
+  configatron.database_url = "postgres://localhost/mack_framework_rocks_development"
+
   
 becomes:
 
-  configatron.email # => "mark@mackframework.com"
+  configatron.email # => "me@example.com"
   configatron.database_url # => "postgres://localhost/mack_framework_rocks_development"
   
 Notice how our other configuration parameters haven't changed? Cool, eh?
@@ -49,23 +45,12 @@ When the 'reload' method is called on configatron then the YAML file will be re-
 ===Namespaces
 
 The question that should be on your lips is what I need to have namespaced configuration parameters. It's easy! Configatron allows you to create namespaces.
-
-  configatron do |config|
-    config.website_url = "http://www.mackframework.com"
-    config.namespace(:email) do |email|
-      email.namespace(:pop) do |pop|
-        pop.address = "pop.example.com"
-        pop.port = "110"
-        # etc ...
-      end
-      email.namespace(:smtp) do |smtp|
-        smtp.address = "smtp.example.com"
-        smtp.port = "25"
-        # etc ...
-      end
-    end
-    # etc...
-  end
+  
+  configatron.website_url = "http://www.mackframework.com"
+  configatron.email.pop.address = "pop.example.com"
+  configatron.email.pop.port = 110
+  configatron.email.smtp.address = "smtp.example.com"
+  configatron.email.smtp.port = 25
 
 becomes:
 
@@ -77,16 +62,58 @@ Configatron allows you to nest namespaces to your hearts content! Just keep goin
 
 Of course you can update a single parameter n levels deep as well:
 
-  configatron do |config|
-    config.namespace(:email) do |email|
-      email.namespace(:pop) do |pop|
-        pop.address = "pop2.example.com"
-      end
-    end
-  end
+  configatron.email.pop.address = "pop2.example.com"
   
   configatron.email.pop.address # => "pop2.example.com"
   configatron.email.smtp.address # => "smtp.example.com"
+  
+===Misc.
+
+Even if parameters haven't been set, you can still call them, and you'll get nil back:
+
+  configatron.i.dont.exist.nil? # => true
+  configatron.i.dont.exist # => nil
+  
+You can set 'default' values for parameters. If there is already a setting, it won't be replaced. This is useful if you've already done your 'configuration' and you call a library, that needs to have parameters set. The library can set it's defaults, without worrying that it might have overridden your custom settings.
+
+  configatron.set_default(:name, 'Mark Bates')
+  configatron.name # => 'Mark Bates'
+  configatron.set_default(:name, 'Me')
+  configatron.name # => 'Mark Bates'
+  
+Sometimes in testing, or other situations, you want to temporarily change some settings. You can do this with the <tt>temp</tt> method:
+
+  configatron.one = 1
+  configatron.letters.a = 'A'
+  configatron.letters.b = 'B'
+  configatron.temp do
+    configatron.letters.b = 'bb'
+    configatron.letters.c = 'c'
+    configatron.one # => 1
+    configatron.letters.a # => 'A'
+    configatron.letters.b # => 'bb'
+    configatron.letters.c # => 'c'
+  end
+  configatron.one # => 1
+  configatron.letters.a # => 'A'
+  configatron.letters.b # => 'B'
+  configatron.letters.c # => nil
+  
+You can also pass in an optional Hash to the <tt>temp</tt>:
+
+  configatron.one = 1
+  configatron.letters.a = 'A'
+  configatron.letters.b = 'B'
+  configatron.temp(:letters => {:b => 'bb', :c => 'c'}) do
+    configatron.one == 1
+    configatron.letters.a # => 'A'
+    configatron.letters.b # => 'bb'
+    configatron.letters.c # => 'c'
+  end
+  configatron.one == 1
+  configatron.letters.a # => 'A'
+  configatron.letters.b # => 'B'
+  configatron.letters.c # => nil
 
 Enjoy!
 
