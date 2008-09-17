@@ -6,12 +6,12 @@ describe "configatron" do
     configatron.reset!
   end
   
-  describe 'freeze' do
+  describe 'protect' do
     
-    it 'should freeze a parameter and prevent it from being set' do
+    it 'should protect a parameter and prevent it from being set' do
       configatron.one = 1
-      configatron.freeze(:one)
-      lambda{configatron.one = 'one'}.should raise_error(Configatron::FrozenParameter)
+      configatron.protect(:one)
+      lambda{configatron.one = 'one'}.should raise_error(Configatron::ProtectedParameter)
       configatron.one.should == 1
     end
     
@@ -19,24 +19,24 @@ describe "configatron" do
       configatron.one = 1
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
-      configatron.letters.freeze(:a)
-      lambda{configatron.letters.a = 'a'}.should raise_error(Configatron::FrozenParameter)
+      configatron.letters.protect(:a)
+      lambda{configatron.letters.a = 'a'}.should raise_error(Configatron::ProtectedParameter)
       configatron.letters.a.should == 'A'
-      configatron.freeze(:letters)
-      lambda{configatron.letters.a = 'a'}.should raise_error(Configatron::FrozenParameter)
-      lambda{configatron.letters = 'letter'}.should raise_error(Configatron::FrozenParameter)
+      configatron.protect(:letters)
+      lambda{configatron.letters.a = 'a'}.should raise_error(Configatron::ProtectedParameter)
+      lambda{configatron.letters = 'letter'}.should raise_error(Configatron::ProtectedParameter)
     end
     
     it 'should work with configure_from_hash' do
       configatron.one = 1
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
-      configatron.letters.freeze(:a)
-      lambda{configatron.configure_from_hash(:letters => {:a => 'a'})}.should raise_error(Configatron::FrozenParameter)
+      configatron.letters.protect(:a)
+      lambda{configatron.configure_from_hash(:letters => {:a => 'a'})}.should raise_error(Configatron::ProtectedParameter)
       configatron.letters.a.should == 'A'
-      configatron.freeze(:letters)
-      lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::FrozenParameter)
-      lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::FrozenParameter)
+      configatron.protect(:letters)
+      lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::ProtectedParameter)
+      lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)
     end
     
   end

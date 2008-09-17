@@ -1,7 +1,7 @@
 class Configatron
-  class FrozenParameter < StandardError
+  class ProtectedParameter < StandardError
     def intialize(name)
-      super("Can not modify frozen parameter: '#{name}'")
+      super("Can not modify protected parameter: '#{name}'")
     end
   end
 end
