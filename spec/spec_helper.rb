@@ -1,4 +1,5 @@
 require 'rubygems'
-require 'pathname'
+gem 'rspec'
 require 'spec'
-require Pathname(__FILE__).dirname.parent.expand_path + 'lib/configatron'
+
+require File.join(File.dirname(__FILE__), '..', 'lib', 'configatron')

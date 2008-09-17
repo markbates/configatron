@@ -1,45 +1,5 @@
-require 'singleton'
+base = File.join(File.dirname(__FILE__), 'configatron')
 require 'yaml'
-
-require File.join(File.dirname(__FILE__), 'configatron', 'helpers')
-require File.join(File.dirname(__FILE__), 'configatron', 'kernel')
-require File.join(File.dirname(__FILE__), 'configatron', 'configuration')
-require File.join(File.dirname(__FILE__), 'configatron', 'store')
-require File.join(File.dirname(__FILE__), 'configatron', 'yaml_store')
-
-module Configatron # :nodoc:
-end
-
-class Hash
-
-  # Same as Hash#merge but recursively merges sub-hashes.
-
-  def recursive_merge(other)
-    hash = self.dup
-    other.each do |key, value|
-      myval = self[key]
-      if value.is_a?(Hash) && myval.is_a?(Hash)
-        hash[key] = myval.recursive_merge(value)
-      else
-        hash[key] = value
-      end
-    end
-    hash
-  end
-
-  # Same as Hash#merge! but recursively merges sub-hashes.
-
-  def recursive_merge!(other)
-    other.each do |key, value|
-      myval = self[key]
-      if value.is_a?(Hash) && myval.is_a?(Hash)
-        myval.recursive_merge!(value)
-      else
-        self[key] = value
-      end
-    end
-    self
-  end
-
-end
-
+require File.join(base, 'kernel')
+require File.join(base, 'configatron')
+require File.join(base, 'store')
