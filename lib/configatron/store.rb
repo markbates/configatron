@@ -5,6 +5,7 @@ class Configatron
     def initialize(options = {})
       @_store = {}
       configure_from_hash(options)
+      @_frozen = []
     end
     
     # Returns a Hash representing the configurations
@@ -58,7 +59,9 @@ class Configatron
     
     def method_missing(sym, *args) # :nodoc:
       if sym.to_s.match(/(.+)=$/)
-        @_store[sym.to_s.gsub("=", '').to_sym] = parse_options(*args)
+        name = sym.to_s.gsub("=", '').to_sym
+        raise Configatron::FrozenParameter.new(name) if @_frozen.include?(name)
+        @_store[name] = parse_options(*args)
       elsif @_store.has_key?(sym)
         return @_store[sym]
       else
@@ -70,6 +73,10 @@ class Configatron
     
     def ==(other) # :nodoc:
       self.to_hash == other
+    end
+    
+    def freeze(name)
+      @_frozen << name.to_sym
     end
     
     # = DeepClone

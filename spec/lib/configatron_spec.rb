@@ -6,6 +6,41 @@ describe "configatron" do
     configatron.reset!
   end
   
+  describe 'freeze' do
+    
+    it 'should freeze a parameter and prevent it from being set' do
+      configatron.one = 1
+      configatron.freeze(:one)
+      lambda{configatron.one = 'one'}.should raise_error(Configatron::FrozenParameter)
+      configatron.one.should == 1
+    end
+    
+    it 'should work with nested parameters' do
+      configatron.one = 1
+      configatron.letters.a = 'A'
+      configatron.letters.b = 'B'
+      configatron.letters.freeze(:a)
+      lambda{configatron.letters.a = 'a'}.should raise_error(Configatron::FrozenParameter)
+      configatron.letters.a.should == 'A'
+      configatron.freeze(:letters)
+      lambda{configatron.letters.a = 'a'}.should raise_error(Configatron::FrozenParameter)
+      lambda{configatron.letters = 'letter'}.should raise_error(Configatron::FrozenParameter)
+    end
+    
+    it 'should work with configure_from_hash' do
+      configatron.one = 1
+      configatron.letters.a = 'A'
+      configatron.letters.b = 'B'
+      configatron.letters.freeze(:a)
+      lambda{configatron.configure_from_hash(:letters => {:a => 'a'})}.should raise_error(Configatron::FrozenParameter)
+      configatron.letters.a.should == 'A'
+      configatron.freeze(:letters)
+      lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::FrozenParameter)
+      lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::FrozenParameter)
+    end
+    
+  end
+  
   describe 'temp' do
     
     it 'should revert back to the original parameters when the block ends' do
