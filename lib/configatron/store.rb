@@ -81,9 +81,22 @@ class Configatron
     
     def protect_all!
       @_protected.clear
-      @_store.keys.each do |v|
-        self.send(v).protect_all! if self.send(v).class == Store
-        @_protected << v
+      @_store.keys.each do |k|
+        val = self.send(k)
+        val.protect_all! if val.class == Configatron::Store
+        @_protected << k
+      end
+    end
+    
+    def unprotect(name)
+      @_protected.reject! { |e| e == name.to_sym }
+    end
+    
+    def unprotect_all!
+      @_protected.clear
+      @_store.keys.each do |k|
+        val = self.send(k)
+        val.unprotect_all! if val.class == Configatron::Store
       end
     end
     

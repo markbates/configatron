@@ -39,7 +39,7 @@ describe "configatron" do
       lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)
     end
     
-    it "should be able to protect all values at once" do
+    it "should be able to protect all parameters at once" do
       configatron.one = 1
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
@@ -50,6 +50,23 @@ describe "configatron" do
       end
       lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::ProtectedParameter)
       lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)
+    end
+    
+    it "should be able to unprotect a parameter" do
+      configatron.one = 1
+      configatron.protect(:one)
+      configatron.unprotect(:one)
+      lambda{configatron.one = 2}.should_not raise_error
+    end
+    
+    it "should be able to unprotect all parameters at once" do
+      configatron.one = 1
+      configatron.letters.a = 'A'
+      configatron.letters.b = 'B'
+      configatron.protect_all!
+      configatron.unprotect_all!
+      lambda{configatron.one = 2}.should_not raise_error
+      lambda{configatron.letters.configure_from_hash(:a => 'a')}.should_not raise_error
     end
     
   end
