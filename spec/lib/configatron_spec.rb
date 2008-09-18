@@ -154,6 +154,15 @@ describe "configatron" do
       lambda{configatron.configure_from_yaml('i_dont_exist.yml')}.should_not raise_error
     end
     
+    it "should be able to load a specific hash from the file" do
+      configatron.others.should be_nil
+      configatron.survivors.should be_nil
+      configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'lost.yml'), :hash => "survivors")
+      configatron.others.should be_nil
+      configatron.survivors.should be_nil
+      configatron.on_island.jack.should == 'Jack Shepherd'
+    end
+    
   end
   
   it 'should return a parameter' do
