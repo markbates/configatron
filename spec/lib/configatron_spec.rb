@@ -39,6 +39,19 @@ describe "configatron" do
       lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)
     end
     
+    it "should be able to protect all values at once" do
+      configatron.one = 1
+      configatron.letters.a = 'A'
+      configatron.letters.b = 'B'
+      configatron.protect_all!
+      [:a,:b].each do |l|
+        lambda{configatron.configure_from_hash(:letters => {l => l.to_s})}.should raise_error(Configatron::ProtectedParameter)
+        configatron.letters.send(l).should == l.to_s.upcase
+      end
+      lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::ProtectedParameter)
+      lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)
+    end
+    
   end
   
   describe 'temp' do

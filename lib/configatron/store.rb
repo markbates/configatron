@@ -79,6 +79,14 @@ class Configatron
       @_protected << name.to_sym
     end
     
+    def protect_all!
+      @_protected.clear
+      @_store.keys.each do |v|
+        self.send(v).protect_all! if self.send(v).class == Store
+        @_protected << v
+      end
+    end
+    
     # = DeepClone
     #
     # == Version
