@@ -75,10 +75,13 @@ class Configatron
       self.to_hash == other
     end
     
+    # Prevents a parameter from being reassigned. If called on a 'namespace' then
+    # all parameters below it will be protected as well.
     def protect(name)
       @_protected << name.to_sym
     end
     
+    # Prevents all parameters from being reassigned.
     def protect_all!
       @_protected.clear
       @_store.keys.each do |k|
@@ -88,6 +91,7 @@ class Configatron
       end
     end
     
+    # Removes the protection of a parameter.
     def unprotect(name)
       @_protected.reject! { |e| e == name.to_sym }
     end
