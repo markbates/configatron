@@ -1,0 +1,14 @@
+others:
+    on_island:
+        ben: Benjamin Linus
+        richard: Richard Alpert
+    deceased:
+        goodwin: Goodwin Stanhope
+        mikhail: Mikhail Bakunin
+survivors:
+    on_island:
+        jack: Jack Shepherd
+        locke: John Locke
+    deceased:
+        charlie: Charlie Pace
+        michael: Michael Dawson

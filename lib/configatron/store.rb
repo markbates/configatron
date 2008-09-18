@@ -23,10 +23,14 @@ class Configatron
     end
 
     # Allows for the configuration of the system from a YAML file.
-    # Takes the path to the YAML file.
-    def configure_from_yaml(path)
+    # Takes the path to the YAML file.  Also takes an optional parameter,
+    # <tt>:hash</tt>, that indicates a specific hash that should be
+    # loaded from the file. 
+    def configure_from_yaml(path, opts = {})
       begin
-        configure_from_hash(YAML.load(File.read(path)))
+        yml = YAML.load(File.read(path))
+        yml = yml[opts[:hash]] unless opts[:hash].nil?
+        configure_from_hash(yml)
       rescue Errno::ENOENT => e
         puts e.message
       end
