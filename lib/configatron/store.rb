@@ -6,6 +6,7 @@ class Configatron
       @_store = {}
       configure_from_hash(options)
       @_protected = []
+      # self.methods.each { |m| puts "m: #{m}"; configatron.protect(m.to_sym) }
     end
     
     # Returns a Hash representing the configurations
@@ -64,7 +65,7 @@ class Configatron
     def method_missing(sym, *args) # :nodoc:
       if sym.to_s.match(/(.+)=$/)
         name = sym.to_s.gsub("=", '').to_sym
-        raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name)
+        raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name) || self.methods.include?(name.to_s)
         @_store[name] = parse_options(*args)
       elsif @_store.has_key?(sym)
         return @_store[sym]

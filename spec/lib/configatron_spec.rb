@@ -15,6 +15,11 @@ describe "configatron" do
       configatron.one.should == 1
     end
     
+    it 'should protect basic methods' do
+      lambda{configatron.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
+      lambda{configatron.foo.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
+    end
+    
     it 'should work with nested parameters' do
       configatron.one = 1
       configatron.letters.a = 'A'
