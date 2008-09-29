@@ -6,7 +6,6 @@ class Configatron
       @_store = {}
       configure_from_hash(options)
       @_protected = []
-      # self.methods.each { |m| puts "m: #{m}"; configatron.protect(m.to_sym) }
     end
     
     # Returns a Hash representing the configurations
