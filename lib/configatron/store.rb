@@ -40,7 +40,7 @@ class Configatron
             end
           end
         else
-          f_out << "#{path.join('.')}.#{k} #=> #{v.inspect}"
+          f_out << "#{path.join('.')}.#{k} = #{v.inspect}"
         end
       end
       f_out.compact.sort.join("\n")
