@@ -15,7 +15,7 @@ class Configatron
   
   # Removes ALL configuration parameters
   def reset!
-    @_store = {:default => Configatron::Store.new}
+    @_store = {:default => Configatron::Store.new()}
   end
   
   # Allows for the temporary overriding of parameters in a block.

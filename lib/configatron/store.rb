@@ -2,7 +2,9 @@ class Configatron
   class Store
     
     # Takes an optional Hash of parameters
-    def initialize(options = {})
+    def initialize(options = {}, name = nil, parent = nil)
+      @_name = name
+      @_parent = parent
       @_store = {}
       configure_from_hash(options)
       @_protected = []
@@ -12,9 +14,36 @@ class Configatron
     def to_hash
       @_store
     end
-
-    def inspect # :nodoc:
-      to_hash.inspect
+    
+    def inspect
+      path = [@_name]
+      parent = @_parent
+      until parent.nil?
+        path << parent.instance_variable_get('@_name')
+        parent = parent.instance_variable_get('@_parent')
+      end
+      path << 'configatron'
+      path.compact!
+      path.reverse!
+      f_out = []
+      @_store.each do |k, v|
+        if v.is_a?(Configatron::Store)
+          v.inspect.each do |line|
+            if line.match(/\n/)
+              line.each do |l|
+                l.strip!
+                f_out << l
+              end
+            else
+              line.strip!
+              f_out << line
+            end
+          end
+        else
+          f_out << "#{path.join('.')}.#{k} #=> #{v.inspect}"
+        end
+      end
+      f_out.compact.sort.join("\n")
     end
 
     # Allows for the configuration of the system via a Hash
@@ -69,7 +98,7 @@ class Configatron
       elsif @_store.has_key?(sym)
         return @_store[sym]
       else
-        store = Configatron::Store.new
+        store = Configatron::Store.new({}, sym, self)
         @_store[sym] = store
         return store
       end
