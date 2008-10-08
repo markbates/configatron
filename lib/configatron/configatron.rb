@@ -23,19 +23,27 @@ class Configatron
   # the block gets called. At the end of the block, the temporary
   # settings are deleted and the original settings are reinstated.
   def temp(options = nil)
-    @_namespace = rand
-    @_store[@_namespace] = @_store[:default].deep_clone 
     begin
-      if options
-        self.method_missing(:configure_from_hash, options)
-      end
+      temp_start(options)
       yield
     rescue Exception => e
       raise e
     ensure
-      @_store.delete(@_namespace)
-      @_namespace = :default
+      temp_end
     end
+  end
+  
+  def temp_start(options = nil)
+    @_namespace = rand
+    @_store[@_namespace] = @_store[:default].deep_clone
+    if options
+      self.method_missing(:configure_from_hash, options)
+    end
+  end
+  
+  def temp_end
+    @_store.delete(@_namespace)
+    @_namespace = :default
   end
   
   undef :inspect # :nodoc:

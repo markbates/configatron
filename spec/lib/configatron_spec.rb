@@ -112,6 +112,15 @@ describe "configatron" do
       configatron.letters.c.should be_nil
     end
     
+    it 'should work the same as temp_start/temp_end' do
+      configatron.one = 1
+      configatron.temp_start
+      configatron.one = 'ONE'
+      configatron.one.should == 'ONE'
+      configatron.temp_end
+      configatron.one.should == 1
+    end
+    
   end
 
   describe 'configure_from_hash' do
