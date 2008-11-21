@@ -141,11 +141,15 @@ class Configatron
     # Prevents a namespace from having new parameters set. The lock is applied
     # recursively to any namespaces below it.
     def lock(name)
-      @_store[name.to_sym].lock!
+      namespace = @_store[name.to_sym]
+      raise ArgumentError, "Namespace #{name.inspect} does not exist" if namespace.nil?
+      namespace.lock!
     end
 
     def unlock(name)
-      @_store[name.to_sym].unlock!
+      namespace = @_store[name.to_sym]
+      raise ArgumentError, "Namespace #{name.inspect} does not exist" if namespace.nil?
+      namespace.unlock!
     end
     
     # = DeepClone

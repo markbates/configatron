@@ -104,6 +104,10 @@ describe "configatron" do
       lambda { configatron.one = 1 }.should_not raise_error
     end
 
+    it 'should raise an ArgumentError if unknown namespace is locked' do
+      lambda { configatron.lock(:numbers).should raise_error(ArgumentError) }
+    end
+
     describe 'then unlock' do
       before :each do
         configatron.unlock(:letters)
@@ -115,6 +119,10 @@ describe "configatron" do
 
       it 'should allow setting of new parameter in unlocked namespace\'s child' do
         lambda { configatron.letters.greek.zeta = 'z' }.should_not raise_error
+      end
+
+      it 'should raise an ArgumentError if unknown namespace is unlocked' do
+        lambda { configatron.unlock(:numbers).should raise_error(ArgumentError) }
       end
     end
   end
