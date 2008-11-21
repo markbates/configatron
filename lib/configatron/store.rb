@@ -94,6 +94,7 @@ class Configatron
       if sym.to_s.match(/(.+)=$/)
         name = sym.to_s.gsub("=", '').to_sym
         raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name) || self.methods.include?(name.to_s)
+        raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
       elsif @_store.has_key?(sym)
         return @_store[sym]
@@ -113,7 +114,7 @@ class Configatron
     def protect(name)
       @_protected << name.to_sym
     end
-    
+
     # Prevents all parameters from being reassigned.
     def protect_all!
       @_protected.clear
@@ -135,6 +136,16 @@ class Configatron
         val = self.send(k)
         val.unprotect_all! if val.class == Configatron::Store
       end
+    end
+
+    # Prevents a namespace from having new parameters set. The lock is applied
+    # recursively to any namespaces below it.
+    def lock(name)
+      @_store[name.to_sym].lock!
+    end
+
+    def unlock(name)
+      @_store[name.to_sym].unlock!
     end
     
     # = DeepClone
@@ -203,6 +214,17 @@ class Configatron
           return cl
         end
       end
+    end
+    
+    protected
+    def lock!
+      @_locked = true
+      @_store.values.each { |store| store.lock! if store.is_a?(Configatron::Store) }
+    end
+
+    def unlock!
+      @_locked = false
+      @_store.values.each { |store| store.unlock! if store.is_a?(Configatron::Store) }
     end
     
     private

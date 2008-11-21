@@ -75,6 +75,49 @@ describe "configatron" do
     end
     
   end
+
+  describe 'lock' do
+    before :each do
+      configatron.letters.a = 'A'
+      configatron.letters.b = 'B'
+      configatron.letters.greek.alpha = 'alpha'
+      configatron.lock(:letters)
+    end
+
+    it 'should allow setting of existing parameters in locked parameter' do
+      lambda { configatron.letters.a = 'a' }.should_not raise_error
+    end
+
+    it 'should not allow setting of a parameter that is not already set' do
+      lambda { configatron.letters.c = 'C' }.should raise_error(Configatron::LockedNamespace)
+    end
+
+    it 'should allow setting of existing parameters in child of locked parameter' do
+      lambda { configatron.letters.greek.alpha = 'a' }.should_not raise_error
+    end
+
+    it 'should not allow setting of new parameters in child of locked parameter' do
+      lambda { configatron.letters.greek.beta = 'beta' }.should raise_error(Configatron::LockedNamespace)
+    end
+
+    it 'should not affect parameters below the locked namespace' do
+      lambda { configatron.one = 1 }.should_not raise_error
+    end
+
+    describe 'then unlock' do
+      before :each do
+        configatron.unlock(:letters)
+      end
+
+      it 'should allow setting of new parameter in unlocked namespace' do
+        lambda { configatron.letters.d = 'd' }.should_not raise_error
+      end
+
+      it 'should allow setting of new parameter in unlocked namespace\'s child' do
+        lambda { configatron.letters.greek.zeta = 'z' }.should_not raise_error
+      end
+    end
+  end
   
   describe 'temp' do
     
