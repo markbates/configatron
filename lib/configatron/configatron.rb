@@ -3,6 +3,8 @@ require 'singleton'
 class Configatron
   include Singleton
   
+  alias_method :send!, :send
+  
   def initialize # :nodoc:
     @_namespace = :default
     reset!

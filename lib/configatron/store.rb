@@ -1,5 +1,6 @@
 class Configatron
   class Store
+    alias_method :send!, :send
     
     # Takes an optional Hash of parameters
     def initialize(options = {}, name = nil, parent = nil)

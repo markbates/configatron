@@ -50,7 +50,8 @@ end
 desc 'Run specifications'
 Spec::Rake::SpecTask.new(:default) do |t|
   t.spec_opts << '--options' << 'spec/spec.opts' if File.exists?('spec/spec.opts')
-  t.spec_files = Pathname.glob(Pathname.new(__FILE__).dirname + 'spec/**/*_spec.rb')
+  # t.spec_files = Dir.glob(File.dirname(__FILE__) + 'spec/**/*_spec.rb')
+  t.spec_files = FileList['spec/**/*_spec.rb']
 end
 
 desc "Install the gem"
