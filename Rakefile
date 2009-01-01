@@ -13,7 +13,7 @@ require 'pathname'
 
 @gem_spec = Gem::Specification.new do |s|
   s.name = "configatron"
-  s.version = "2.1.6"
+  s.version = "2.2.0"
   s.summary = "A powerful Ruby configuration system."
   s.description = "Configatron was developed by: markbates"
   s.author = "markbates"
@@ -50,7 +50,6 @@ end
 desc 'Run specifications'
 Spec::Rake::SpecTask.new(:default) do |t|
   t.spec_opts << '--options' << 'spec/spec.opts' if File.exists?('spec/spec.opts')
-  # t.spec_files = Dir.glob(File.dirname(__FILE__) + 'spec/**/*_spec.rb')
   t.spec_files = FileList['spec/**/*_spec.rb']
 end
 
