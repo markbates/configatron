@@ -29,9 +29,9 @@ class Configatron
       f_out = []
       @_store.each do |k, v|
         if v.is_a?(Configatron::Store)
-          v.inspect.each do |line|
+          v.inspect.each_line do |line|
             if line.match(/\n/)
-              line.each do |l|
+              line.each_line do |l|
                 l.strip!
                 f_out << l
               end
@@ -94,7 +94,7 @@ class Configatron
     def method_missing(sym, *args) # :nodoc:
       if sym.to_s.match(/(.+)=$/)
         name = sym.to_s.gsub("=", '').to_sym
-        raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name) || self.methods.include?(name.to_s)
+        raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name) || methods_include?(name)
         raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
       elsif @_store.has_key?(sym)
@@ -212,7 +212,7 @@ class Configatron
             }
           end
           cl.instance_variables.each do |var|
-            v = cl.instance_eval( var )
+            v = cl.instance_eval( var.to_s )
             v_cl = deep_clone( v, cloned )
             cl.instance_eval( "#{var} = v_cl" )
           end
@@ -233,6 +233,10 @@ class Configatron
     end
     
     private
+    def methods_include?(name)
+      self.methods.include?(RUBY_VERSION > '1.9.0' ? name.to_sym : name.to_s)
+    end
+    
     def parse_options(options)
       if options.is_a?(Hash)
         options.each do |k,v|
