@@ -172,6 +172,31 @@ describe "configatron" do
       configatron.one.should == 1
     end
     
+    it 'should be able to nest' do
+      configatron.one = 1
+      configatron.letters.a = 'A'
+      configatron.letters.b = 'B'
+      configatron.temp do
+        configatron.letters.b = 'bb'
+        configatron.letters.c = 'c'
+        configatron.one.should == 1
+        configatron.letters.a.should == 'A'
+        configatron.letters.b.should == 'bb'
+        configatron.letters.c.should == 'c'
+        configatron.temp do
+          configatron.letters.b = 'bbb'
+          configatron.one.should == 1
+          configatron.letters.a.should == 'A'
+          configatron.letters.b.should == 'bbb'
+          configatron.letters.c.should == 'c'
+        end
+      end
+      configatron.one.should == 1
+      configatron.letters.a.should == 'A'
+      configatron.letters.b.should == 'B'
+      configatron.letters.c.should be_nil
+    end
+    
   end
 
   describe 'configure_from_hash' do

@@ -6,13 +6,13 @@ class Configatron
   alias_method :send!, :send
   
   def initialize # :nodoc:
-    @_namespace = :default
+    @_namespace = [:default]
     reset!
   end
   
   # Forwards the method call onto the 'namespaced' Configatron::Store
   def method_missing(sym, *args)
-    @_store[@_namespace].send(sym, *args)
+    @_store[@_namespace.last].send(sym, *args)
   end
   
   # Removes ALL configuration parameters
@@ -36,16 +36,16 @@ class Configatron
   end
   
   def temp_start(options = nil)
-    @_namespace = rand
-    @_store[@_namespace] = @_store[:default].deep_clone
+    n_space = rand
+    @_store[n_space] = @_store[@_namespace.last].deep_clone
+    @_namespace << n_space
     if options
       self.method_missing(:configure_from_hash, options)
     end
   end
   
   def temp_end
-    @_store.delete(@_namespace)
-    @_namespace = :default
+    @_store.delete(@_namespace.pop)
   end
   
   undef :inspect # :nodoc:
