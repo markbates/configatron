@@ -13,7 +13,7 @@ require 'pathname'
 
 @gem_spec = Gem::Specification.new do |s|
   s.name = "configatron"
-  s.version = "2.2.1"
+  s.version = "2.2.1.1"
   s.summary = "A powerful Ruby configuration system."
   s.description = "Configatron was developed by: markbates"
   s.author = "markbates"
@@ -51,6 +51,13 @@ desc 'Run specifications'
 Spec::Rake::SpecTask.new(:default) do |t|
   t.spec_opts << '--options' << 'spec/spec.opts' if File.exists?('spec/spec.opts')
   t.spec_files = FileList['spec/**/*_spec.rb']
+end
+
+desc "Dump gemspec into root of project, for GitHub gem building"
+task :make_gemspec do |t|
+  File.open("configatron.gemspec", "w") do |file|
+    file.puts @gem_spec.to_ruby
+  end
 end
 
 desc "Install the gem"
