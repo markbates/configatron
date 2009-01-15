@@ -253,6 +253,21 @@ describe "configatron" do
       configatron.on_island.jack.should == 'Jack Shepherd'
     end
     
+    class WireHelper
+      def self.best_show_on_tv?
+        true
+      end
+    end
+    
+    it "should be able to use ERB in yaml" do
+      AVON = "Avon Barksdale"
+      configatron.simpsons.should be_nil
+      configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'the_wire.yml'))
+      configatron.police.jimmy.should == "Jimmy McNulty"
+      configatron.best_show_on_tv.should == true
+      configatron.dealers.avon.should == "Avon Barksdale"
+    end
+    
   end
   
   it 'should return a parameter' do

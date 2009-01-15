@@ -58,7 +58,7 @@ class Configatron
     # loaded from the file. 
     def configure_from_yaml(path, opts = {})
       begin
-        yml = YAML.load(File.read(path))
+        yml = YAML.load(ERB.new(File.read(path)).result)
         yml = yml[opts[:hash]] unless opts[:hash].nil?
         configure_from_hash(yml)
       rescue Errno::ENOENT => e
