@@ -25,18 +25,8 @@ require 'pathname'
   s.files = FileList['lib/**/*.rb', 'README', 'doc/**/*.*', 'bin/**/*.*']
   s.require_paths << 'lib'
 
-  #s.bindir = "bin"
-  #s.executables << "configatron"
-  #s.default_executable = ""
-  #s.add_dependency("", "")
-  #s.add_dependency("", "")
-  #s.extensions << ""
   s.extra_rdoc_files = ["README"]
   s.has_rdoc = true
-  #s.platform = "Gem::Platform::Ruby"
-  #s.required_ruby_version = ">= 1.8.5"
-  #s.requirements << "An ice cold beer."
-  #s.requirements << "Some free time!"
   s.rubyforge_project = "magrathea"
 end
 
