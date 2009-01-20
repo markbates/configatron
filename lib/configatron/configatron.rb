@@ -12,7 +12,7 @@ class Configatron
   
   # Forwards the method call onto the 'namespaced' Configatron::Store
   def method_missing(sym, *args)
-    @_store[@_namespace.last].send(sym, *args)
+    @_store[@_namespace.last].__send__(sym, *args)
   end
   
   # Removes ALL configuration parameters

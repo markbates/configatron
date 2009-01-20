@@ -3,15 +3,40 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 describe "configatron" do
 
   before(:each) do
+    p 'in each!'
     configatron.reset!
+  end
+
+  describe 'store' do
+    it 'responds to methods_include' do
+      Configatron::Store.new.should respond_to(:methods_include)
+      Configatron::Store.new.should respond_to(:methods)
+    end
+    
+    it "responds to protect" do
+      Configatron::Store.new.should respond_to(:protect)
+    end
+    
   end
   
   describe 'protect' do
     
+    fit "should shovel protected attribute onto @protected" do
+      begin
+        configatron.one = 1
+      rescue Exception => e
+        p e.message
+      end
+      configatron.protect(:one)
+      configatron.instance_variable_get(:@_protected).should == [:one]
+    end
+    
     it 'should protect a parameter and prevent it from being set' do
       configatron.one = 1
       configatron.protect(:one)
-      lambda{configatron.one = 'one'}.should raise_error(Configatron::ProtectedParameter)
+      lambda { 
+        configatron.one = 'one' 
+      }.should raise_error(Configatron::ProtectedParameter)
       configatron.one.should == 1
     end
     
@@ -51,7 +76,7 @@ describe "configatron" do
       configatron.protect_all!
       [:a,:b].each do |l|
         lambda{configatron.configure_from_hash(:letters => {l => l.to_s})}.should raise_error(Configatron::ProtectedParameter)
-        configatron.letters.send(l).should == l.to_s.upcase
+        configatron.letters.__send__(l).should == l.to_s.upcase
       end
       lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::ProtectedParameter)
       lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)

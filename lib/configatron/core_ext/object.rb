@@ -2,7 +2,7 @@ class Object # :nodoc:
   
   def send_with_chain(methods, *args) # :nodoc:
     obj = self
-    [methods].flatten.each {|m| obj = obj.send(m, *args)}
+    [methods].flatten.each {|m| obj = obj.__send__(m, *args)}
     obj
   end
   
