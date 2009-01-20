@@ -1,0 +1,161 @@
+h1. Configatron
+
+Configatron makes configuring your applications and scripts incredibly easy. No longer is a there a need to use constants or global variables. Now you can use a simple and painless system to configure your life. And, because it's all Ruby, you can do any crazy thing you would like to!
+
+h2. Examples
+
+h3. Simple
+
+<pre><code>
+  configatron.email = 'me@example.com'
+  configatron.database_url = "postgres://localhost/mack_framework_rocks"
+</code></pre>
+
+Now, anywhere in your code you can do the following:
+
+<pre><code>
+  configatron.email # => "me@example.com"
+  configatron.database_url # => "postgres://localhost/mack_framework_rocks"
+</code></pre>
+
+Viola! Simple as can be.
+
+Now you're saying, what if I want to have a 'default' set of options, but then override them later, based on other information? Simple again. Let's use our above example. We've configured our @database_url@ option to be @postgres://localhost/mack_framework_rocks@. The problem with that is that is our production database url, not our development url. Fair enough, all you have to do is redeclare it:
+
+<pre><code>
+  configatron.database_url = "postgres://localhost/mack_framework_rocks_development"
+</code></pre>
+
+becomes:
+
+<pre><code>
+  configatron.email # => "me@example.com"
+  configatron.database_url # => "postgres://localhost/mack_framework_rocks_development"
+</code></pre>
+
+Notice how our other configuration parameters haven't changed? Cool, eh?
+
+h3. Hash/YAML
+
+You can configure configatron from a hash as well:
+
+<pre><code>
+  configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})
+  
+  configatron.email.pop.address # => 'pop.example.com'
+  configatron.email.pop.port # => 110
+  # and so on...
+</code></pre>
+
+Notice how they're all namespaced for your as well. The same holds true for YAML files:
+
+<pre><code>
+  configuration.configure_from_yaml('/path/to/file.yml')
+</code></pre>
+
+When the @reload@ method is called on configatron then the YAML file will be re-read in case changes have been made.
+
+h3. Namespaces
+
+The question that should be on your lips is what I need to have namespaced configuration parameters. It's easy! Configatron allows you to create namespaces.
+  
+<pre><code>
+  configatron.website_url = "http://www.mackframework.com"
+  configatron.email.pop.address = "pop.example.com"
+  configatron.email.pop.port = 110
+  configatron.email.smtp.address = "smtp.example.com"
+  configatron.email.smtp.port = 25
+</code></pre>
+
+becomes:
+
+<pre><code>
+  configatron.email.pop.address # => "pop.example.com"
+  configatron.email.smtp.address # => "smtp.example.com"
+  configatron.website_url # => "http://www.mackframework.com"
+</code></pre>
+
+Configatron allows you to nest namespaces to your hearts content! Just keep going, it's that easy.
+
+Of course you can update a single parameter n levels deep as well:
+
+<pre><code>
+  configatron.email.pop.address = "pop2.example.com"
+  
+  configatron.email.pop.address # => "pop2.example.com"
+  configatron.email.smtp.address # => "smtp.example.com"
+</code></pre>
+
+h3. Misc.
+
+Even if parameters haven't been set, you can still call them, and you'll get nil back:
+
+<pre><code>
+  configatron.i.dont.exist.nil? # => true
+  configatron.i.dont.exist # => nil
+</code></pre>
+
+You can set 'default' values for parameters. If there is already a setting, it won't be replaced. This is useful if you've already done your 'configuration' and you call a library, that needs to have parameters set. The library can set its defaults, without worrying that it might have overridden your custom settings.
+
+<pre><code>
+  configatron.set_default(:name, 'Mark Bates')
+  configatron.name # => 'Mark Bates'
+  configatron.set_default(:name, 'Me')
+  configatron.name # => 'Mark Bates'
+</code></pre>
+
+Sometimes in testing, or other situations, you want to temporarily change some settings. You can do this with the @temp@ method:
+
+<pre><code>
+  configatron.one = 1
+  configatron.letters.a = 'A'
+  configatron.letters.b = 'B'
+  configatron.temp do
+    configatron.letters.b = 'bb'
+    configatron.letters.c = 'c'
+    configatron.one # => 1
+    configatron.letters.a # => 'A'
+    configatron.letters.b # => 'bb'
+    configatron.letters.c # => 'c'
+  end
+  configatron.one # => 1
+  configatron.letters.a # => 'A'
+  configatron.letters.b # => 'B'
+  configatron.letters.c # => nil
+</code></pre>
+
+You can also pass in an optional Hash to the @temp@:
+
+<pre><code>
+  configatron.one = 1
+  configatron.letters.a = 'A'
+  configatron.letters.b = 'B'
+  configatron.temp(:letters => {:b => 'bb', :c => 'c'}) do
+    configatron.one == 1
+    configatron.letters.a # => 'A'
+    configatron.letters.b # => 'bb'
+    configatron.letters.c # => 'c'
+  end
+  configatron.one == 1
+  configatron.letters.a # => 'A'
+  configatron.letters.b # => 'B'
+  configatron.letters.c # => nil
+</code></pre>
+
+Enjoy!
+
+h2. Contact
+
+Please mail bugs, suggestions and patches to "bugs@mackframework.com":mailto:bugs@mackframework.com
+
+On the web at: "http://www.mackframework.com":http://www.mackframework.com
+
+h2. License and Copyright
+
+Copyright (C) 2008 Mark Bates, "http://www.mackframework.com":http://www.mackframework.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
