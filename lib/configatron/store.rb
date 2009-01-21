@@ -92,12 +92,8 @@ class Configatron
     end
     
     def method_missing(sym, *args) # :nodoc:
-      p "method_missing with #{sym} and #{args}"
       if sym.to_s.match(/(.+)=$/)
         name = sym.to_s.gsub("=", '').to_sym
-        p 'in if block...'
-        p "protected: #{@_protected.inspect}"
-        p methods_include?(name)
         raise Configatron::ProtectedParameter.new(name.to_s) if @_protected.include?(name) || methods_include?(name)
         raise Configatron::LockedNamespace.new(@_name.to_s) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)

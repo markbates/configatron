@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 describe "configatron" do
 
   before(:each) do
-    p 'in each!'
     configatron.reset!
   end
 
@@ -21,16 +20,6 @@ describe "configatron" do
   
   describe 'protect' do
     
-    fit "should shovel protected attribute onto @protected" do
-      begin
-        configatron.one = 1
-      rescue Exception => e
-        p e.message
-      end
-      configatron.protect(:one)
-      configatron.instance_variable_get(:@_protected).should == [:one]
-    end
-    
     it 'should protect a parameter and prevent it from being set' do
       configatron.one = 1
       configatron.protect(:one)
@@ -41,6 +30,7 @@ describe "configatron" do
     end
     
     it 'should protect basic methods' do
+      pending("Not sure if this really applies any more...there is no reason to _not_ let users set a key called 'object_id' now")
       lambda{configatron.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
       lambda{configatron.foo.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
     end
@@ -74,9 +64,11 @@ describe "configatron" do
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
       configatron.protect_all!
-      [:a,:b].each do |l|
-        lambda{configatron.configure_from_hash(:letters => {l => l.to_s})}.should raise_error(Configatron::ProtectedParameter)
-        configatron.letters.__send__(l).should == l.to_s.upcase
+      [:a,:b].each do |lowercase_letter|
+        lambda {
+          configatron.configure_from_hash(:letters => { lowercase_letter => lowercase_letter.to_s})
+        }.should raise_error(Configatron::ProtectedParameter)
+        configatron.letters.__send__(lowercase_letter).should == lowercase_letter.to_s.upcase
       end
       lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::ProtectedParameter)
       lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)

@@ -6,26 +6,20 @@ describe Configatron::BlankSlate do
     configatron.reset!
   end
   
-  it "should respond to __id__, __send__, and instance_eval" do
+  it "should respond to __id__ and __send__ built in methods" do
     lambda {
       Configatron::BlankSlate.new.__id__
       Configatron::BlankSlate.new.__send__
-      Configatron::BlankSlate.new.__methods__
-      Configatron::BlankSlate.new.instance_eval { 'hi' }
     }.should_not raise_error(NoMethodError)
   end
   
-  it "has methods" do
-    Configatron::BlankSlate.new.methods.should == ["methods", "__id__", "__send__", "instance_eval", "configatron", "send_with_chain"]
-  end
-  
-  it "should not respond to Object's immediate methods" do
-    object_methods = Object.methods(false).reject { |m| m =~ /^(__|instance_eval)/ }.sort
-    object_methods.each do |meth|
+  it "should have methods on the CONFIGATRON_WHITELIST" do
+    blank_slate = Configatron::BlankSlate.new
+    Configatron::BlankSlate::CONFIGATRON_WHITELIST.each do |meth|
       lambda {
-        Configatron::BlankSlate.new.__send__(meth)
-      }.should raise_error(NoMethodError)
+        blank_slate__send__
+      }.should_not raise_error(NoMethodError)
     end
   end
-
+  
 end
