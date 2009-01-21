@@ -6,16 +6,12 @@ describe "configatron" do
     configatron.reset!
   end
 
-  describe 'store' do
-    it 'responds to methods_include' do
-      Configatron::Store.new.should respond_to(:methods_include)
-      Configatron::Store.new.should respond_to(:methods)
-    end
+  describe "can use built in method names on nested stores" do
+    configatron.email.send = "joe@example.com"
+    configatron.email.send.should == "joe@example.com"
     
-    it "responds to protect" do
-      Configatron::Store.new.should respond_to(:protect)
-    end
-    
+    configatron.email.object_id.should == "another"
+    configatron.email.object_id "another"
   end
   
   describe 'protect' do
