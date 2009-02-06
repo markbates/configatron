@@ -1,5 +1,5 @@
 class Configatron
-  class Store < BlankSlate
+  class Store < ::ConfigatronBlankSlate
     # alias_method :__send!, :__send__
     
     # Takes an optional Hash of parameters

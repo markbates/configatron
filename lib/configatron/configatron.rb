@@ -1,9 +1,7 @@
 require 'singleton'
 
-class Configatron
+class Configatron < ConfigatronBlankSlate
   include Singleton
-  
-  alias_method :send!, :send
   
   def initialize # :nodoc:
     @_namespace = [:default]
@@ -48,7 +46,7 @@ class Configatron
     @_store.delete(@_namespace.pop)
   end
   
-  undef :inspect # :nodoc:
-  undef :nil? # :nodoc:
+  # undef :inspect # :nodoc:
+  # undef :nil? # :nodoc:
   
 end

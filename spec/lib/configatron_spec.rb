@@ -25,10 +25,10 @@ describe "configatron" do
       configatron.one.should == 1
     end
     
-    it 'should protect basic methods' do
-      pending("Not sure if this really applies any more...there is no reason to _not_ let users set a key called 'object_id' now")
-      lambda{configatron.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
-      lambda{configatron.foo.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
+    it 'should allow setting properties with same name as Object/Kernel builtins' do
+      configatron.object_id.should be_nil
+      configatron.object_id = "my-object-id"
+      configatron.object_id.should == "my-object-id"
     end
     
     it 'should work with nested parameters' do
