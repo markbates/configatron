@@ -20,10 +20,12 @@ require 'pathname'
   s.email = "mark@mackframework.com"
   s.homepage = "http://www.mackframework.com"
 
-  s.test_files = FileList['test/**/*', 'spec/**/*']
+  # s.test_files = FileList['test/**/*', 'spec/**/*']
+
+  s.add_dependency('yamler', '>=0.1.0')
 
   s.files = FileList['lib/**/*.rb', 'README', 'doc/**/*.*', 'bin/**/*.*']
-  s.require_paths << 'lib'
+  s.require_paths = 'lib'
 
   s.extra_rdoc_files = ["README"]
   s.has_rdoc = true

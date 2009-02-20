@@ -1,6 +1,5 @@
 base = File.join(File.dirname(__FILE__), 'configatron')
-require 'yaml'
-require 'erb'
+require 'yamler'
 require File.join(base, 'configatron_blank_slate')
 require File.join(base, 'configatron')
 require File.join(base, 'store')

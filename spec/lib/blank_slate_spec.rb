@@ -22,4 +22,14 @@ describe ConfigatronBlankSlate do
     end
   end
   
+  it 'should not have methods on the CONFIGATRON_WHITELIST' do
+    blank_slate = ConfigatronBlankSlate.new
+    lambda {
+      blank_slate.inspect
+    }.should raise_error(NoMethodError)
+    lambda {
+      blank_slate.to_s
+    }.should raise_error(NoMethodError)
+  end
+  
 end
