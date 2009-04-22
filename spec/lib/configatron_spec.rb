@@ -15,6 +15,14 @@ describe "configatron" do
     configatron.foo.test.should == 'hi!'
   end
   
+  describe 'heirarchy' do
+    
+    it 'should return a string representing where in the heirarchy the current Store is' do
+      configatron.a.b.c.d.heirarchy.should == 'a.b.c.d'
+    end
+    
+  end
+  
   describe 'protect' do
     
     it 'should protect a parameter and prevent it from being set' do

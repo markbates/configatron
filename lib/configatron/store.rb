@@ -16,6 +16,18 @@ class Configatron
       @_store
     end
     
+    def heirarchy
+      path = [@_name]
+      parent = @_parent
+      until parent.nil?
+        path << parent.instance_variable_get('@_name')
+        parent = parent.instance_variable_get('@_parent')
+      end
+      path.compact!
+      path.reverse!
+      path.join('.')
+    end
+    
     def inspect
       path = [@_name]
       parent = @_parent
