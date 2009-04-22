@@ -5,30 +5,19 @@ describe "configatron" do
   before(:each) do
     configatron.reset!
   end
-
-  describe "can use built in method names on nested stores" do
-    configatron.email.send = "joe@example.com"
-    configatron.email.send.should == "joe@example.com"
-    
-    configatron.email.object_id.should == "another"
-    configatron.email.object_id "another"
-  end
   
   describe 'protect' do
     
     it 'should protect a parameter and prevent it from being set' do
       configatron.one = 1
       configatron.protect(:one)
-      lambda { 
-        configatron.one = 'one' 
-      }.should raise_error(Configatron::ProtectedParameter)
+      lambda{configatron.one = 'one'}.should raise_error(Configatron::ProtectedParameter)
       configatron.one.should == 1
     end
     
-    it 'should allow setting properties with same name as Object/Kernel builtins' do
-      configatron.object_id.should be_nil
-      configatron.object_id = "my-object-id"
-      configatron.object_id.should == "my-object-id"
+    it 'should protect basic methods' do
+      lambda{configatron.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
+      lambda{configatron.foo.object_id = 123456}.should raise_error(Configatron::ProtectedParameter)
     end
     
     it 'should work with nested parameters' do
@@ -60,11 +49,9 @@ describe "configatron" do
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
       configatron.protect_all!
-      [:a,:b].each do |lowercase_letter|
-        lambda {
-          configatron.configure_from_hash(:letters => { lowercase_letter => lowercase_letter.to_s})
-        }.should raise_error(Configatron::ProtectedParameter)
-        configatron.letters.__send__(lowercase_letter).should == lowercase_letter.to_s.upcase
+      [:a,:b].each do |l|
+        lambda{configatron.configure_from_hash(:letters => {l => l.to_s})}.should raise_error(Configatron::ProtectedParameter)
+        configatron.letters.send(l).should == l.to_s.upcase
       end
       lambda{configatron.letters.configure_from_hash(:a => 'a')}.should raise_error(Configatron::ProtectedParameter)
       lambda{configatron.configure_from_hash(:letters => 'letters')}.should raise_error(Configatron::ProtectedParameter)
@@ -264,21 +251,6 @@ describe "configatron" do
       configatron.others.should be_nil
       configatron.survivors.should be_nil
       configatron.on_island.jack.should == 'Jack Shepherd'
-    end
-    
-    class WireHelper
-      def self.best_show_on_tv?
-        true
-      end
-    end
-    
-    it "should be able to use ERB in yaml" do
-      AVON = "Avon Barksdale"
-      configatron.simpsons.should be_nil
-      configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'the_wire.yml'))
-      configatron.police.jimmy.should == "Jimmy McNulty"
-      configatron.best_show_on_tv.should == true
-      configatron.dealers.avon.should == "Avon Barksdale"
     end
     
   end

@@ -1,6 +1,6 @@
 class Configatron
-  class Store < ::ConfigatronBlankSlate
-    # alias_method :__send!, :__send__
+  class Store
+    alias_method :send!, :send
     
     # Takes an optional Hash of parameters
     def initialize(options = {}, name = nil, parent = nil)
@@ -58,7 +58,7 @@ class Configatron
     # loaded from the file. 
     def configure_from_yaml(path, opts = {})
       begin
-        yml = Yamler.load(path)
+        yml = YAML.load(File.read(path))
         yml = yml[opts[:hash]] unless opts[:hash].nil?
         configure_from_hash(yml)
       rescue Errno::ENOENT => e
@@ -94,8 +94,8 @@ class Configatron
     def method_missing(sym, *args) # :nodoc:
       if sym.to_s.match(/(.+)=$/)
         name = sym.to_s.gsub("=", '').to_sym
-        raise Configatron::ProtectedParameter.new(name.to_s) if @_protected.include?(name) || methods_include?(name)
-        raise Configatron::LockedNamespace.new(@_name.to_s) if @_locked && !@_store.has_key?(name)
+        raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name) || methods_include?(name)
+        raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
       elsif @_store.has_key?(sym)
         return @_store[sym]
@@ -120,7 +120,7 @@ class Configatron
     def protect_all!
       @_protected.clear
       @_store.keys.each do |k|
-        val = self.__send__(k)
+        val = self.send(k)
         val.protect_all! if val.class == Configatron::Store
         @_protected << k
       end
@@ -134,7 +134,7 @@ class Configatron
     def unprotect_all!
       @_protected.clear
       @_store.keys.each do |k|
-        val = self.__send__(k)
+        val = self.send(k)
         val.unprotect_all! if val.class == Configatron::Store
       end
     end

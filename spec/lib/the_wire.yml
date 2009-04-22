@@ -1,5 +1,0 @@
-best_show_on_tv: <%= WireHelper.best_show_on_tv? %>
-police:
-    jimmy: Jimmy McNulty
-dealers:
-    avon: <%= AVON %>

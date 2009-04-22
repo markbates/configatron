@@ -1,7 +1,9 @@
 require 'singleton'
 
-class Configatron < ConfigatronBlankSlate
+class Configatron
   include Singleton
+  
+  alias_method :send!, :send
   
   def initialize # :nodoc:
     @_namespace = [:default]
@@ -10,7 +12,7 @@ class Configatron < ConfigatronBlankSlate
   
   # Forwards the method call onto the 'namespaced' Configatron::Store
   def method_missing(sym, *args)
-    @_store[@_namespace.last].__send__(sym, *args)
+    @_store[@_namespace.last].send(sym, *args)
   end
   
   # Removes ALL configuration parameters
@@ -46,7 +48,7 @@ class Configatron < ConfigatronBlankSlate
     @_store.delete(@_namespace.pop)
   end
   
-  # undef :inspect # :nodoc:
-  # undef :nil? # :nodoc:
+  undef :inspect # :nodoc:
+  undef :nil? # :nodoc:
   
 end
