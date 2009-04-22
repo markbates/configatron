@@ -25,7 +25,8 @@ require 'pathname'
   s.add_dependency('yamler', '>=0.1.0')
 
   s.files = FileList['lib/**/*.rb', 'README', 'doc/**/*.*', 'bin/**/*.*']
-  s.require_paths = 'lib'
+  s.require_paths << 'lib'
+  s.require_paths.uniq!
 
   s.extra_rdoc_files = ["README"]
   s.has_rdoc = true
@@ -56,7 +57,6 @@ end
 desc "Install the gem"
 task :install => [:package] do |t|
   puts `sudo gem install --local pkg/#{@gem_spec.name}-#{@gem_spec.version}.gem --no-update-sources`
-  Rake::Task[:gemspec].invoke
 end
 
 desc "Release the gem"
