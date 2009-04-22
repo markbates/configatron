@@ -1,5 +1,11 @@
 class String # :nodoc:
   
+  def to_configatron(*args)
+    name_spaces = (args + self.split("::")).flatten
+    name_spaces.collect!{|s| s.to_s.methodize}
+    configatron.send_with_chain(name_spaces)
+  end
+  
   def underscore # :nodoc:
     self.to_s.gsub(/::/, '/').
       gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').

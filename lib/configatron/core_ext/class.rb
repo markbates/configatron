@@ -19,9 +19,7 @@ class Class
   #   Foo.to_configatron.bar # => :bar
   #   A::B::C.to_configatron.d # => 'D'
   def to_configatron(*args)
-    name_spaces = (args + self.name.split("::")).flatten
-    name_spaces.collect!{|s| s.to_s.methodize}
-    configatron.send_with_chain(name_spaces)
+    self.name.to_configatron(*args)
   end
   
 end

@@ -36,6 +36,10 @@ describe Class do
       N::O.to_configatron(:l, 'm').p.should == 'P'
     end
     
+    it 'should convert a string to a Store object' do
+      'A::B::C'.to_configatron.d.should == configatron.a.b.c.d
+    end
+    
   end
   
 end
