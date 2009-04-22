@@ -58,7 +58,7 @@ class Configatron
     # loaded from the file. 
     def configure_from_yaml(path, opts = {})
       begin
-        yml = YAML.load(File.read(path))
+        yml = ::Yamler.load(path)
         yml = yml[opts[:hash]] unless opts[:hash].nil?
         configure_from_hash(yml)
       rescue Errno::ENOENT => e
@@ -251,5 +251,7 @@ class Configatron
       end
     end
     
-  end
-end
+    undef :test # :nodoc:
+    
+  end # Store
+end # Configatron

@@ -6,6 +6,15 @@ describe "configatron" do
     configatron.reset!
   end
   
+  it 'should respond to test without blowing up' do
+    configatron.test.should be_nil
+    configatron.test = 'hi!'
+    configatron.test.should == 'hi!'
+    configatron.foo.test.should be_nil
+    configatron.foo.test = 'hi!'
+    configatron.foo.test.should == 'hi!'
+  end
+  
   describe 'protect' do
     
     it 'should protect a parameter and prevent it from being set' do
@@ -251,6 +260,13 @@ describe "configatron" do
       configatron.others.should be_nil
       configatron.survivors.should be_nil
       configatron.on_island.jack.should == 'Jack Shepherd'
+    end
+    
+    it 'should run the yaml through ERB' do
+      configatron.math.should be_nil
+      configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'math.yml'))
+      configatron.math.should_not be_nil
+      configatron.math.four.should == 4
     end
     
   end

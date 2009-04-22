@@ -13,7 +13,7 @@ require 'pathname'
 
 @gem_spec = Gem::Specification.new do |s|
   s.name = "configatron"
-  s.version = "2.2.2"
+  s.version = "2.3.0"
   s.summary = "A powerful Ruby configuration system."
   s.description = "Configatron was developed by: markbates"
   s.author = "markbates"
@@ -54,8 +54,9 @@ task :gemspec do |t|
 end
 
 desc "Install the gem"
-task :install => :package do |t|
+task :install => [:package] do |t|
   puts `sudo gem install --local pkg/#{@gem_spec.name}-#{@gem_spec.version}.gem --no-update-sources`
+  Rake::Task[:gemspec].invoke
 end
 
 desc "Release the gem"

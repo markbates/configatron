@@ -50,5 +50,6 @@ class Configatron
   
   undef :inspect # :nodoc:
   undef :nil? # :nodoc:
+  undef :test # :nodoc:
   
 end

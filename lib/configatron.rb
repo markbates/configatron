@@ -1,5 +1,5 @@
 base = File.join(File.dirname(__FILE__), 'configatron')
-require 'yaml'
+require 'yamler'
 require File.join(base, 'configatron')
 require File.join(base, 'store')
 require File.join(base, 'errors')
