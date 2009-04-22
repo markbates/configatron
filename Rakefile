@@ -13,7 +13,7 @@ require 'pathname'
 
 @gem_spec = Gem::Specification.new do |s|
   s.name = "configatron"
-  s.version = "2.2.2.2"
+  s.version = "2.2.2"
   s.summary = "A powerful Ruby configuration system."
   s.description = "Configatron was developed by: markbates"
   s.author = "markbates"
@@ -46,7 +46,8 @@ Spec::Rake::SpecTask.new(:default) do |t|
 end
 
 desc "Dump gemspec into root of project, for GitHub gem building"
-task :make_gemspec do |t|
+task :gemspec do |t|
+  @gem_spec.version = "#{@gem_spec.version}.#{Time.now.strftime('%Y%m%d%H%M%S')}"
   File.open("configatron.gemspec", "w") do |file|
     file.puts @gem_spec.to_ruby
   end
