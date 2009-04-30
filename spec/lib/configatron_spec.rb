@@ -15,6 +15,17 @@ describe "configatron" do
     configatron.foo.test.should == 'hi!'
   end
   
+  describe 'configatron_keys' do
+    
+    it 'should return a list of keys in the store' do
+      configatron.abcd.a = 'A'
+      configatron.abcd.b = 'B'
+      configatron.abcd.c = 'C'
+      configatron.abcd.configatron_keys.should == ['a', 'b', 'c']
+    end
+    
+  end
+  
   describe 'heirarchy' do
     
     it 'should return a string representing where in the heirarchy the current Store is' do

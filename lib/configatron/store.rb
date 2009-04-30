@@ -28,6 +28,10 @@ class Configatron
       path.join('.')
     end
     
+    def configatron_keys
+      return @_store.keys.collect{|k| k.to_s}.sort
+    end
+    
     def inspect
       path = [@_name]
       parent = @_parent
