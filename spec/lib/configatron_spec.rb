@@ -15,6 +15,20 @@ describe "configatron" do
     configatron.foo.test.should == 'hi!'
   end
   
+  describe 'exists?' do
+    
+    it 'should return true or false depending on whether or the setting exists' do
+      configatron.temp do
+        configatron.i.am.alive = 'alive!'
+        configatron.i.am.should be_exists(:alive)
+        configatron.i.am.should be_exists('alive')
+      end
+      configatron.i.am.should_not be_exists(:alive)
+      configatron.i.am.should_not be_exists('alive')
+    end
+    
+  end
+  
   describe 'configatron_keys' do
     
     it 'should return a list of keys in the store' do

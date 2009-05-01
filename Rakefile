@@ -13,7 +13,7 @@ require 'pathname'
 
 @gem_spec = Gem::Specification.new do |s|
   s.name = "configatron"
-  s.version = "2.3.0"
+  s.version = "2.3.1"
   s.summary = "A powerful Ruby configuration system."
   s.description = "Configatron was developed by: markbates"
   s.author = "markbates"

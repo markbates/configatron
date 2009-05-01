@@ -32,6 +32,16 @@ class Configatron
       return @_store.keys.collect{|k| k.to_s}.sort
     end
     
+    # Checks whether or not a parameter exists
+    # 
+    # Examples:
+    #   configatron.i.am.alive = 'alive!'
+    #   configatron.i.am.exists?(:alive) # => true
+    #   configatron.i.am.exists?(:dead) # => false
+    def exists?(name)
+      @_store.has_key?(name.to_sym) || @_store.has_key?(name.to_s)
+    end
+    
     def inspect
       path = [@_name]
       parent = @_parent
