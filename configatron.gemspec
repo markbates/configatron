@@ -2,15 +2,15 @@
 
 Gem::Specification.new do |s|
   s.name = %q{configatron}
-  s.version = "2.3.1.20090501171402"
+  s.version = "2.3.2.20090520135149"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["markbates"]
-  s.date = %q{2009-05-01}
+  s.date = %q{2009-05-20}
   s.description = %q{Configatron was developed by: markbates}
   s.email = %q{mark@mackframework.com}
   s.extra_rdoc_files = ["README"]
-  s.files = ["lib/configatron/configatron.rb", "lib/configatron/core_ext/class.rb", "lib/configatron/core_ext/kernel.rb", "lib/configatron/core_ext/object.rb", "lib/configatron/core_ext/string.rb", "lib/configatron/errors.rb", "lib/configatron/store.rb", "lib/configatron.rb", "README"]
+  s.files = ["lib/configatron/configatron.rb", "lib/configatron/core_ext/class.rb", "lib/configatron/core_ext/kernel.rb", "lib/configatron/core_ext/object.rb", "lib/configatron/core_ext/string.rb", "lib/configatron/errors.rb", "lib/configatron/store.rb", "lib/configatron.rb", "README", "doc/classes/Class.html", "doc/classes/Configatron/LockedNamespace.html", "doc/classes/Configatron/ProtectedParameter.html", "doc/classes/Configatron/Store.html", "doc/classes/Configatron.html", "doc/classes/Kernel.html", "doc/created.rid", "doc/files/lib/configatron/configatron_rb.html", "doc/files/lib/configatron/core_ext/class_rb.html", "doc/files/lib/configatron/core_ext/kernel_rb.html", "doc/files/lib/configatron/core_ext/object_rb.html", "doc/files/lib/configatron/core_ext/string_rb.html", "doc/files/lib/configatron/errors_rb.html", "doc/files/lib/configatron/store_rb.html", "doc/files/lib/configatron_rb.html", "doc/files/README.html", "doc/fr_class_index.html", "doc/fr_file_index.html", "doc/fr_method_index.html", "doc/index.html", "doc/rdoc-style.css"]
   s.has_rdoc = true
   s.homepage = %q{http://www.mackframework.com}
   s.require_paths = ["lib"]

@@ -53,12 +53,10 @@ Notice how they're all namespaced for your as well. The same holds true for YAML
   configuration.configure_from_yaml('/path/to/file.yml')
 </code></pre>
 
-When the @reload@ method is called on configatron then the YAML file will be re-read in case changes have been made.
-
 h3. Namespaces
 
 The question that should be on your lips is what I need to have namespaced configuration parameters. It's easy! Configatron allows you to create namespaces.
-  
+
 <pre><code>
   configatron.website_url = "http://www.mackframework.com"
   configatron.email.pop.address = "pop.example.com"
@@ -88,11 +86,19 @@ Of course you can update a single parameter n levels deep as well:
 
 h3. Misc.
 
-Even if parameters haven't been set, you can still call them, and you'll get nil back:
+Even if parameters haven't been set, you can still call them, but you'll get a @Configatron::Store@ object back. The Configatron::Store class, however, will respond true to @.nil?@ if there are no parameters configured on it.
 
 <pre><code>
   configatron.i.dont.exist.nil? # => true
-  configatron.i.dont.exist # => nil
+  configatron.i.dont.exist # => Configatron::Store
+</code></pre>
+
+If you want to get back an actual @nil@ then you can use the @retrieve@ method:
+
+<pre><code>
+  configatron.i.do.exist = [:some, :array]
+  configatron.i.dont.retrieve(:exist, nil) # => nil
+  configatron.i.do.retrieve(:exist, :foo) # => [:some, :array]
 </code></pre>
 
 You can set 'default' values for parameters. If there is already a setting, it won't be replaced. This is useful if you've already done your 'configuration' and you call a library, that needs to have parameters set. The library can set its defaults, without worrying that it might have overridden your custom settings.
