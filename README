@@ -73,6 +73,12 @@ Even if parameters haven't been set, you can still call them, but you'll get a <
   configatron.i.dont.exist.nil? # => true
   configatron.i.dont.exist # => Configatron::Store
 
+If you want to get back an actual <tt>nil</tt> then you can use the <tt>retrieve</tt> method:
+
+  configatron.i.do.exist = [:some, :array]
+  configatron.i.dont.retrieve(:exist, nil) # => nil
+  configatron.i.do.retrieve(:exist, :foo) # => [:some, :array]
+
 You can set 'default' values for parameters. If there is already a setting, it won't be replaced. This is useful if you've already done your 'configuration' and you call a library, that needs to have parameters set. The library can set its defaults, without worrying that it might have overridden your custom settings.
 
   configatron.set_default(:name, 'Mark Bates')
