@@ -16,10 +16,10 @@ class Configatron
     #   <RAILS_ROOT>/config/configatron/<RAILS_ENV>/defaults.rb
     #   <RAILS_ROOT>/config/configatron/<RAILS_ENV>/bar.rb
     #   <RAILS_ROOT>/config/configatron/<RAILS_ENV>/foo.rb
-    def self.init
+    def self.init(root = RAILS_ROOT)
       config_files = []
 
-      base_dir = File.expand_path(File.join(RAILS_ROOT, 'config', 'configatron'))
+      base_dir = File.expand_path(File.join(root, 'config', 'configatron'))
       config_files << File.join(base_dir, 'defaults.rb')
       config_files << File.join(base_dir, "#{RAILS_ENV}.rb")
 
