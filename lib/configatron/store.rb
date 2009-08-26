@@ -277,7 +277,11 @@ class Configatron
       end
     end
     
-    undef :test # :nodoc:
+    begin
+      undef :test # :nodoc:
+    rescue Exception => e
+    end
+    
     
   end # Store
 end # Configatron
