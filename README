@@ -53,7 +53,7 @@ You can configure configatron from a hash as well:
 
 Notice how they're all namespaced for your as well. The same holds true for YAML files:
 
-  configuration.configure_from_yaml('/path/to/file.yml')
+  configatron.configure_from_yaml('/path/to/file.yml')
 
 ===Namespaces
 
