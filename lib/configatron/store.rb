@@ -113,7 +113,8 @@ class Configatron
     # it won't set the value.
     def set_default(name, default_value)
       unless @_store[name.to_sym]
-        @_store[name.to_sym] = parse_options(default_value)
+        # @_store[name.to_sym] = parse_options(default_value)
+        self.send("#{name}=", default_value)
       end
     end
     
@@ -124,7 +125,15 @@ class Configatron
         raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
       elsif @_store.has_key?(sym)
-        return @_store[sym]
+        val = @_store[sym]
+        if val.is_a?(Configatron::Proc)
+          res = val.execute
+          if val.finalize?
+            @_store[sym] = res
+          end
+          return res
+        end
+        return val
       else
         store = Configatron::Store.new({}, sym, self)
         @_store[sym] = store
