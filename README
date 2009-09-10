@@ -80,25 +80,7 @@ Of course you can update a single parameter n levels deep as well:
   configatron.email.pop.address # => "pop2.example.com"
   configatron.email.smtp.address # => "smtp.example.com"
 
-===Misc.
-
-Even if parameters haven't been set, you can still call them, but you'll get a <tt>Configatron::Store</tt> object back. The Configatron::Store class, however, will respond true to <tt>.nil?</tt> if there are no parameters configured on it.
-
-  configatron.i.dont.exist.nil? # => true
-  configatron.i.dont.exist # => Configatron::Store
-
-If you want to get back an actual <tt>nil</tt> then you can use the <tt>retrieve</tt> method:
-
-  configatron.i.do.exist = [:some, :array]
-  configatron.i.dont.retrieve(:exist, nil) # => nil
-  configatron.i.do.retrieve(:exist, :foo) # => [:some, :array]
-
-You can set 'default' values for parameters. If there is already a setting, it won't be replaced. This is useful if you've already done your 'configuration' and you call a library, that needs to have parameters set. The library can set its defaults, without worrying that it might have overridden your custom settings.
-
-  configatron.set_default(:name, 'Mark Bates')
-  configatron.name # => 'Mark Bates'
-  configatron.set_default(:name, 'Me')
-  configatron.name # => 'Mark Bates'
+===Temp Configurations
 
 Sometimes in testing, or other situations, you want to temporarily change some settings. You can do this with the <tt>temp</tt> method:
 
@@ -133,6 +115,70 @@ You can also pass in an optional Hash to the <tt>temp</tt>:
   configatron.letters.a # => 'A'
   configatron.letters.b # => 'B'
   configatron.letters.c # => nil
+
+===Delayed and Dynamic Configurations
+
+There are times when you want to refer to one configuration setting in another configuration setting. Let's look at a fairly contrived example:
+
+  configatron.memcached.servers = ['127.0.0.1:11211']
+  configatron.page_caching.servers = configatron.memcached.servers
+  configatron.object_caching.servers = configatron.memcached.servers
+
+  if RAILS_ENV == 'production'
+    configatron.memcached.servers = ['192.168.0.1:11211']
+    configatron.page_caching.servers = configatron.memcached.servers
+    configatron.object_caching.servers = configatron.memcached.servers
+  elsif RAILS_ENV == 'staging'
+    configatron.memcached.servers = ['192.168.0.2:11211']
+    configatron.page_caching.servers = configatron.memcached.servers
+    configatron.object_caching.servers = configatron.memcached.servers
+  end
+
+Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create <code>Delayed</code> and <code>Dynamic</code> settings. 
+
+====Delayed
+
+With <code>Delayed</code> settings execution of the setting doesn't happen until the first time it is executed. 
+
+  configatron.memcached.servers = ['127.0.0.1:11211']
+  configatron.page_caching.servers = Configatron::Delayed.new {configatron.memcached.servers}
+  configatron.object_caching.servers = Configatron::Delayed.new {configatron.memcached.servers}
+
+  if RAILS_ENV == 'production'
+    configatron.memcached.servers = ['192.168.0.1:11211']
+  elsif RAILS_ENV == 'staging'
+    configatron.memcached.servers = ['192.168.0.2:11211']
+  end
+
+Execution occurs once and after that the result of that execution is returned. So in our case the first time someone calls the setting <code>configatron.page_caching.servers</code> it will find the <code>configatron.memcached.servers</code> setting and return that. After that point if the <code>configatron.memcached.servers</code> setting is changed, the original settings are returned by <code>configatron.page_caching.servers</code>.
+
+====Dynamic
+
+<code>Dynamic</code> settings are very similar to <code>Delayed</code> settings, but with one big difference. Every time you call a <code>Dynamic</code> setting is executed. Take this example:
+
+  configatron.current.time = Configatron::Dynamic.new {Time.now}
+
+Each time you call <code>configatron.current.time</code> it will return a new value to you. While this seems a bit useless, it is pretty useful if you have ever changing configurations.
+
+===Misc.
+
+Even if parameters haven't been set, you can still call them, but you'll get a <tt>Configatron::Store</tt> object back. The Configatron::Store class, however, will respond true to <tt>.nil?</tt> if there are no parameters configured on it.
+
+  configatron.i.dont.exist.nil? # => true
+  configatron.i.dont.exist # => Configatron::Store
+
+If you want to get back an actual <tt>nil</tt> then you can use the <tt>retrieve</tt> method:
+
+  configatron.i.do.exist = [:some, :array]
+  configatron.i.dont.retrieve(:exist, nil) # => nil
+  configatron.i.do.retrieve(:exist, :foo) # => [:some, :array]
+
+You can set 'default' values for parameters. If there is already a setting, it won't be replaced. This is useful if you've already done your 'configuration' and you call a library, that needs to have parameters set. The library can set its defaults, without worrying that it might have overridden your custom settings.
+
+  configatron.set_default(:name, 'Mark Bates')
+  configatron.name # => 'Mark Bates'
+  configatron.set_default(:name, 'Me')
+  configatron.name # => 'Mark Bates'
 
 Enjoy!
 
