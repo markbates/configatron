@@ -4,7 +4,7 @@ require 'gemstub'
 Gemstub.test_framework = :rspec
 
 Gemstub.gem_spec do |s|
-  s.version = "2.5.0"
+  s.version = "2.5.1"
   s.summary = "A powerful Ruby configuration system."
   s.rubyforge_project = "magrathea"
   s.add_dependency('yamler', '>=0.1.0')

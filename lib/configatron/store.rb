@@ -100,7 +100,8 @@ class Configatron
     # Retrieves a certain parameter and if that parameter
     # doesn't exist it will return the default_value specified.
     def retrieve(name, default_value = nil)
-      @_store[name.to_sym] || default_value
+      val = method_missing(name.to_sym)
+      return val.is_a?(Configatron::Store) ? default_value : val
     end
     
     # Removes a parameter. In the case of a nested parameter
