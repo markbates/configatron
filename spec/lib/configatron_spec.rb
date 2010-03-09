@@ -331,14 +331,20 @@ describe "configatron" do
   it 'should return the Configatron instance' do
     configatron.should be_is_a(Configatron)
   end
-  
+
   describe 'to_hash' do
     
     it 'should return a hash of all the params' do
       configatron.one = 1
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
-      configatron.to_hash.should == {:one => 1, :letters => {:a => 'A', :b => 'B'}}
+
+      h = configatron.to_hash
+      h.should be_an_instance_of(Hash)
+      h[:letters].should be_an_instance_of(Hash)
+
+      h[:one].should == 1
+      h[:letters][:b].should == 'B'
     end
     
   end

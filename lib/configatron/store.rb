@@ -13,7 +13,12 @@ class Configatron
     
     # Returns a Hash representing the configurations
     def to_hash
-      @_store
+      h = Hash.new
+      @_store.each { |k,v|
+        # Descend the tree and hashify each node
+        h[k] = v.is_a?(Store) ? v.to_hash : v
+      }
+      h 
     end
     
     def heirarchy
