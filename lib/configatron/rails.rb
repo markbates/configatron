@@ -10,21 +10,21 @@ class Configatron
     # Loads configatron files in the following order:
     # 
     # Example:
-    #   <RAILS_ROOT>/config/configatron/defaults.rb
-    #   <RAILS_ROOT>/config/configatron/<RAILS_ENV>.rb
+    #   <Rails.root>/config/configatron/defaults.rb
+    #   <Rails.root>/config/configatron/<Rails.env>.rb
     #   # optional:
-    #   <RAILS_ROOT>/config/configatron/<RAILS_ENV>/defaults.rb
-    #   <RAILS_ROOT>/config/configatron/<RAILS_ENV>/bar.rb
-    #   <RAILS_ROOT>/config/configatron/<RAILS_ENV>/foo.rb
+    #   <Rails.root>/config/configatron/<Rails.env>/defaults.rb
+    #   <Rails.root>/config/configatron/<Rails.env>/bar.rb
+    #   <Rails.root>/config/configatron/<Rails.env>/foo.rb
     def self.init(root = nil, env = nil)
       base_dir = root
       if root.nil?
-        root = defined?(RAILS_ROOT) ? RAILS_ROOT : FileUtils.pwd
+        root = defined?(Rails) ? ::Rails.root : FileUtils.pwd
         base_dir = File.expand_path(File.join(root, 'config', 'configatron'))
       end
       
       if env.nil?
-        env = defined?(RAILS_ENV) ? RAILS_ENV : 'development'
+        env = defined?(Rails) ? ::Rails.env : 'development'
       end
       
       config_files = []

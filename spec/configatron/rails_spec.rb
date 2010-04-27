@@ -7,11 +7,11 @@ describe Configatron::Rails do
     describe env do
       
       before(:each) do
-        Object.send(:remove_const, 'RAILS_ENV') rescue nil
-        Object.send(:remove_const, 'RAILS_ROOT') rescue nil
-        RAILS_ENV = env
-        RAILS_ROOT = File.join(File.dirname(__FILE__), '..', "tmp_rails_root_#{env}")
-        @configatron_path = File.join(RAILS_ROOT, 'config', 'configatron')
+        Object.send(:remove_const, 'Rails') rescue nil
+        load File.expand_path(File.join(File.dirname(__FILE__), '..', 'support', 'rails.rb'))
+        ::Rails.env = env
+        ::Rails.root = File.join(File.dirname(__FILE__), '..', "tmp_rails_root_#{env}")
+        @configatron_path = File.join(Rails.root, 'config', 'configatron')
         @defaults_file_loc = File.join(@configatron_path, 'defaults.rb')
         @env_file_loc = File.join(@configatron_path, "#{env}.rb")
         @env_folder_loc = File.join(@configatron_path, env)
@@ -45,9 +45,8 @@ describe Configatron::Rails do
       end
 
       after(:each) do
-        FileUtils.rm_rf(RAILS_ROOT)
-        Object.send(:remove_const, 'RAILS_ENV')
-        Object.send(:remove_const, 'RAILS_ROOT')
+        FileUtils.rm_rf(::Rails.root)
+        Object.send(:remove_const, 'Rails')
         # configatron.reset!
       end
 

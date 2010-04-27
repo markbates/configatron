@@ -124,11 +124,11 @@ There are times when you want to refer to one configuration setting in another c
   configatron.page_caching.servers = configatron.memcached.servers
   configatron.object_caching.servers = configatron.memcached.servers
 
-  if RAILS_ENV == 'production'
+  if Rails.env == 'production'
     configatron.memcached.servers = ['192.168.0.1:11211']
     configatron.page_caching.servers = configatron.memcached.servers
     configatron.object_caching.servers = configatron.memcached.servers
-  elsif RAILS_ENV == 'staging'
+  elsif Rails.env == 'staging'
     configatron.memcached.servers = ['192.168.0.2:11211']
     configatron.page_caching.servers = configatron.memcached.servers
     configatron.object_caching.servers = configatron.memcached.servers
@@ -144,9 +144,9 @@ With <code>Delayed</code> settings execution of the setting doesn't happen until
   configatron.page_caching.servers = Configatron::Delayed.new {configatron.memcached.servers}
   configatron.object_caching.servers = Configatron::Delayed.new {configatron.memcached.servers}
 
-  if RAILS_ENV == 'production'
+  if Rails.env == 'production'
     configatron.memcached.servers = ['192.168.0.1:11211']
-  elsif RAILS_ENV == 'staging'
+  elsif Rails.env == 'staging'
     configatron.memcached.servers = ['192.168.0.2:11211']
   end
 
