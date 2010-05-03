@@ -486,4 +486,62 @@ configatron.one = 1
     
   end
 
+  describe :blank? do
+
+    context "uninitialized option" do
+      specify { configatron.foo.bar.should be_blank }
+    end
+
+    context "nil option" do
+      before { configatron.foo.bar = nil }
+      specify { configatron.foo.bar.should be_blank }
+    end
+
+    context "false option" do
+      before { configatron.foo.bar = false }
+      specify { configatron.foo.bar.should be_blank }
+    end
+
+    context "empty string option" do
+      before { configatron.foo.bar = "" }
+      specify { configatron.foo.bar.should be_blank }
+    end
+
+    context "empty hash option" do
+      before { configatron.foo.bar = {} }
+      specify { configatron.foo.bar.should be_blank }
+    end
+
+    context "empty array option" do
+      before { configatron.foo.bar = [] }
+      specify { configatron.foo.bar.should be_blank }
+    end
+
+    context "defined option" do
+      before { configatron.foo.bar = 'asd' }
+      subject { configatron.foo.bar }
+      it { should_not be_blank }
+      it { should == 'asd' }
+    end
+  end
+
+
+  describe "boolean test" do
+
+    context "nil option" do
+      before { configatron.foo.bar = nil }
+      specify { configatron.foo.bar?.should be_false }
+    end
+
+    context "false option" do
+      before { configatron.foo.bar = false }
+      specify { configatron.foo.bar?.should be_false }
+    end
+
+    context "string option" do
+      before { configatron.foo.bar = 'asd' }
+      specify { configatron.foo.bar?.should be_true }
+    end
+
+  end
 end

@@ -102,6 +102,11 @@ class Configatron
       return @_store.empty?
     end
 
+    def blank?
+      value = retrieve(@_name)
+      value.respond_to?(:empty?) ? value.empty? : !value
+    end
+
     # Retrieves a certain parameter and if that parameter
     # doesn't exist it will return the default_value specified.
     def retrieve(name, default_value = nil)
@@ -140,6 +145,8 @@ class Configatron
           return res
         end
         return val
+      elsif sym.to_s.match(/(.+)\?/)
+        return !@_store[$1.to_sym].blank?
       else
         store = Configatron::Store.new({}, sym, self)
         @_store[sym] = store
