@@ -9,6 +9,7 @@ class Configatron
       @_store = {}
       configure_from_hash(options)
       @_protected = []
+      @_locked = false
     end
     
     # Returns a Hash representing the configurations
