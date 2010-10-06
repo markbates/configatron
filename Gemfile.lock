@@ -1,0 +1,39 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    abstract (1.0.0)
+    activesupport (3.0.0)
+    diff-lcs (1.1.2)
+    erubis (2.6.6)
+      abstract (>= 1.0.0)
+    gemstub (2.0.0)
+      activesupport (~> 3.0.0.rc)
+      genosaurus
+      mark_facets
+      rspec (>= 2.0.0.beta.19)
+    genosaurus (1.2.4)
+      erubis
+    hashie (0.4.0)
+    mark_facets (0.1.2)
+      hashie
+    rake (0.8.7)
+    rspec (2.0.0.rc)
+      rspec-core (= 2.0.0.rc)
+      rspec-expectations (= 2.0.0.rc)
+      rspec-mocks (= 2.0.0.rc)
+    rspec-core (2.0.0.rc)
+    rspec-expectations (2.0.0.rc)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.0.rc)
+      rspec-core (= 2.0.0.rc)
+      rspec-expectations (= 2.0.0.rc)
+    yamler (0.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gemstub (>= 2.0.0.pre)
+  rake
+  rspec (>= 2.0.0.beta.19)
+  yamler
