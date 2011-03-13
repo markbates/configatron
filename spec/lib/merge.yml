@@ -1,0 +1,11 @@
+merge:
+  vegetables: &v
+    - :brocolli
+    - :spinach
+    - :rhubarb
+  fruits: &f
+    - :apple
+    - :banana
+    - :tomato
+  all:
+    <<: [ *v, *f ]

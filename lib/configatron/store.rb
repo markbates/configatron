@@ -290,7 +290,11 @@ class Configatron
       if options.is_a?(Hash)
         options.each do |k,v|
           if v.is_a?(Hash)
-            self.method_missing(k.to_sym).configure_from_hash(v)
+            if v.keys.length == 1 && v.keys.first.is_a?(Syck::MergeKey)
+              self.method_missing("#{k.to_sym}=", v.values.first.flatten)
+            else
+              self.method_missing(k.to_sym).configure_from_hash(v)
+            end
           else
             self.method_missing("#{k.to_sym}=", v)
           end

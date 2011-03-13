@@ -301,7 +301,14 @@ describe "configatron" do
       configatron.math.should_not be_nil
       configatron.math.four.should == 4
     end
-    
+
+    it 'should handle merged keys' do
+      configatron.merge.should be_nil
+      configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'merge.yml'))
+      configatron.merge.should_not be_nil
+      #configatron.merge.only_fruits.should == [:apple, :banana, :tomato]
+      configatron.merge.all.should == [:apple, :banana, :tomato, :brocolli, :spinach, :rhubarb]
+    end
   end
   
   it 'should return a parameter' do
