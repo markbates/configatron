@@ -306,7 +306,6 @@ describe "configatron" do
       configatron.food.should be_nil
       configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'merge.yml'))
       configatron.food.should_not be_nil
-      #configatron.merge.only_fruits.should == [:apple, :banana, :tomato]
       configatron.food.list.should == [:apple, :banana, :tomato, :brocolli, :spinach]
     end
   end
