@@ -1,11 +1,14 @@
-merge:
-  vegetables: &v
-    - :brocolli
-    - :spinach
-    - :rhubarb
-  fruits: &f
-    - :apple
-    - :banana
-    - :tomato
-  all:
-    <<: [ *v, *f ]
+---
+  void: &void
+  food:
+    fruits: &fruits
+      - :apple
+      - :banana
+      - :tomato
+    vegetables: &vegetables
+      - :brocolli
+      - :spinach
+
+    list:
+      <<: [*fruits, *vegetables, *void]
+

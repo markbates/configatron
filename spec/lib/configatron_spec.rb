@@ -303,11 +303,11 @@ describe "configatron" do
     end
 
     it 'should handle merged keys' do
-      configatron.merge.should be_nil
+      configatron.food.should be_nil
       configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'merge.yml'))
-      configatron.merge.should_not be_nil
+      configatron.food.should_not be_nil
       #configatron.merge.only_fruits.should == [:apple, :banana, :tomato]
-      configatron.merge.all.should == [:apple, :banana, :tomato, :brocolli, :spinach, :rhubarb]
+      configatron.food.list.should == [:apple, :banana, :tomato, :brocolli, :spinach]
     end
   end
   
