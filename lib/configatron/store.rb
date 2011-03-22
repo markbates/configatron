@@ -290,7 +290,7 @@ class Configatron
       if options.is_a?(Hash)
         options.each do |k,v|
           if v.is_a?(Hash)
-            if v.keys.length == 1 && v.keys.first.is_a?(Syck::MergeKey)
+            if v.keys.length == 1 && v.keys.first.is_a?(SYCK_CONSTANT)
               self.method_missing("#{k.to_sym}=", v.values.first.flatten)
             else
               self.method_missing(k.to_sym).configure_from_hash(v)
@@ -309,6 +309,7 @@ class Configatron
     rescue Exception => e
     end
     
+    SYCK_CONSTANT = (RUBY_VERSION.match(/^1\.9/) ? Syck::MergeKey : YAML::Syck::MergeKey)
     
   end # Store
 end # Configatron
