@@ -1,8 +1,4 @@
 base = File.join(File.dirname(__FILE__), 'configatron')
-if RUBY_VERSION.match(/^1\.9\.2/)
-  require 'syck'
-  ::YAML::ENGINE.yamler = 'syck'
-end
 require 'yamler'
 require 'fileutils'
 require File.join(base, 'configatron')
