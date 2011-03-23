@@ -17,7 +17,7 @@ Bundler.require
 Gemstub.test_framework = :rspec
 
 Gemstub.gem_spec do |s|
-  s.version = "2.7.1"
+  s.version = "2.7.2"
   s.summary = "A powerful Ruby configuration system."
   s.rubyforge_project = "magrathea"
   s.add_dependency('yamler', '>=0.1.0')
