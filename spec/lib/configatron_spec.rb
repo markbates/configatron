@@ -15,6 +15,30 @@ describe "configatron" do
     configatron.foo.test.should == 'hi!'
   end
   
+  describe 'block assignment' do
+    it 'should pass the store to the block' do
+      configatron.test do |c|
+        c.should === configatron.test
+      end
+    end
+
+    it 'should persist changes outside of the block' do
+      configatron.test.one = 1
+      configatron.test.two = 2
+      configatron.test do |c|
+        c.two = 'two'
+      end
+      configatron.test.one.should === 1
+      configatron.test.two.should === 'two'
+    end
+
+    it 'should pass the default store to a temp block' do
+      configatron.temp do |c|
+        c.class.should == Configatron::Store
+      end
+    end
+  end
+
   describe 'exists?' do
     
     it 'should return true or false depending on whether or the setting exists' do

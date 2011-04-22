@@ -141,6 +141,10 @@ class Configatron
         raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name) || methods_include?(name)
         raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
+      elsif sym.to_s.match(/(.+)\?/)
+        return !@_store[$1.to_sym].blank?
+      elsif block_given?
+        yield self.send(sym)
       elsif @_store.has_key?(sym)
         val = @_store[sym]
         if val.is_a?(Configatron::Proc)
@@ -151,8 +155,6 @@ class Configatron
           return res
         end
         return val
-      elsif sym.to_s.match(/(.+)\?/)
-        return !@_store[$1.to_sym].blank?
       else
         store = Configatron::Store.new({}, sym, self)
         @_store[sym] = store
