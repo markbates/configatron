@@ -6,7 +6,7 @@ class Configatron
     end
 
     alias_method :send!, :send
-    
+
     # Takes an optional Hash of parameters
     def initialize(options = {}, name = nil, parent = nil)
       @_name = name
@@ -16,7 +16,7 @@ class Configatron
       @_protected = []
       @_locked = false
     end
-    
+
     # Returns a Hash representing the configurations
     def to_hash
       h = Hash.new
@@ -24,9 +24,9 @@ class Configatron
         # Descend the tree and hashify each node
         h[k] = v.is_a?(Store) ? v.to_hash : v
       }
-      h 
+      h
     end
-    
+
     def heirarchy
       path = [@_name]
       parent = @_parent
@@ -38,13 +38,13 @@ class Configatron
       path.reverse!
       path.join('.')
     end
-    
+
     def configatron_keys
       return @_store.keys.collect{|k| k.to_s}.sort
     end
-    
+
     # Checks whether or not a parameter exists
-    # 
+    #
     # Examples:
     #   configatron.i.am.alive = 'alive!'
     #   configatron.i.am.exists?(:alive) # => true
@@ -52,7 +52,12 @@ class Configatron
     def exists?(name)
       @_store.has_key?(name.to_sym) || @_store.has_key?(name.to_s)
     end
-    
+
+    # respond_to to respond_to
+    def respond_to?(name)
+      exists?(name) || super
+    end
+
     def inspect
       path = [@_name]
       parent = @_parent
@@ -92,7 +97,7 @@ class Configatron
     # Allows for the configuration of the system from a YAML file.
     # Takes the path to the YAML file.  Also takes an optional parameter,
     # <tt>:hash</tt>, that indicates a specific hash that should be
-    # loaded from the file. 
+    # loaded from the file.
     def configure_from_yaml(path, opts = {})
       begin
         yml = ::Yamler.load(path)
@@ -119,7 +124,7 @@ class Configatron
       val = method_missing(name.to_sym)
       return val.is_a?(Configatron::Store) ? default_value : val
     end
-    
+
     # Removes a parameter. In the case of a nested parameter
     # it will remove all below it.
     def remove(name)
@@ -134,7 +139,7 @@ class Configatron
         self.send("#{name}=", default_value)
       end
     end
-    
+
     def method_missing(sym, *args) # :nodoc:
       if sym.to_s.match(/(.+)=$/)
         name = sym.to_s.gsub("=", '').to_sym
@@ -159,11 +164,11 @@ class Configatron
         return store
       end
     end
-    
+
     def ==(other) # :nodoc:
       self.to_hash == other
     end
-    
+
     # Prevents a parameter from being reassigned. If called on a 'namespace' then
     # all parameters below it will be protected as well.
     def protect(name)
@@ -179,12 +184,12 @@ class Configatron
         @_protected << k
       end
     end
-    
+
     # Removes the protection of a parameter.
     def unprotect(name)
       @_protected.reject! { |e| e == name.to_sym }
     end
-    
+
     def unprotect_all!
       @_protected.clear
       @_store.keys.each do |k|
@@ -206,7 +211,7 @@ class Configatron
       raise ArgumentError, "Namespace #{name.inspect} does not exist" if namespace.nil?
       namespace.unlock!
     end
-    
+
     # = DeepClone
     #
     # == Version
@@ -274,7 +279,7 @@ class Configatron
         end
       end
     end
-    
+
     protected
     def lock!
       @_locked = true
@@ -285,12 +290,12 @@ class Configatron
       @_locked = false
       @_store.values.each { |store| store.unlock! if store.is_a?(Configatron::Store) }
     end
-    
+
     private
     def methods_include?(name)
       self.methods.include?(RUBY_VERSION > '1.9.0' ? name.to_sym : name.to_s)
     end
-    
+
     def parse_options(options)
       if options.is_a?(Hash)
         options.each do |k,v|
@@ -308,13 +313,13 @@ class Configatron
         return options
       end
     end
-    
+
     begin
       undef :test # :nodoc:
     rescue Exception => e
     end
-    
+
     SYCK_CONSTANT = (RUBY_VERSION.match(/^1\.9/) ? Syck::MergeKey : YAML::Syck::MergeKey)
-    
+
   end # Store
 end # Configatron
