@@ -14,19 +14,49 @@ describe "configatron" do
     configatron.foo.test = 'hi!'
     configatron.foo.test.should == 'hi!'
   end
+  
+  describe "respond_to" do
+    
+    it 'should respond_to respond_to?' do
+      configatron.test.should be_nil
+      configatron.test = 'hi!'
+      configatron.respond_to?(:test).should be_true
+      configatron.respond_to?(:plop).should be_false
+    end
 
-  it 'should respond_to respond_to?' do
-    configatron.test.should be_nil
-    configatron.test = 'hi!'
-    configatron.respond_to?(:test).should be_true
-    configatron.respond_to?(:plop).should be_false
+    it 'should respond_to respond_to? recursively' do
+      configatron.foo.test.should be_nil
+      configatron.foo.test = 'hi!l'
+      configatron.foo.respond_to?(:test).should be_true
+      configatron.foo.respond_to?(:plop).should be_false
+    end
+    
   end
+  
+  describe 'block assignment' do
+    
+    it 'should pass the store to the block' do
+      configatron.test do |c|
+        c.should === configatron.test
+      end
+    end
 
-  it 'should respond_to respond_to? recursively' do
-    configatron.foo.test.should be_nil
-    configatron.foo.test = 'hi!l'
-    configatron.foo.respond_to?(:test).should be_true
-    configatron.foo.respond_to?(:plop).should be_false
+    it 'should persist changes outside of the block' do
+      configatron.test.one = 1
+      configatron.test.two = 2
+      configatron.test do |c|
+        c.two = 'two'
+      end
+      configatron.test.one.should === 1
+      configatron.test.two.should === 'two'
+    end
+
+    it 'should pass the default store to a temp block' do
+      configatron.temp do |c|
+        c.class.should == Configatron::Store
+      end
+    end
+
   end
 
   describe 'exists?' do
@@ -133,6 +163,7 @@ describe "configatron" do
   end
 
   describe 'lock' do
+    
     before :each do
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
@@ -165,6 +196,7 @@ describe "configatron" do
     end
 
     describe 'then unlock' do
+      
       before :each do
         configatron.unlock(:letters)
       end
@@ -180,7 +212,9 @@ describe "configatron" do
       it 'should raise an ArgumentError if unknown namespace is unlocked' do
         lambda { configatron.unlock(:numbers).should raise_error(ArgumentError) }
       end
+      
     end
+    
   end
 
   describe 'temp' do
@@ -322,6 +356,7 @@ describe "configatron" do
       configatron.food.should_not be_nil
       configatron.food.list.should == [:apple, :banana, :tomato, :brocolli, :spinach]
     end
+    
   end
 
   it 'should return a parameter' do
@@ -543,6 +578,7 @@ configatron.one = 1
       it { should_not be_blank }
       it { should == 'asd' }
     end
+    
   end
 
 
@@ -564,4 +600,5 @@ configatron.one = 1
     end
 
   end
+  
 end
