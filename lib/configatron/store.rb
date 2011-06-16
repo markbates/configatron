@@ -320,8 +320,12 @@ class Configatron
       undef :test # :nodoc:
     rescue Exception => e
     end
-
-    SYCK_CONSTANT = (RUBY_VERSION.match(/^1\.9/) ? Syck::MergeKey : YAML::Syck::MergeKey)
+   
+    if RUBY_PLATFORM == 'java'
+      SYCK_CONSTANT = YAML::Yecht::MergeKey
+    else
+      SYCK_CONSTANT = (RUBY_VERSION.match(/^1\.9/) ? Syck::MergeKey : YAML::Syck::MergeKey) 
+    end
 
   end # Store
 end # Configatron
