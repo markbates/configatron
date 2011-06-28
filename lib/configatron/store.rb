@@ -99,6 +99,7 @@ class Configatron
     # <tt>:hash</tt>, that indicates a specific hash that should be
     # loaded from the file.
     def configure_from_yaml(path, opts = {})
+      Configatron.log.warn "DEPRECATED! (configure_from_yaml) Please stop using YAML and use Ruby instead. This method will be removed in 2.9."
       begin
         yml = ::Yamler.load(path)
         yml = yml[opts[:hash]] unless opts[:hash].nil?
@@ -303,12 +304,12 @@ class Configatron
         options.each do |k,v|
           if v.is_a?(Hash)
             if v.keys.length == 1 && v.keys.first.is_a?(SYCK_CONSTANT)
-              self.method_missing("#{k.to_sym}=", v.values.first.flatten)
+              self.method_missing("#{k}=", v.values.first.flatten)
             else
               self.method_missing(k.to_sym).configure_from_hash(v)
             end
           else
-            self.method_missing("#{k.to_sym}=", v)
+            self.method_missing("#{k}=", v)
           end
         end
       else

@@ -1,15 +1,30 @@
 require 'singleton'
+require 'logger'
 
 class Configatron
   include Singleton
 
   alias_method :send!, :send
+  
+  class << self
+    
+    def log
+      unless @logger
+        if defined?(::Rails)
+          @logger = ::Rails.logger
+        end
+        @logger = ::Logger.new(STDOUT) if @logger.nil?
+      end
+      return @logger
+    end
+    
+  end
 
   def initialize # :nodoc:
     @_namespace = [:default]
     reset!
   end
-
+  
   # Forwards the method call onto the 'namespaced' Configatron::Store
   def method_missing(sym, *args, &block)
     @_store[@_namespace.last].send(sym, *args, &block)

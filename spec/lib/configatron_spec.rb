@@ -357,6 +357,13 @@ describe "configatron" do
       configatron.food.list.should == [:apple, :banana, :tomato, :brocolli, :spinach]
     end
     
+    it "should handle complex yaml" do
+      configatron.complex_development.bucket.should be_nil
+      configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'complex.yml'))
+      configatron.complex_development.bucket.should == 'develop'
+      configatron.complex_development.access_key_id.should == 'access_key'
+    end
+    
   end
 
   it 'should return a parameter' do

@@ -17,13 +17,13 @@ Bundler.require
 Gemstub.test_framework = :rspec
 
 Gemstub.gem_spec do |s|
-  s.version = "2.8.1"
+  s.version = "2.8.2"
   s.summary = "A powerful Ruby configuration system."
   s.rubyforge_project = "magrathea"
   s.add_dependency('yamler', '>=0.1.0')
   s.email = 'mark@markbates.com'
   s.homepage = 'http://www.metabates.com'
-  s.files = FileList['lib/**/*.*', 'README', 'LICENSE', 'bin/**/*.*', 'generators/**/*.*']
+  s.files = FileList['lib/**/*.*', 'README.textile', 'LICENSE', 'bin/**/*.*', 'generators/**/*.*']
 end
 
 Gemstub.rdoc do |rd|

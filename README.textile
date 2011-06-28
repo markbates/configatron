@@ -57,7 +57,7 @@ Notice how our other configuration parameters haven't changed? Cool, eh?
 
 h3. Hash/YAML
 
-You can configure configatron from a hash as well:
+You can configure configatron from a hash as well (this is really only useful in testing or for data driven configurat, it's not recommended for actual configuration):
 
 <pre><code>
   configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})
@@ -67,11 +67,9 @@ You can configure configatron from a hash as well:
   # and so on...
 </code></pre>
 
-Notice how they're all namespaced for your as well. The same holds true for YAML files:
+h4. YAML
 
-<pre><code>
-  configatron.configure_from_yaml('/path/to/file.yml')
-</code></pre>
+Support for YAML has been deprecated and will be removed in version 2.9 of Configatron. Please switch to Ruby based configuration of Configatron. Trust me, it's a lot nicer and easier to use. Why would you _not_ want to?
 
 h3. Namespaces
 
