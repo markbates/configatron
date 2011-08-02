@@ -1,6 +1,6 @@
 class Configatron
   class Store
-    if RUBY_VERSION.match(/^1\.9\.2/)
+    if RUBY_VERSION.match(/^1\.9\.[23]/)
       require 'syck'
       ::YAML::ENGINE.yamler = 'syck'
     end
