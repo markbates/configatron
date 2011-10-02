@@ -220,8 +220,21 @@ You can set 'default' values for parameters. If there is already a setting, it w
 
 Enjoy!
 
-h2. Contact
+h2. Contributors
 
-Please mail bugs, suggestions and patches to "development@metabates.com":mailto:development@metabates.com
-
-On the web at: "http://www.metabates.com":http://www.metabates.com
+* Mark Bates
+* Rob Sanheim
+* Cody Maggard
+* Jean-Denis Vauguet
+* Simon Menke
+* chatgris
+* Mat Brown
+* Torsten Schönebaum
+* Casper Gripenberg
+* Artiom Diomin
+* Tim Riley
+* mattelacchiato
+* Rick Fletcher
+* Brandon Dimcheff
+* joe miller
+* Josh Nichols
