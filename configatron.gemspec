@@ -1,21 +1,21 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{configatron}
-  s.version = "2.8.2.20110628103123"
+  s.name = "configatron"
+  s.version = "2.8.3.20111002102303"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["markbates"]
-  s.date = %q{2011-06-28}
-  s.description = %q{configatron was developed by: markbates}
-  s.email = %q{mark@markbates.com}
+  s.date = "2011-10-02"
+  s.description = "configatron was developed by: markbates"
+  s.email = "mark@markbates.com"
   s.extra_rdoc_files = ["LICENSE"]
   s.files = ["lib/configatron/configatron.rb", "lib/configatron/core_ext/class.rb", "lib/configatron/core_ext/kernel.rb", "lib/configatron/core_ext/object.rb", "lib/configatron/core_ext/string.rb", "lib/configatron/errors.rb", "lib/configatron/proc.rb", "lib/configatron/rails.rb", "lib/configatron/store.rb", "lib/configatron.rb", "README.textile", "LICENSE", "generators/configatron_generator.rb", "generators/templates/configatron/cucumber.rb", "generators/templates/configatron/defaults.rb", "generators/templates/configatron/development.rb", "generators/templates/configatron/production.rb", "generators/templates/configatron/test.rb", "generators/templates/initializers/configatron.rb"]
-  s.homepage = %q{http://www.metabates.com}
+  s.homepage = "http://www.metabates.com"
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{magrathea}
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{A powerful Ruby configuration system.}
+  s.rubyforge_project = "magrathea"
+  s.rubygems_version = "1.8.10"
+  s.summary = "A powerful Ruby configuration system."
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
