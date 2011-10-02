@@ -226,15 +226,16 @@ h2. Contributors
 * Rob Sanheim
 * Cody Maggard
 * Jean-Denis Vauguet
-* Simon Menke
-* chatgris
 * Mat Brown
 * Torsten Schönebaum
+* chatgris
+* Simon Menke
 * Casper Gripenberg
 * Artiom Diomin
-* Tim Riley
 * mattelacchiato
+* Tim Riley
 * Rick Fletcher
-* Brandon Dimcheff
 * joe miller
+* Brandon Dimcheff
+* Dan Pickett
 * Josh Nichols
