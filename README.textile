@@ -227,9 +227,10 @@ h2. Contributors
 * Cody Maggard
 * Jean-Denis Vauguet
 * Mat Brown
-* Torsten Schönebaum
 * chatgris
+* Torsten Schönebaum
 * Simon Menke
+* Gleb Pomykalov
 * Casper Gripenberg
 * Artiom Diomin
 * mattelacchiato
