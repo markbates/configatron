@@ -10,10 +10,11 @@ Gem::Specification.new do |s|
   s.description = "configatron was developed by: markbates"
   s.email = "mark@markbates.com"
   s.extra_rdoc_files = ["LICENSE"]
-  s.files = ["lib/configatron/configatron.rb", "lib/configatron/core_ext/class.rb", "lib/configatron/core_ext/kernel.rb", "lib/configatron/core_ext/object.rb", "lib/configatron/core_ext/string.rb", "lib/configatron/errors.rb", "lib/configatron/proc.rb", "lib/configatron/rails.rb", "lib/configatron/store.rb", "lib/configatron.rb", "lib/generators/configatron/install/install_generator.rb", "lib/generators/configatron/install/templates/configatron/defaults.rb", "lib/generators/configatron/install/templates/configatron/development.rb", "lib/generators/configatron/install/templates/configatron/production.rb", "lib/generators/configatron/install/templates/configatron/test.rb", "lib/generators/configatron/install/templates/initializers/configatron.rb", "README.textile", "LICENSE"]
+
   ignored_files = File.read('.gitignore').split("\n").compact.reject(&:empty?) + ["Rakefile", "Gemfile", "configatron.gemspec"]
   test_files = Dir['spec/**/*'].reject {|f| File.directory?(f)}
   library_files = Dir['**/*'].reject{|f| File.directory?(f)}
+  s.files = library_files - test_files - ignored_files
   s.homepage = "http://www.metabates.com"
   s.require_paths = ["lib"]
   s.rubyforge_project = "magrathea"
