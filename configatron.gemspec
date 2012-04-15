@@ -12,4 +12,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.summary = "A powerful Ruby configuration system."
 
+  s.add_runtime_dependency "yamler", ">= 0.1.0"
 end
