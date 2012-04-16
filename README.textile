@@ -223,17 +223,18 @@ Enjoy!
 h2. Contributors
 
 * Mark Bates
+* Kurtis Rainbolt-Greene
 * Rob Sanheim
 * Cody Maggard
 * Jean-Denis Vauguet
-* Mat Brown
-* chatgris
 * Torsten Schönebaum
+* Mat Brown
 * Simon Menke
+* chatgris
 * Gleb Pomykalov
 * Casper Gripenberg
-* Artiom Diomin
 * mattelacchiato
+* Artiom Diomin
 * Tim Riley
 * Rick Fletcher
 * joe miller
