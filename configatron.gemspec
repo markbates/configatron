@@ -21,6 +21,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = "1.8.10"
   s.summary = "A powerful Ruby configuration system."
 
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'gemstub'
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
