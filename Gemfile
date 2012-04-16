@@ -1,6 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
-gem 'rake'
-gem "rspec", ">= 2.6.0"
-gem 'gemstub', ">= 2.0.0"
-gem 'yamler'
+# Specify your gem's dependencies in bar.gemspec
+gemspec

@@ -19,4 +19,7 @@ Gem::Specification.new do |s|
   s.summary = "A powerful Ruby configuration system."
 
   s.add_runtime_dependency "yamler", ">= 0.1.0"
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'gemstub'
 end
