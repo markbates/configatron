@@ -7,18 +7,20 @@ require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
 
 require 'gemstub'
 
+require File.expand_path('../lib/configatron/version', __FILE__)
+
 Gemstub.test_framework = :rspec
 
-# Gemstub.gem_spec do |s|
-#   s.version = "2.9.0"
-#   s.summary = "A powerful Ruby configuration system."
-#   s.rubyforge_project = "magrathea"
-#   s.add_dependency('yamler', '>=0.1.0')
-#   s.email = 'mark@markbates.com'
-#   s.homepage = 'http://www.metabates.com'
-#   s.files = FileList['lib/**/*.*', 'README.textile', 'LICENSE', 'bin/**/*.*']
-# end
+Gemstub.gem_spec do |s|
+  s.version = Configatron::VERSION
+  s.summary = "A powerful Ruby configuration system."
+  s.rubyforge_project = "magrathea"
+  s.add_dependency('yamler', '>=0.1.0')
+  s.email = 'mark@markbates.com'
+  s.homepage = 'http://www.metabates.com'
+  s.files = FileList['lib/**/*.*', 'README.textile', 'LICENSE', 'bin/**/*.*']
+end
 
-# Gemstub.rdoc do |rd|
-#   rd.title = "Configatron"
-# end
+Gemstub.rdoc do |rd|
+  rd.title = "Configatron"
+end
