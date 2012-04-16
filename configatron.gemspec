@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
+require File.expand_path('../lib/configatron/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name = "configatron"
-  s.version = "2.9.0.20111208155705"
+  s.version = Configatron::VERSION
 
   s.authors = ["markbates"]
   s.description = "configatron was developed by: markbates"
