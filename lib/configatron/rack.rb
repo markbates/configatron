@@ -1,5 +1,5 @@
 class Configatron
-  # Helpful for making using configatron with Rack even easier!
+  # Helpful for making using configatron with Rack apps even easier!
   module Rack
 
     # Loads configatron files in the following order:
@@ -11,6 +11,9 @@ class Configatron
     #   <root>/config/configatron/ENV['RACK_ENV']/defaults.rb
     #   <root>/config/configatron/ENV['RACK_ENV']/bar.rb
     #   <root>/config/configatron/ENV['RACK_ENV']/foo.rb
+    #
+    #   If you pass in root, it has to be the configatron directory and not the root
+    #   of the rack app!
     def self.init(root = nil, env = nil)
       base_dir = root
       if root.nil?
@@ -21,26 +24,7 @@ class Configatron
       if env.nil?
         env = ENV['RACK_ENV'] || 'development'
       end
-
-      config_files = []
-
-      config_files << File.join(base_dir, 'defaults.rb')
-      config_files << File.join(base_dir, "#{env}.rb")
-
-      env_dir = File.join(base_dir, env)
-      config_files << File.join(env_dir, 'defaults.rb')
-
-      Dir.glob(File.join(env_dir, '*.rb')).sort.each do |f|
-        config_files << f
-      end
-
-      config_files.collect! {|config| File.expand_path(config)}.uniq!
-
-      config_files.each do |config|
-        if File.exists?(config)
-          require config
-        end
-      end
+      Configatron::ConfigFiles.load(env, base_dir)
     end
   end # Rack
 end # Configatron
