@@ -6,4 +6,4 @@ rvm:
   - rbx-19mode
   - ruby-head
 
-script: bundle exec rspec
+script: bundle exec rake
