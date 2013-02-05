@@ -7,7 +7,9 @@ class Configatron
   alias_method :send!, :send
   
   class << self
-    
+
+    attr_accessor :strict
+
     def log
       unless @logger
         if defined?(::Rails)
@@ -17,7 +19,10 @@ class Configatron
       end
       return @logger
     end
-    
+
+    def reset!
+      @strict = false
+    end
   end
 
   def initialize # :nodoc:
@@ -37,6 +42,7 @@ class Configatron
 
   # Removes ALL configuration parameters
   def reset!
+    self.class.reset!
     @_store = {:default => Configatron::Store.new}
   end
 
