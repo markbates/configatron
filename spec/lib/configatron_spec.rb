@@ -6,6 +6,22 @@ describe "configatron" do
     configatron.reset!
   end
 
+  describe '.strict' do
+    it 'should raise an error for undefined keys' do
+      Configatron.strict = true
+      lambda {configatron.undefined}.should raise_error(IndexError)
+      lambda {configatron.undefined?}.should raise_error(IndexError)
+    end
+
+    it 'should not raise an error for existing keys' do
+      configatron.defined
+      configatron.defined?
+      Configatron.strict = true
+      configatron.defined
+      configatron.defined?
+    end
+  end
+
   it 'should respond to test without blowing up' do
     configatron.test.should be_nil
     configatron.test = 'hi!'

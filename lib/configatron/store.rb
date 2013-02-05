@@ -156,11 +156,11 @@ class Configatron
         raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
       elsif sym.to_s.match(/(.+)\?/)
-        return !@_store[$1.to_sym].blank?
+        return !_store_lookup($1.to_sym).blank?
       elsif block_given?
         yield self.send(sym)
       elsif @_store.has_key?(sym)
-        val = @_store[sym]
+        val = _store_lookup(sym)
         if val.is_a?(Configatron::Proc)
           res = val.execute
           if val.finalize?
@@ -170,6 +170,10 @@ class Configatron
         end
         return val
       else
+        # This will error out if strict is enabled, and be a no-op
+        # otherwise. The nice thing is the error message will be the
+        # same as in the .method? case.
+        _store_lookup(sym)
         store = Configatron::Store.new({}, sym, self)
         @_store[sym] = store
         return store
@@ -330,6 +334,17 @@ class Configatron
         end
       else
         return options
+      end
+    end
+
+    # Give it this awkward name to hopefully avoid config keys people
+    # are using.
+    def _store_lookup(sym)
+      begin
+        @_store.fetch(sym)
+      rescue IndexError
+        raise if Configatron.strict
+        nil
       end
     end
 
