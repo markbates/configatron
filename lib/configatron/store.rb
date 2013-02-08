@@ -17,6 +17,14 @@ class Configatron
       @_locked = false
     end
 
+    def [](key)
+      method_missing(key.to_sym)
+    end
+
+    def []=(key, value)
+      method_missing(:"#{key}=", value)
+    end
+
     # Returns a Hash representing the configurations
     def to_hash
       h = Hash.new
