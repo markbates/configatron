@@ -1,8 +1,12 @@
 class Configatron
   class Store
     if RUBY_VERSION.match(/^1\.9\.[^1]/)
-      require 'syck'
-      ::YAML::ENGINE.yamler = 'syck' unless RUBY_PLATFORM == 'java'
+      if RUBY_PLATFORM == 'java'
+        require 'yecht'
+      else
+        require 'syck'
+        ::YAML::ENGINE.yamler = 'syck'
+      end
     end
 
     alias_method :send!, :send
