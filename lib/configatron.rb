@@ -1,5 +1,6 @@
 require "configatron/version"
+require "configatron/store"
 
-module Configatron
+class Configatron
   # Your code goes here...
 end
