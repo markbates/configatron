@@ -14,9 +14,9 @@ describe "configatron" do
     configatron.foo.test = 'hi!'
     configatron.foo.test.should == 'hi!'
   end
-  
+
   describe "respond_to" do
-    
+
     it 'should respond_to respond_to?' do
       configatron.test.should be_nil
       configatron.test = 'hi!'
@@ -30,11 +30,11 @@ describe "configatron" do
       configatron.foo.respond_to?(:test).should be_true
       configatron.foo.respond_to?(:plop).should be_false
     end
-    
+
   end
-  
+
   describe 'block assignment' do
-    
+
     it 'should pass the store to the block' do
       configatron.test do |c|
         c.should === configatron.test
@@ -163,7 +163,7 @@ describe "configatron" do
   end
 
   describe 'lock' do
-    
+
     before :each do
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
@@ -196,7 +196,7 @@ describe "configatron" do
     end
 
     describe 'then unlock' do
-      
+
       before :each do
         configatron.unlock(:letters)
       end
@@ -212,9 +212,9 @@ describe "configatron" do
       it 'should raise an ArgumentError if unknown namespace is unlocked' do
         lambda { configatron.unlock(:numbers).should raise_error(ArgumentError) }
       end
-      
+
     end
-    
+
   end
 
   describe 'temp' do
@@ -356,14 +356,14 @@ describe "configatron" do
       configatron.food.should_not be_nil
       configatron.food.list.should == [:apple, :banana, :tomato, :brocolli, :spinach]
     end
-    
+
     it "should handle complex yaml" do
       configatron.complex_development.bucket.should be_nil
       configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'complex.yml'))
       configatron.complex_development.bucket.should == 'develop'
       configatron.complex_development.access_key_id.should == 'access_key'
     end
-    
+
   end
 
   it 'should return a parameter' do
@@ -548,46 +548,47 @@ configatron.one = 1
 
   end
 
-  describe :blank? do
+  if Object.new.respond_to?(:blank?)
+    describe :blank? do
 
-    context "uninitialized option" do
-      specify { configatron.foo.bar.should be_blank }
-    end
+      context "uninitialized option" do
+        specify { configatron.foo.bar.should be_blank }
+      end
 
-    context "nil option" do
-      before { configatron.foo.bar = nil }
-      specify { configatron.foo.bar.should be_blank }
-    end
+      context "nil option" do
+        before { configatron.foo.bar = nil }
+        specify { configatron.foo.bar.should be_blank }
+      end
 
-    context "false option" do
-      before { configatron.foo.bar = false }
-      specify { configatron.foo.bar.should be_blank }
-    end
+      context "false option" do
+        before { configatron.foo.bar = false }
+        specify { configatron.foo.bar.should be_blank }
+      end
 
-    context "empty string option" do
-      before { configatron.foo.bar = "" }
-      specify { configatron.foo.bar.should be_blank }
-    end
+      context "empty string option" do
+        before { configatron.foo.bar = "" }
+        specify { configatron.foo.bar.should be_blank }
+      end
 
-    context "empty hash option" do
-      before { configatron.foo.bar = {} }
-      specify { configatron.foo.bar.should be_blank }
-    end
+      context "empty hash option" do
+        before { configatron.foo.bar = {} }
+        specify { configatron.foo.bar.should be_blank }
+      end
 
-    context "empty array option" do
-      before { configatron.foo.bar = [] }
-      specify { configatron.foo.bar.should be_blank }
-    end
+      context "empty array option" do
+        before { configatron.foo.bar = [] }
+        specify { configatron.foo.bar.should be_blank }
+      end
 
-    context "defined option" do
-      before { configatron.foo.bar = 'asd' }
-      subject { configatron.foo.bar }
-      it { should_not be_blank }
-      it { should == 'asd' }
+      context "defined option" do
+        before { configatron.foo.bar = 'asd' }
+        subject { configatron.foo.bar }
+        it { should_not be_blank }
+        it { should == 'asd' }
+      end
+
     end
-    
   end
-
 
   describe "boolean test" do
 
@@ -607,5 +608,5 @@ configatron.one = 1
     end
 
   end
-  
+
 end

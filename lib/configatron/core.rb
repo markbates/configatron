@@ -1,5 +1,14 @@
+require 'fileutils'
 require 'singleton'
 require 'logger'
+require 'yamler'
+
+base = File.dirname(__FILE__)
+
+require File.join(base, 'store')
+require File.join(base, 'errors')
+require File.join(base, 'rails')
+require File.join(base, 'proc')
 
 class Configatron
   include Singleton
@@ -7,7 +16,9 @@ class Configatron
   alias_method :send!, :send
   
   class << self
-    
+
+    attr_accessor :disable_monkey_patching
+
     def log
       unless @logger
         if defined?(::Rails)
