@@ -89,7 +89,7 @@ becomes:
   configatron.email.smtp.address # => "smtp.example.com"
   configatron.website_url # => "http://www.mackframework.com"
 ```
-####onfigatron allows you to nest namespaces to your hearts content! Just keep going, it's that easy.
+####Configatron allows you to nest namespaces to your hearts content! Just keep going, it's that easy.
 
 Of course you can update a single parameter n levels deep as well:
 
