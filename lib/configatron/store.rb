@@ -12,9 +12,9 @@ class Configatron
       @_name = name
       @_parent = parent
       @_store = {}
-      configure_from_hash(options)
       @_protected = []
       @_locked = false
+      configure_from_hash(options)
     end
 
     # Returns a Hash representing the configurations
