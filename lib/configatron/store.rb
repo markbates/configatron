@@ -300,9 +300,9 @@ class Configatron
     end
 
     def is_syck?(obj)
-      if defined?(SYCK_CONSTANT)
+      if defined?(SYCK_CONSTANT) && obj.is_a?(SYCK_CONSTANT)
         Configatron.log.warn "DEPRECATED! (SYCK) Syck support has been removed from Configatron in Ruby 2.x. This feature will be removed entirely in Configatron 3.0. Please be advised."
-        return obj.is_a?(SYCK_CONSTANT)
+        return true
       end
       return false
     end
