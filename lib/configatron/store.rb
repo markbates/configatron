@@ -299,11 +299,19 @@ class Configatron
       self.methods.include?(RUBY_VERSION > '1.9.0' ? name.to_sym : name.to_s)
     end
 
+    def is_syck?(obj)
+      if defined?(SYCK_CONSTANT)
+        Configatron.log.warn "DEPRECATED! (SYCK) Syck support has been removed from Configatron in Ruby 2.x. This feature will be removed entirely in Configatron 3.0. Please be advised."
+        return obj.is_a?(SYCK_CONSTANT)
+      end
+      return false
+    end
+
     def parse_options(options)
       if options.is_a?(Hash)
         options.each do |k,v|
           if v.is_a?(Hash)
-            if v.keys.length == 1 && v.keys.first.is_a?(SYCK_CONSTANT)
+            if v.keys.length == 1 && is_syck?(v.keys.first)
               self.method_missing("#{k}=", v.values.first.flatten)
             else
               self.method_missing(k.to_sym).configure_from_hash(v)
@@ -324,8 +332,8 @@ class Configatron
 
     if RUBY_PLATFORM == 'java'
       SYCK_CONSTANT = YAML::Yecht::MergeKey
-    else
-      SYCK_CONSTANT = (RUBY_VERSION.match(/^1\.9/) ? Syck::MergeKey : YAML::Syck::MergeKey)
+    elsif RUBY_VERSION.match(/^1\.9/)
+      SYCK_CONSTANT = Syck::MergeKey
     end
 
   end # Store
