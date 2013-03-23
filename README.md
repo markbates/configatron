@@ -60,7 +60,7 @@ Notice how our other configuration parameters haven't changed? Cool, eh?
 You can configure configatron from a hash as well (this is really only useful in testing or for data driven configurat, it's not recommended for actual configuration):
 
 ```ruby
-  configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})#### 
+  configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})####
   configatron.email.pop.address # => 'pop.example.com'
   configatron.email.pop.port # => 110
   # and so on...
@@ -95,7 +95,7 @@ Of course you can update a single parameter n levels deep as well:
 
 ```ruby
   configatron.email.pop.address = "pop2.example.com"
-  
+
   configatron.email.pop.address # => "pop2.example.com"
   configatron.email.smtp.address # => "smtp.example.com"
 ```
@@ -160,11 +160,11 @@ There are times when you want to refer to one configuration setting in another c
   end
 ```
 
-Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create `Delayed` and `Dynamic` settings. 
+Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create `Delayed` and `Dynamic` settings.
 
 #### Delayed
 
-With `Delayed` settings execution of the setting doesn't happen until the first time it is executed. 
+With `Delayed` settings execution of the setting doesn't happen until the first time it is executed.
 
 ```ruby
   configatron.memcached.servers = ['127.0.0.1:11211']
@@ -205,6 +205,14 @@ If you want to get back an actual @nil@ then you can use the @retrieve@ method:
   configatron.i.do.exist = [:some, :array]
   configatron.i.dont.retrieve(:exist, nil) # => nil
   configatron.i.do.retrieve(:exist, :foo) # => [:some, :array]
+```
+
+Alternatively, if a configuration parameter is always required you can append a bang to the property name when accessing it and a `Configatron::RequiredParameter` error will be raised if the property is not configured:
+
+```ruby
+  configatron.missing.required.parameter! # => Configatron::RequiredParameter will be raised
+  configatron.required.parameter = 'required'
+  configatron.required.parameter! # => 'required'
 ```
 
 You can set 'default' values for parameters. If there is already a setting, it won't be replaced. This is useful if you've already done your 'configuration' and you call a library, that needs to have parameters set. The library can set its defaults, without worrying that it might have overridden your custom settings.
