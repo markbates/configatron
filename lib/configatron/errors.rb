@@ -10,4 +10,10 @@ class Configatron
       super("Cannot add new parameters to locked namespace: #{name.inspect}")
     end
   end
+
+  class RequiredParameter < StandardError
+    def initialize(name)
+      super("Required parameter missing: #{name.inspect}")
+    end
+  end
 end

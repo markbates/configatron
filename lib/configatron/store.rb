@@ -142,6 +142,8 @@ class Configatron
     end
 
     def method_missing(sym, *args) # :nodoc:
+      raise_error_if_missing = sym[-1] == '!'
+      sym = sym[0...-1].to_sym if raise_error_if_missing
       if sym.to_s.match(/(.+)=$/)
         name = sym.to_s.gsub("=", '').to_sym
         raise Configatron::ProtectedParameter.new(name) if @_protected.include?(name) || methods_include?(name)
@@ -162,6 +164,7 @@ class Configatron
         end
         return val
       else
+        raise Configatron::RequiredParameter.new(sym.to_s) if raise_error_if_missing
         store = Configatron::Store.new({}, sym, self)
         @_store[sym] = store
         return store

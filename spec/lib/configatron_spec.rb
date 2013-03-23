@@ -14,9 +14,23 @@ describe "configatron" do
     configatron.foo.test = 'hi!'
     configatron.foo.test.should == 'hi!'
   end
-  
+
+  describe 'required parameters' do
+    it 'should blow up if the property does not exist' do
+      expect { configatron.missing.property! }.to raise_error(Configatron::RequiredParameter)
+    end
+
+    it 'should respond with the property if it exists' do
+      configatron.required.property = 'hi!'
+      configatron.required.property!.should == 'hi!'
+
+      configatron.another.required.property = false
+      configatron.another.required.property!.should be_false
+    end
+  end
+
   describe "respond_to" do
-    
+
     it 'should respond_to respond_to?' do
       configatron.test.should be_nil
       configatron.test = 'hi!'
@@ -30,11 +44,11 @@ describe "configatron" do
       configatron.foo.respond_to?(:test).should be_true
       configatron.foo.respond_to?(:plop).should be_false
     end
-    
+
   end
-  
+
   describe 'block assignment' do
-    
+
     it 'should pass the store to the block' do
       configatron.test do |c|
         c.should === configatron.test
@@ -163,7 +177,7 @@ describe "configatron" do
   end
 
   describe 'lock' do
-    
+
     before :each do
       configatron.letters.a = 'A'
       configatron.letters.b = 'B'
@@ -196,7 +210,7 @@ describe "configatron" do
     end
 
     describe 'then unlock' do
-      
+
       before :each do
         configatron.unlock(:letters)
       end
@@ -212,9 +226,9 @@ describe "configatron" do
       it 'should raise an ArgumentError if unknown namespace is unlocked' do
         lambda { configatron.unlock(:numbers).should raise_error(ArgumentError) }
       end
-      
+
     end
-    
+
   end
 
   describe 'temp' do
@@ -358,14 +372,14 @@ describe "configatron" do
         configatron.food.list.should == [:apple, :banana, :tomato, :brocolli, :spinach]
       end
     end
-    
+
     it "should handle complex yaml" do
       configatron.complex_development.bucket.should be_nil
       configatron.configure_from_yaml(File.join(File.dirname(__FILE__), 'complex.yml'))
       configatron.complex_development.bucket.should == 'develop'
       configatron.complex_development.access_key_id.should == 'access_key'
     end
-    
+
   end
 
   it 'should return a parameter' do
@@ -587,7 +601,7 @@ configatron.one = 1
       it { should_not be_blank }
       it { should == 'asd' }
     end
-    
+
   end
 
 
@@ -609,5 +623,5 @@ configatron.one = 1
     end
 
   end
-  
+
 end
