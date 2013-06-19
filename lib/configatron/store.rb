@@ -67,15 +67,7 @@ class Configatron
     end
 
     def inspect
-      path = [@_name]
-      parent = @_parent
-      until parent.nil?
-        path << parent.instance_variable_get('@_name')
-        parent = parent.instance_variable_get('@_parent')
-      end
-      path << 'configatron'
-      path.compact!
-      path.reverse!
+      name = _store_name
       f_out = []
       @_store.each do |k, v|
         if v.is_a?(Configatron::Store)
@@ -91,7 +83,7 @@ class Configatron
             end
           end
         else
-          f_out << "#{path.join('.')}.#{k} = #{v.inspect}"
+          f_out << "#{name}.#{k} = #{v.inspect}"
         end
       end
       f_out.compact.sort.join("\n")
@@ -156,11 +148,11 @@ class Configatron
         raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
       elsif sym.to_s.match(/(.+)\?/)
-        return !@_store[$1.to_sym].blank?
+        return !_store_lookup($1.to_sym).blank?
       elsif block_given?
         yield self.send(sym)
       elsif @_store.has_key?(sym)
-        val = @_store[sym]
+        val = _store_lookup(sym)
         if val.is_a?(Configatron::Proc)
           res = val.execute
           if val.finalize?
@@ -170,6 +162,10 @@ class Configatron
         end
         return val
       else
+        # This will error out if strict is enabled, and be a no-op
+        # otherwise. The nice thing is the error message will be the
+        # same as in the .method? case.
+        _store_lookup(sym)
         store = Configatron::Store.new({}, sym, self)
         @_store[sym] = store
         return store
@@ -330,6 +326,30 @@ class Configatron
         end
       else
         return options
+      end
+    end
+
+    def _store_name
+      path = [@_name]
+      parent = @_parent
+      until parent.nil?
+        path << parent.instance_variable_get('@_name')
+        parent = parent.instance_variable_get('@_parent')
+      end
+      path << 'configatron'
+      path.compact!
+      path.reverse!
+      path.join('.')
+    end
+
+    # Give it this awkward name to hopefully avoid config keys people
+    # are using.
+    def _store_lookup(sym)
+      begin
+        @_store.fetch(sym)
+      rescue IndexError => e
+        raise e.class.new("#{e.message} (for #{_store_name})") if Configatron.strict
+        nil
       end
     end
 
