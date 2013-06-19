@@ -60,7 +60,7 @@ Notice how our other configuration parameters haven't changed? Cool, eh?
 You can configure configatron from a hash as well (this is really only useful in testing or for data driven configurat, it's not recommended for actual configuration):
 
 ```ruby
-  configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})#### 
+  configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})####
   configatron.email.pop.address # => 'pop.example.com'
   configatron.email.pop.port # => 110
   # and so on...
@@ -95,7 +95,7 @@ Of course you can update a single parameter n levels deep as well:
 
 ```ruby
   configatron.email.pop.address = "pop2.example.com"
-  
+
   configatron.email.pop.address # => "pop2.example.com"
   configatron.email.smtp.address # => "smtp.example.com"
 ```
@@ -160,11 +160,11 @@ There are times when you want to refer to one configuration setting in another c
   end
 ```
 
-Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create `Delayed` and `Dynamic` settings. 
+Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create `Delayed` and `Dynamic` settings.
 
 #### Delayed
 
-With `Delayed` settings execution of the setting doesn't happen until the first time it is executed. 
+With `Delayed` settings execution of the setting doesn't happen until the first time it is executed.
 
 ```ruby
   configatron.memcached.servers = ['127.0.0.1:11211']
@@ -225,17 +225,18 @@ Enjoy!
 * Rob Sanheim
 * Cody Maggard
 * Jean-Denis Vauguet
-* Torsten Schönebaum
-* Mat Brown
-* Simon Menke
 * chatgris
+* Mat Brown
 * Gleb Pomykalov
+* Torsten Schönebaum
+* Simon Menke
 * Casper Gripenberg
 * mattelacchiato
 * Artiom Diomin
-* Tim Riley
 * Rick Fletcher
+* Tim Riley
 * joe miller
-* Brandon Dimcheff
 * Dan Pickett
+* Brandon Dimcheff
+* Greg Brockman
 * Josh Nichols
