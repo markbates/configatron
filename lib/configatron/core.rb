@@ -1,14 +1,23 @@
+require 'fileutils'
 require 'singleton'
 require 'logger'
+require 'yamler'
+
+base = File.dirname(__FILE__)
+
+require File.join(base, 'store')
+require File.join(base, 'errors')
+require File.join(base, 'rails')
+require File.join(base, 'proc')
 
 class Configatron
   include Singleton
 
   alias_method :send!, :send
-  
+
   class << self
 
-    attr_accessor :strict
+    attr_accessor :strict, :disable_monkey_patching
 
     def log
       unless @logger
@@ -29,7 +38,7 @@ class Configatron
     @_namespace = [:default]
     reset!
   end
-  
+
   # Forwards the method call onto the 'namespaced' Configatron::Store
   def method_missing(sym, *args, &block)
     @_store[@_namespace.last].send(sym, *args, &block)

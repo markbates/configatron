@@ -148,7 +148,8 @@ class Configatron
         raise Configatron::LockedNamespace.new(@_name) if @_locked && !@_store.has_key?(name)
         @_store[name] = parse_options(*args)
       elsif sym.to_s.match(/(.+)\?/)
-        return !_store_lookup($1.to_sym).blank?
+        object = _store_lookup($1.to_sym)
+        return !_object_blank?(object)
       elsif block_given?
         yield self.send(sym)
       elsif @_store.has_key?(sym)
@@ -351,6 +352,10 @@ class Configatron
         raise e.class.new("#{e.message} (for #{_store_name})") if Configatron.strict
         nil
       end
+    end
+
+    def _object_blank?(object) # ported ActiveSupport method
+      object.respond_to?(:empty?) ? object.empty? : !object
     end
 
     begin
