@@ -223,8 +223,8 @@ Enjoy!
 * Mark Bates
 * Kurtis Rainbolt-Greene
 * Rob Sanheim
-* Cody Maggard
 * Greg Brockman
+* Cody Maggard
 * Jean-Denis Vauguet
 * Torsten Schönebaum
 * Mat Brown
