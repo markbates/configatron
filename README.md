@@ -224,19 +224,19 @@ Enjoy!
 * Kurtis Rainbolt-Greene
 * Rob Sanheim
 * Cody Maggard
+* Greg Brockman
 * Jean-Denis Vauguet
-* chatgris
-* Mat Brown
-* Gleb Pomykalov
 * Torsten Schönebaum
+* Mat Brown
 * Simon Menke
+* chatgris
+* Gleb Pomykalov
 * Casper Gripenberg
 * mattelacchiato
 * Artiom Diomin
-* Rick Fletcher
 * Tim Riley
+* Rick Fletcher
 * joe miller
-* Dan Pickett
 * Brandon Dimcheff
-* Greg Brockman
+* Dan Pickett
 * Josh Nichols
