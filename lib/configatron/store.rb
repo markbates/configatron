@@ -5,16 +5,27 @@ class Configatron
     extend ::Forwardable
 
     def initialize(attributes = {})
+      @__locked = false
       @attributes = attributes || {}
+    end
+
+    def lock!
+      @__locked = true
     end
 
     def [](key)
       fetch(key.to_sym) do
+        if @__locked
+          raise Configatron::UndefinedKeyError.new("Key Not Found: #{key}")
+        end
         ::Configatron::Store.new
       end
     end
 
     def store(key, value)
+      if @__locked
+        raise Configatron::LockedError.new("Locked! Can not set key #{key}!")
+      end
       @attributes[key.to_sym] = value
     end
 

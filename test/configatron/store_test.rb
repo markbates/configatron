@@ -1,13 +1,13 @@
 require 'test_helper'
 
 describe Configatron::Store do
-  
+
   let(:store) { Configatron::Store.new }
 
   context "[]" do
 
     let(:store) { Configatron::Store.new(foo: "bar") }
-    
+
     it "returns the value if there is one" do
       store[:foo].must_equal "bar"
       store["foo"].must_equal "bar"
@@ -21,7 +21,7 @@ describe Configatron::Store do
   end
 
   context "[]=" do
-    
+
     it "sets the value" do
       store[:foo] = "bar"
       store[:foo].must_equal "bar"
@@ -35,7 +35,7 @@ describe Configatron::Store do
   end
 
   context "fetch" do
-    
+
     let(:store) { Configatron::Store.new(foo: "bar") }
 
     it "returns the value" do
@@ -58,7 +58,7 @@ describe Configatron::Store do
   end
 
   context "nil?" do
-    
+
     it "returns true if there is no value set" do
       store.foo.must_be_nil
       store.foo = "bar"
@@ -68,7 +68,7 @@ describe Configatron::Store do
   end
 
   context "empty?" do
-    
+
     it "returns true if there is no value set" do
       store.foo.must_be_empty
       store.foo = "bar"
@@ -78,7 +78,7 @@ describe Configatron::Store do
   end
 
   context "has_key?" do
-    
+
     it "returns true if there is a key" do
       store.has_key?(:foo).must_equal false
       store.foo = "bar"
@@ -96,7 +96,7 @@ describe Configatron::Store do
   context "method_missing" do
 
     let(:store) { Configatron::Store.new(foo: "bar") }
-    
+
     it "returns the value if there is one" do
       store.foo.must_equal "bar"
     end
@@ -112,10 +112,31 @@ describe Configatron::Store do
 
   end
 
+  context "lock!" do
+
+    before do
+      store.a.b.c.d = 'DD'
+      store.lock!
+    end
+
+    it "raises an error when accessing non-existing values" do
+      store.a.wont_be_nil
+      store.a.b.wont_be_nil
+      store.a.b.c.wont_be_nil
+      store.a.b.c.d.must_equal "DD"
+      proc {store.unknown}.must_raise(Configatron::UndefinedKeyError)
+    end
+
+    it "raises an error when trying to set a non-existing key" do
+      proc {store.unknown = "known"}.must_raise(Configatron::LockedError)
+    end
+
+  end
+
   context "configuring" do
-    
+
     context "configure_from_hash" do
-      
+
       it "allows setup from a hash" do
         store.configure_from_hash(one: 1, a: {b: {c: {d: "DD"}}})
         store.one.must_equal 1
