@@ -133,6 +133,31 @@ describe Configatron::Store do
 
   end
 
+  context "temp" do
+
+    before do
+      store.a = 'A'
+      store.b = 'B'
+    end
+
+
+    it "allows for temporary setting of values" do
+      store.a.must_equal 'A'
+      store.b.must_equal 'B'
+      store.temp do
+        store.a = 'AA'
+        store.c = 'C'
+        store.a.must_equal 'AA'
+        store.b.must_equal 'B'
+        store.c.must_equal 'C'
+      end
+      store.a.must_equal 'A'
+      store.b.must_equal 'B'
+      store.c.must_be_nil
+    end
+
+  end
+
   context "configuring" do
 
     context "configure_from_hash" do
@@ -141,6 +166,22 @@ describe Configatron::Store do
         store.configure_from_hash(one: 1, a: {b: {c: {d: "DD"}}})
         store.one.must_equal 1
         store.a.b.c.d.must_equal "DD"
+      end
+
+    end
+
+    context "with a block" do
+
+      before do
+        store.a.b = 'B'
+      end
+
+      it "yields up the store to configure with" do
+        store.a do |a|
+          a.c = 'CC'
+        end
+        store.a.b.must_equal 'B'
+        store.a.c.must_equal 'CC'
       end
 
     end

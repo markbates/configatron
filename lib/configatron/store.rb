@@ -61,13 +61,22 @@ class Configatron
       end
     end
 
+    def temp(&block)
+      @__temp = @attributes.dup
+      yield
+      @attributes = @__temp.dup
+    end
+
     def method_missing(name, *args, &block)
-      # puts %{name: #{name.inspect}}
-      name = name.to_s
-      if /(.+)=$/.match(name)
-        return store($1, args[0])
+      if block_given?
+        yield self[name]
       else
-        return self[name]
+        name = name.to_s
+        if /(.+)=$/.match(name)
+          return store($1, args[0])
+        else
+          return self[name]
+        end
       end
     end
 
