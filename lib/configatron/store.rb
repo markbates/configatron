@@ -7,6 +7,7 @@ class Configatron
     def initialize(attributes = {})
       @__locked = false
       @attributes = attributes || {}
+      @attributes.send(:extend, DeepClone)
     end
 
     def lock!
@@ -62,9 +63,9 @@ class Configatron
     end
 
     def temp(&block)
-      @__temp = @attributes.dup
+      @__temp = @attributes.deep_clone
       yield
-      @attributes = @__temp.dup
+      @attributes = @__temp
     end
 
     def method_missing(name, *args, &block)
@@ -88,6 +89,9 @@ class Configatron
     def_delegator :@attributes, :each
     def_delegator :@attributes, :empty?
     def_delegator :@attributes, :inspect
+    def_delegator :@attributes, :to_h
+    def_delegator :@attributes, :to_hash
+    def_delegator :@attributes, :delete
     # def_delegator :@attributes, :fetch
     # def_delegator :@attributes, :has_key?
     # def_delegator :$stdout, :puts
