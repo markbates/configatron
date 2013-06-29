@@ -4,7 +4,7 @@ class Configatron
   # To get started you can use the generator to generate
   # the necessary stub files.
   #
-  #   $ ruby script/generate configatron
+  #   $ rails g configatron:install
   module Rails
 
     # Loads configatron files in the following order:
