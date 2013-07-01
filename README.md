@@ -1,4 +1,4 @@
-# Configatron
+# Configatron [![Build Status](https://travis-ci.org/markbates/configatron.png?branch=v3)](https://travis-ci.org/markbates/configatron)
 
 Configatron makes configuring your applications and scripts incredibly easy. No longer is a there a need to use constants or global variables. Now you can use a simple and painless system to configure your life. And, because it's all Ruby, you can do any crazy thing you would like to!
 
