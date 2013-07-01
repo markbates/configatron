@@ -57,11 +57,11 @@ Notice how our other configuration parameters haven't changed? Cool, eh?
 
 h3. Hash/YAML
 
-You can configure configatron from a hash as well (this is really only useful in testing or for data driven configurat, it's not recommended for actual configuration):
+You can configure configatron from a hash as well (this is really only useful in testing or for data driven configuration, it's not recommended for actual configuration):
 
 <pre><code>
   configatron.configure_from_hash({:email => {:pop => {:address => 'pop.example.com', :port => 110}}, :smtp => {:address => 'smtp.example.com'}})
-  
+
   configatron.email.pop.address # => 'pop.example.com'
   configatron.email.pop.port # => 110
   # and so on...
@@ -97,7 +97,7 @@ Of course you can update a single parameter n levels deep as well:
 
 <pre><code>
   configatron.email.pop.address = "pop2.example.com"
-  
+
   configatron.email.pop.address # => "pop2.example.com"
   configatron.email.smtp.address # => "smtp.example.com"
 </code></pre>
@@ -162,11 +162,11 @@ There are times when you want to refer to one configuration setting in another c
   end
 </code></pre>
 
-Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create <code>Delayed</code> and <code>Dynamic</code> settings. 
+Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create <code>Delayed</code> and <code>Dynamic</code> settings.
 
 h4. Delayed
 
-With <code>Delayed</code> settings execution of the setting doesn't happen until the first time it is executed. 
+With <code>Delayed</code> settings execution of the setting doesn't happen until the first time it is executed.
 
 <pre><code>
   configatron.memcached.servers = ['127.0.0.1:11211']
