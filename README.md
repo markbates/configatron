@@ -1,4 +1,5 @@
-# V2 of Configatron is EOL. Please see [https://github.com/markbates/configatron/tree/v3](https://github.com/markbates/configatron/tree/v3) for the RC versions of V3.
+# V2 of Configatron is EOL. 
+# Please see [https://github.com/markbates/configatron/tree/v3](https://github.com/markbates/configatron/tree/v3) for the RC versions of V3.
 
 # Configatron [![Build Status](https://travis-ci.org/markbates/configatron.png?branch=master)](https://travis-ci.org/markbates/configatron)
 
