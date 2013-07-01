@@ -13,7 +13,7 @@ One of the more important changes to V3 is that it now resembles more a `Hash` s
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'configatron'
+gem 'configatron', '3.0.0.rc1'
 ```
 
 And then execute:
@@ -25,7 +25,7 @@ $ bundle
 Or install it yourself as:
 
 ```bash
-$ gem install configatron
+$ gem install configatron --pre
 ```
 
 ## Usage
