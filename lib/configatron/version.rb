@@ -1,3 +1,3 @@
 class Configatron
-  VERSION = "2.13.0"
+  VERSION = "3.0.0.rc1"
 end

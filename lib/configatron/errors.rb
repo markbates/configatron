@@ -1,13 +1,9 @@
 class Configatron
-  class ProtectedParameter < StandardError
-    def intialize(name)
-      super("Can not modify protected parameter: '#{name}'")
+  class UndefinedKeyError < StandardError
+    def initialize(msg)
+      super(msg)
     end
   end
-
-  class LockedNamespace < StandardError
-    def initialize(name)
-      super("Cannot add new parameters to locked namespace: #{name.inspect}")
-    end
+  class LockedError < StandardError
   end
 end

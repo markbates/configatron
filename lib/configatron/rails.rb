@@ -1,14 +1,14 @@
 class Configatron
   # Helpful for making using configatron with Rails even easier!
-  # 
+  #
   # To get started you can use the generator to generate
   # the necessary stub files.
-  # 
-  #   $ ruby script/generate configatron
+  #
+  #   $ rails g configatron:install
   module Rails
-    
+
     # Loads configatron files in the following order:
-    # 
+    #
     # Example:
     #   <Rails.root>/config/configatron/defaults.rb
     #   <Rails.root>/config/configatron/<Rails.env>.rb
@@ -22,11 +22,11 @@ class Configatron
         root = defined?(Rails) ? ::Rails.root : FileUtils.pwd
         base_dir = File.expand_path(File.join(root, 'config', 'configatron'))
       end
-      
+
       if env.nil?
         env = defined?(Rails) ? ::Rails.env : 'development'
       end
-      
+
       config_files = []
 
       config_files << File.join(base_dir, 'defaults.rb')
@@ -48,6 +48,6 @@ class Configatron
         end
       end
     end
-    
+
   end # Rails
 end # Configatron
