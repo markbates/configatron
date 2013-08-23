@@ -43,7 +43,7 @@ class Configatron
 
       config_files.each do |config|
         if File.exists?(config)
-          # puts "Configuration: #{config}"
+          puts "Configuration: #{config}"
           require config
         end
       end

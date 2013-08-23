@@ -82,7 +82,7 @@ class Configatron
     end
 
 
-    def print_hash
+    def print
       internal_print_hash("", self)
     end
 
