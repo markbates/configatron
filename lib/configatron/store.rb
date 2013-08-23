@@ -81,6 +81,31 @@ class Configatron
       end
     end
 
+
+    def print
+      internal_print_hash("", self)
+    end
+
+    def internal_print_hash(key_up_here, hash)
+      if key_up_here.blank?
+        starting_with = ""
+      else
+        starting_with = "#{key_up_here}."
+      end
+
+      hash.each { |key,value|  
+      
+        if value.is_a?(Store)
+          internal_print_hash("#{starting_with}#{key}", value)
+        else
+          puts "#{starting_with}#{key}=#{value}"
+        end
+
+      }
+      
+    end
+
+
     alias :[]= :store
     alias :blank? :nil?
 
