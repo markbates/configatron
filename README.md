@@ -159,6 +159,17 @@ You can use `.has_key?` to determine if a key already exists.
 configatron.i.dont.has_key?(:exist) # => false
 ```
 
+#### (key)!
+
+You can also append a `!` to the end of any key. If the key exists it will return it, otherwise it will raise a `Configatron::UndefinedKeyError`.
+
+``` ruby
+configatron.a.b = 'B'
+configatron.a.b # => 'B'
+configatron.a.b! # => 'B'
+configatron.a.b.c! # => raise Configratron::UndefinedKeyError
+```
+
 ### Kernel
 
 The `configatron` "helper" method is store in the `Kernel` module. Some people didn't like that in the V2 of Configatron, so in V3, while that hasn't changed, you don't have to use it.

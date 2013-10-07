@@ -48,7 +48,7 @@ class Configatron
     end
 
     def has_key?(key)
-      val = self[key]
+      val = self[key.to_sym]
       !val.is_a?(Configatron::Store)
     end
 
@@ -75,6 +75,13 @@ class Configatron
         name = name.to_s
         if /(.+)=$/.match(name)
           return store($1, args[0])
+        elsif /(.+)!/.match(name)
+          key = $1
+          if self.has_key?(key)
+            return self[key]
+          else
+            raise Configatron::UndefinedKeyError.new($1)
+          end
         else
           return self[name]
         end

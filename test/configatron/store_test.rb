@@ -110,6 +110,19 @@ describe Configatron::Store do
       store.a.b.c.d.must_equal "DD"
     end
 
+    context 'with bang' do
+
+      it "raises an exception if the key doesn't exist" do
+        lambda {store.a.b!}.must_raise Configatron::UndefinedKeyError
+      end
+
+      it "returns the value" do
+        store.a.b = 'B'
+        store.a.b!.must_equal 'B'
+      end
+
+    end
+
   end
 
   context "lock!" do
