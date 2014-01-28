@@ -153,7 +153,6 @@ describe Configatron::Store do
       store.b = 'B'
     end
 
-
     it "allows for temporary setting of values" do
       store.a.must_equal 'A'
       store.b.must_equal 'B'
@@ -167,6 +166,25 @@ describe Configatron::Store do
       store.a.must_equal 'A'
       store.b.must_equal 'B'
       store.c.must_be_nil
+    end
+
+    context "start/end" do
+
+      it "allows for temporary setting of values" do
+        store.a.must_equal 'A'
+        store.b.must_equal 'B'
+        store.temp_start
+        store.a = 'AA'
+        store.c = 'C'
+        store.a.must_equal 'AA'
+        store.b.must_equal 'B'
+        store.c.must_equal 'C'
+        store.temp_end
+        store.a.must_equal 'A'
+        store.b.must_equal 'B'
+        store.c.must_be_nil
+      end
+
     end
 
   end

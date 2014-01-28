@@ -63,8 +63,16 @@ class Configatron
     end
 
     def temp(&block)
-      @__temp = @attributes.deep_clone
+      temp_start
       yield
+      temp_end
+    end
+
+    def temp_start
+      @__temp = @attributes.deep_clone
+    end
+
+    def temp_end
       @attributes = @__temp
     end
 
