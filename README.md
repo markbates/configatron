@@ -3,10 +3,6 @@
 
 Configatron makes configuring your applications and scripts incredibly easy. No longer is a there a need to use constants or global variables. Now you can use a simple and painless system to configure your life. And, because it's all Ruby, you can do any crazy thing you would like to!
 
-## IMPORTANT NOTES ON V3
-
-V3 is still a work in progress. It is also a complete rewrite of the library. Because V3 is a rewrite there is a lot that has been thrown out, modified, etc... There is a good chance that some feature or method that you were using doesn't exist, or works differently now. Hopefully you'll find these changes for the best. If not, you know how to submit a Pull Request. :)
-
 One of the more important changes to V3 is that it now resembles more a `Hash` style interface. You can use `[]`, `fetch`, `each`, etc...
 
 ## Installation
@@ -14,7 +10,7 @@ One of the more important changes to V3 is that it now resembles more a `Hash` s
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'configatron', '3.0.0.rc1'
+gem 'configatron'
 ```
 
 And then execute:
