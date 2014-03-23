@@ -49,7 +49,7 @@ configatron.database.url # => "postgres://localhost/foo"
 
 Voila! Simple as can be.
 
-Now you're saying, what if I want to have a 'default' set of options, but then override them later, based on other information? Simple again. Let's use our above example. We've configured our `database.url` option to be @postgres://localhost/foo@. The problem with that is that is our production database url, not our development url. Fair enough, all you have to do is redeclare it:
+Now you're saying, what if I want to have a 'default' set of options, but then override them later, based on other information? Simple again. Let's use our above example. We've configured our `database.url` option to be `postgres://localhost/foo`. The problem with that is that is our production database url, not our development url. Fair enough, all you have to do is redeclare it:
 
 ```ruby
 configatron.database.url = "postgres://localhost/foo_development"
