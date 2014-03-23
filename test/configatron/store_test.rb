@@ -162,6 +162,45 @@ describe Configatron::Store do
 
   end
 
+  context "dup" do
+
+    let(:store) {
+      store = Configatron::Store.new
+      store.foo.bar = "A"
+      store.qux = store.foo.dup
+
+      store
+    }
+
+    it "returns a copy of the current level" do
+
+      store.qux.bar.must_equal "A"
+    end
+
+    it "makes a copy and not a reference" do
+      store.qux.bar = "B"
+
+      store.foo.bar.must_equal "A"
+      store.qux.bar.must_equal "B"
+    end
+
+    it "only adds later values to the correct store branch" do
+      store.foo.baz = "C"
+      store.qux.quux = "D"
+
+      store.foo.baz.must_equal "C"
+      store.qux.quux.must_equal "D"
+    end
+
+    it "only nullifies the correct store branch" do
+      store.foo.bar = nil
+
+      store.foo.bar.must_be_kind_of Configatron::Store
+      store.qux.bar.must_equal "A"
+    end
+
+  end
+
   context "temp" do
 
     before do

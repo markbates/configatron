@@ -23,6 +23,10 @@ class Configatron
       end
     end
 
+    def dup
+      ::Configatron::Store.new(@attributes.dup)
+    end
+
     def store(key, value)
       if @__locked
         raise Configatron::LockedError.new("Locked! Can not set key #{key}!")
