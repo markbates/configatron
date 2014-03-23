@@ -242,19 +242,20 @@ configatron.to_h # => {:letters=>{:a=>"A", :b=>"BB", :c=>"C"}}
 * Kurtis Rainbolt-Greene
 * Rob Sanheim
 * Greg Brockman
+* Jérémy Lecour
 * Cody Maggard
 * Jean-Denis Vauguet
 * Torsten Schönebaum
-* Mat Brown
 * Simon Menke
-* chatgris
 * Gleb Pomykalov
+* chatgris
+* Mat Brown
 * Casper Gripenberg
-* mattelacchiato
+* Dan Pickett
 * Artiom Diomin
 * Tim Riley
-* Rick Fletcher
+* mattelacchiato
 * joe miller
 * Brandon Dimcheff
-* Dan Pickett
-* Josh Nichols
+* Rick Fletcher
+* Josh Nichol
