@@ -77,6 +77,22 @@ describe Configatron::Store do
 
   end
 
+  context "key?" do
+
+    it "returns true if there is a key" do
+      store.key?(:foo).must_equal false
+      store.foo = "bar"
+      store.key?(:foo).must_equal true
+    end
+
+    it "returns false if the key is a Configatron::Store" do
+      store.key?(:foo).must_equal false
+      store.foo = Configatron::Store.new
+      store.key?(:foo).must_equal false
+    end
+
+  end
+
   context "has_key?" do
 
     it "returns true if there is a key" do
