@@ -100,6 +100,28 @@ class Configatron
       end
     end
 
+    def inspect(name = 'configatron')
+      f_out = []
+      @attributes.each do |k, v|
+        if v.is_a?(Configatron::Store)
+          v.inspect("#{name}.#{k}").each_line do |line|
+            if line.match(/\n/)
+              line.each_line do |l|
+                l.strip!
+                f_out << l
+              end
+            else
+              line.strip!
+              f_out << line
+            end
+          end
+        else
+          f_out << "#{name}.#{k} = #{v.inspect}"
+        end
+      end
+      f_out.compact.sort.join("\n")
+  end
+
     alias :[]= :store
     alias :blank? :nil?
     alias :has_key? :key?
@@ -108,7 +130,6 @@ class Configatron
     def_delegator :@attributes, :keys
     def_delegator :@attributes, :each
     def_delegator :@attributes, :empty?
-    def_delegator :@attributes, :inspect
     def_delegator :@attributes, :to_h
     def_delegator :@attributes, :to_hash
     def_delegator :@attributes, :delete

@@ -27,7 +27,6 @@ describe Configatron::Store do
 
     end
 
-
   end
 
   context "[]=" do
@@ -243,6 +242,15 @@ describe Configatron::Store do
 
     end
 
+  end
+
+  context '#inspect' do
+
+    it 'returns a printable inspect' do
+      store.a.b = 'B'
+      store.c.d = 'C'
+      store.inspect.must_equal %{configatron.a.b = "B"\nconfigatron.c.d = "C"}
+    end
   end
 
 end
