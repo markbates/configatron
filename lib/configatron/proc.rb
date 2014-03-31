@@ -25,6 +25,10 @@ class Configatron
       true
     end
 
+    def inspect
+      call.inspect
+    end
+
   end
 
 end
