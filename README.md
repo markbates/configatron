@@ -139,6 +139,56 @@ configatron.letters.b # => 'B'
 configatron.letters.c # => {}
 ```
 
+### Delayed and Dynamic Configurations
+
+There are times when you want to refer to one configuration setting in another configuration setting. Let's look at a fairly contrived example:
+
+```ruby
+configatron.memcached.servers = ['127.0.0.1:11211']
+configatron.page_caching.servers = configatron.memcached.servers
+configatron.object_caching.servers = configatron.memcached.servers
+
+if Rails.env == 'production'
+  configatron.memcached.servers = ['192.168.0.1:11211']
+  configatron.page_caching.servers = configatron.memcached.servers
+  configatron.object_caching.servers = configatron.memcached.servers
+elsif Rails.env == 'staging'
+  configatron.memcached.servers = ['192.168.0.2:11211']
+  configatron.page_caching.servers = configatron.memcached.servers
+  configatron.object_caching.servers = configatron.memcached.servers
+end
+```
+
+Now, we could've written that slightly differently, but it helps to illustrate the point. With Configatron you can create `Delayed` and `Dynamic` settings.
+
+#### Delayed
+
+With `Delayed` settings execution of the setting doesn't happen until the first time it is executed.
+
+```ruby
+configatron.memcached.servers = ['127.0.0.1:11211']
+configatron.page_caching.servers = Configatron::Delayed.new {configatron.memcached.servers}
+configatron.object_caching.servers = Configatron::Delayed.new {configatron.memcached.servers}
+
+if Rails.env == 'production'
+  configatron.memcached.servers = ['192.168.0.1:11211']
+elsif Rails.env == 'staging'
+  configatron.memcached.servers = ['192.168.0.2:11211']
+end
+```
+
+Execution occurs once and after that the result of that execution is returned. So in our case the first time someone calls the setting `configatron.page_caching.servers` it will find the `configatron.memcached.servers` setting and return that. After that point if the `configatron.memcached.servers` setting is changed, the original settings are returned by `configatron.page_caching.servers`.
+
+#### Dynamic
+
+`Dynamic` settings are very similar to `Delayed` settings, but with one big difference. Every time you call a `Dynamic` setting is executed. Take this example:
+
+```ruby
+configatron.current.time = Configatron::Dynamic.new {Time.now}
+```
+
+Each time you call `configatron.current.time` it will return a new value to you. While this seems a bit useless, it is pretty useful if you have ever changing configurations.
+
 ### nil
 
 Even if parameters haven't been set, you can still call them, but you'll get a `Configatron::Store` object back. The `Configatron::Store` class, however, will respond true to `.nil?` or `.blank?` if there are no parameters configured on it.
@@ -241,8 +291,8 @@ configatron.to_h # => {:letters=>{:a=>"A", :b=>"BB", :c=>"C"}}
 * Mark Bates
 * Kurtis Rainbolt-Greene
 * Rob Sanheim
-* Greg Brockman
 * Jérémy Lecour
+* Greg Brockman
 * Cody Maggard
 * Jean-Denis Vauguet
 * Torsten Schönebaum
@@ -258,4 +308,4 @@ configatron.to_h # => {:letters=>{:a=>"A", :b=>"BB", :c=>"C"}}
 * joe miller
 * Brandon Dimcheff
 * Rick Fletcher
-* Josh Nichol
+* Josh Nichols
