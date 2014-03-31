@@ -15,12 +15,13 @@ class Configatron
     end
 
     def [](key)
-      fetch(key.to_sym) do
+      val = fetch(key.to_sym) do
         if @__locked
           raise Configatron::UndefinedKeyError.new("Key Not Found: #{key}")
         end
         ::Configatron::Store.new
       end
+      return val
     end
 
     def store(key, value)
@@ -39,6 +40,9 @@ class Configatron
           val = default_value
         end
         store(key, val)
+      end
+      if val.is_a?(Configatron::Proc)
+        val = val.call
       end
       return val
     end

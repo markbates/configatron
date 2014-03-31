@@ -7,3 +7,4 @@ gemspec
 # gem 'rb-fsevent'
 # gem "guard"
 # gem 'guard-minitest'
+gem 'm', github: "unmanbearpig/m"

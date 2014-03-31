@@ -18,6 +18,16 @@ describe Configatron::Store do
       store["unknown"].must_be_kind_of Configatron::Store
     end
 
+    context 'Configatron::Proc' do
+
+      it 'executes the proc' do
+        store.a = Configatron::Proc.new {1+1}
+        store.a.must_equal 2
+      end
+
+    end
+
+
   end
 
   context "[]=" do
