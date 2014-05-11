@@ -291,8 +291,8 @@ configatron.to_h # => {:letters=>{:a=>"A", :b=>"BB", :c=>"C"}}
 * Mark Bates
 * Kurtis Rainbolt-Greene
 * Rob Sanheim
-* Jérémy Lecour
 * Greg Brockman
+* Jérémy Lecour
 * Cody Maggard
 * Jean-Denis Vauguet
 * Torsten Schönebaum
