@@ -10,8 +10,8 @@ class Configatron
       @attributes.send(:extend, DeepClone)
     end
 
-    def lock!
-      @__locked = true
+    def lock!(value=true)
+      @__locked = value
     end
 
     def [](key)
