@@ -14,6 +14,10 @@ class Configatron
       @__locked = value
     end
 
+    def reset!
+      @attributes.clear
+    end
+
     def [](key)
       val = fetch(key.to_sym) do
         if @__locked
