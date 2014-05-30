@@ -1,4 +1,4 @@
-class Configatron
+class Configatron::Integrations
   # Helpful for making using configatron with Rails even easier!
   #
   # To get started you can use the generator to generate

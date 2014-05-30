@@ -4,3 +4,4 @@ module Configatron
 end
 
 require 'configatron/integrations/minitest'
+require 'configatron/integrations/rails'
