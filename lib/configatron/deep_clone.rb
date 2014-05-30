@@ -1,8 +1,8 @@
-module DeepClone
+module Configatron::DeepClone
   # = DeepClone
   #
   # == Version
-  #  1.2006.05.23 (change of the first number means Big Change)
+  #  1.2006.05.23.configatron.1 (change of the first number means Big Change)
   #
   # == Description
   #  Adds deep_clone method to an object which produces deep copy of it. It means
@@ -34,9 +34,12 @@ module DeepClone
   # == Licence
   #  You can redistribute it and/or modify it under the same terms of Ruby's license;
   #  either the dual license version in 2003, or any later version.
-  #
-  def deep_clone( obj=self, cloned={} )
-    if cloned.has_key?( obj.object_id )
+  def self.deep_clone( obj=self, cloned={} )
+    if obj.kind_of?(Configatron::KernelStore)
+      # We never actually want to have multiple copies of our
+      # Configatron::KernelStore (and every Store has a reference).
+      return obj
+    elsif cloned.has_key?( obj.object_id )
       return cloned[obj.object_id]
     else
       begin

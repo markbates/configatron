@@ -7,7 +7,6 @@ class Configatron
     def initialize(attributes = {})
       @__locked = false
       @attributes = attributes || {}
-      @attributes.send(:extend, DeepClone)
     end
 
     def lock!(value=true)
@@ -77,7 +76,7 @@ class Configatron
     end
 
     def temp_start
-      @__temp = @attributes.deep_clone
+      @__temp = DeepClone.deep_clone(@attributes)
     end
 
     def temp_end
