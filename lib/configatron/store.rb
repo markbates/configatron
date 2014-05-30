@@ -65,20 +65,6 @@ class Configatron
       end
     end
 
-    def temp(&block)
-      temp_start
-      yield
-      temp_end
-    end
-
-    def temp_start
-      @__temp = DeepClone.deep_clone(@attributes)
-    end
-
-    def temp_end
-      @attributes = @__temp
-    end
-
     def inspect(name = 'configatron')
       f_out = []
       @attributes.each do |k, v|

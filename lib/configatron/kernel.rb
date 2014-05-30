@@ -22,6 +22,20 @@ class Configatron::KernelStore
   def reset!
     @store = ::Configatron::Store.new
   end
+
+  def temp(&block)
+    temp_start
+    yield
+    temp_end
+  end
+
+  def temp_start
+    @temp = DeepClone.deep_clone(@attributes)
+  end
+
+  def temp_end
+    @attributes = @temp
+  end
 end
 
 module Kernel
