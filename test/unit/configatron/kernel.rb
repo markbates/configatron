@@ -10,7 +10,7 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
 
   describe Kernel do
     describe 'configatron' do
-      it 'returns an instance of Configatron::Store' do
+      it 'returns an instance of Configatron::KernelStore' do
         configatron.kind_of?(Configatron::KernelStore).must_equal true
       end
     end
