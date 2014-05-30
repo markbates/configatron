@@ -1,5 +1,5 @@
 require 'singleton'
-class Configatron::KernelStore < BasicObject
+class Configatron::KernelStore
   include ::Singleton
 
   attr_reader :store

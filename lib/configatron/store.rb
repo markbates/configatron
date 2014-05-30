@@ -1,7 +1,7 @@
 require 'forwardable'
 
 class Configatron
-  class Store# < BasicObject
+  class Store
     extend ::Forwardable
 
     def initialize(attributes = {})
