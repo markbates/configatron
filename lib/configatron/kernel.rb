@@ -1,8 +1,13 @@
-require 'singleton'
 class Configatron::KernelStore
-  include ::Singleton
+  include Singleton
 
   attr_reader :store
+
+  # Have one global KernelStore instance, but allow people to create
+  # their own parallel ones if they desire.
+  class << self
+    public :new
+  end
 
   def initialize
     @store = ::Configatron::Store.new
