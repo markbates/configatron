@@ -83,26 +83,6 @@ class Configatron
       @attributes = @__temp
     end
 
-    def method_missing(name, *args, &block)
-      if block_given?
-        yield self[name]
-      else
-        name = name.to_s
-        if /(.+)=$/.match(name)
-          return store($1, args[0])
-        elsif /(.+)!/.match(name)
-          key = $1
-          if self.has_key?(key)
-            return self[key]
-          else
-            raise Configatron::UndefinedKeyError.new($1)
-          end
-        else
-          return self[name]
-        end
-      end
-    end
-
     def inspect(name = 'configatron')
       f_out = []
       @attributes.each do |k, v|
@@ -124,6 +104,40 @@ class Configatron
       end
       f_out.compact.sort.join("\n")
   end
+
+    def method_missing(name, *args, &block)
+      # In case of Configatron bugs, prevent method_missing infinite
+      # loops.
+      if @method_missing
+        raise ::NoMethodError.new
+      end
+      @method_missing = true
+      do_lookup(name, *args, &block)
+    ensure
+      @method_missing = false
+    end
+
+    private
+
+    def do_lookup(name, *args, &block)
+      if block
+        yield self[name]
+      else
+        name = name.to_s
+        if /(.+)=$/.match(name)
+          return store($1, args[0])
+        elsif /(.+)!/.match(name)
+          key = $1
+          if self.has_key?(key)
+            return self[key]
+          else
+            raise Configatron::UndefinedKeyError.new($1)
+          end
+        else
+          return self[name]
+        end
+      end
+    end
 
     alias :[]= :store
     alias :blank? :nil?
