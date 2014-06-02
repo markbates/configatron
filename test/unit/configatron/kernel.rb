@@ -36,7 +36,7 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
       end
       @kernel.a.must_equal 'A'
       @kernel.b.must_equal 'B'
-      @kernel.c.must_be_nil
+      @kernel.key?(:c).must_equal false
     end
 
     describe "start/end" do
@@ -52,7 +52,7 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
         @kernel.temp_end
         @kernel.a.must_equal 'A'
         @kernel.b.must_equal 'B'
-        @kernel.c.must_be_nil
+        @kernel.key?(:c).must_equal false
       end
     end
   end
@@ -75,7 +75,7 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
       end
       @kernel.a.must_equal 'A'
       @kernel.b.must_equal 'B'
-      @kernel.c.must_be_nil
+      @kernel.key?(:c).must_equal false
     end
 
     describe "start/end" do
@@ -91,7 +91,7 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
         @kernel.temp_end
         @kernel.a.must_equal 'A'
         @kernel.b.must_equal 'B'
-        @kernel.c.must_be_nil
+        @kernel.key?(:c).must_equal false
       end
     end
   end
