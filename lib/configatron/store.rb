@@ -4,9 +4,9 @@ class Configatron
   class Store
     extend ::Forwardable
 
-    def initialize(kernel_store, attributes = {})
+    def initialize(kernel_store)
       @kernel_store = kernel_store
-      @attributes = attributes || {}
+      @attributes = {}
     end
 
     def [](key)
