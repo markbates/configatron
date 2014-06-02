@@ -14,7 +14,7 @@ class Configatron
         if @kernel_store.locked?
           raise Configatron::UndefinedKeyError.new("Key Not Found: #{key}")
         end
-        ::Configatron::Store.new(@kernel_store)
+        Configatron::Store.new(@kernel_store)
       end
       return val
     end
@@ -82,7 +82,7 @@ class Configatron
       # In case of Configatron bugs, prevent method_missing infinite
       # loops.
       if @method_missing
-        raise ::NoMethodError.new
+        raise NoMethodError.new("Bug in configatron; ended up in method_missing while running: #{name.inspect}")
       end
       @method_missing = true
       do_lookup(name, *args, &block)
