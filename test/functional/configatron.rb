@@ -66,4 +66,11 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       end
     end
   end
+
+  describe 'name' do
+    it 'assigns an appropriate nested name' do
+      name = @kernel.foo.bar.baz.to_s
+      assert_equal(name, 'configatron.foo.bar.baz')
+    end
+  end
 end

@@ -4,8 +4,10 @@ class Configatron
   class Store
     extend ::Forwardable
 
-    def initialize(kernel_store)
+    def initialize(kernel_store, name='configatron')
       @kernel_store = kernel_store
+      @name = name
+
       @attributes = {}
     end
 
@@ -14,7 +16,7 @@ class Configatron
         if @kernel_store.locked?
           raise Configatron::UndefinedKeyError.new("Key Not Found: #{key}")
         end
-        Configatron::Store.new(@kernel_store)
+        Configatron::Store.new(@kernel_store, "#{@name}.#{key}")
       end
       return val
     end
@@ -61,11 +63,15 @@ class Configatron
       raise NoMethodError
     end
 
-    def inspect(name = 'configatron')
+    def to_s
+      @name
+    end
+
+    def inspect
       f_out = []
       @attributes.each do |k, v|
         if v.is_a?(Configatron::Store)
-          v.inspect("#{name}.#{k}").each_line do |line|
+          v.inspect.each_line do |line|
             if line.match(/\n/)
               line.each_line do |l|
                 l.strip!
@@ -77,7 +83,7 @@ class Configatron
             end
           end
         else
-          f_out << "#{name}.#{k} = #{v.inspect}"
+          f_out << "#{@name}.#{k} = #{v.inspect}"
         end
       end
       f_out.compact.sort.join("\n")
