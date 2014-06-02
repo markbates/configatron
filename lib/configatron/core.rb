@@ -1,6 +1,2 @@
-require_relative "deep_clone"
-require_relative "store"
-require_relative "errors"
-require_relative "proc"
-require_relative "dynamic"
-require_relative "delayed"
+$stderr.puts "Warning: Loading 'configatron/core' has been deprecated. Please just load 'configatron directly."
+require 'configatron'
