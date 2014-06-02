@@ -12,6 +12,7 @@ class Configatron::KernelStore
   end
 
   def initialize
+    @locked = false
     reset!
   end
 
@@ -20,7 +21,7 @@ class Configatron::KernelStore
   end
 
   def reset!
-    @store = ::Configatron::Store.new
+    @store = ::Configatron::Store.new(self)
   end
 
   def temp(&block)
@@ -34,7 +35,19 @@ class Configatron::KernelStore
   end
 
   def temp_end
-    @attributes = @temp
+    @store = @temp
+  end
+
+  def locked?
+    @locked
+  end
+
+  def lock!
+    @locked = true
+  end
+
+  def unlock!
+    @locked = false
   end
 end
 
