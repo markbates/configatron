@@ -76,7 +76,7 @@ class Configatron
         end
       end
       f_out.compact.sort.join("\n")
-  end
+    end
 
     def method_missing(name, *args, &block)
       # In case of Configatron bugs, prevent method_missing infinite
