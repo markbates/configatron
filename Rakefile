@@ -3,7 +3,7 @@ require 'rake/testtask'
 
 Bundler::GemHelper.install_tasks
 
-Rake::TestTask.new(:default) do |t|
+Rake::TestTask.new do |t|
   t.libs = ["lib"]
   # t.warning = true
   t.verbose = true
