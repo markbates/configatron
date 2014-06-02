@@ -14,7 +14,7 @@ class Configatron
     def [](key)
       val = fetch(key.to_sym) do
         if @kernel_store.locked?
-          raise Configatron::UndefinedKeyError.new("Key Not Found: #{key}")
+          raise Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
         Configatron::Store.new(@kernel_store, "#{@name}.#{key}")
       end
@@ -23,7 +23,7 @@ class Configatron
 
     def store(key, value)
       if @kernel_store.locked?
-        raise Configatron::LockedError.new("Locked! Can not set key #{key}!")
+        raise Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
       end
       @attributes[key.to_sym] = value
     end
