@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
+ENV['MT_NO_EXPECTATIONS'] = 'true'
 require 'minitest/autorun'
 require 'minitest/spec'
 require 'mocha/setup'

@@ -8,13 +8,13 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
   describe 'delegation' do
     it 'passes on to Configatron::Store' do
       @kernel.a.b.c.d = 'D'
-      @kernel.a.b.c.d.must_equal 'D'
+      assert_equal('D', @kernel.a.b.c.d)
     end
   end
 
   describe 'global configatron' do
     it 'returns an instance of Configatron::KernelStore' do
-      configatron.kind_of?(Configatron::KernelStore).must_equal true
+      assert_equal(true, configatron.kind_of?(Configatron::KernelStore))
     end
   end
 
@@ -25,34 +25,34 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
     end
 
     it "allows for temporary setting of values" do
-      @kernel.a.must_equal 'A'
-      @kernel.b.must_equal 'B'
+      assert_equal('A', @kernel.a)
+      assert_equal('B', @kernel.b)
       @kernel.temp do
         @kernel.a = 'AA'
         @kernel.c = 'C'
-        @kernel.a.must_equal 'AA'
-        @kernel.b.must_equal 'B'
-        @kernel.c.must_equal 'C'
+        assert_equal('AA', @kernel.a)
+        assert_equal('B', @kernel.b)
+        assert_equal('C', @kernel.c)
       end
-      @kernel.a.must_equal 'A'
-      @kernel.b.must_equal 'B'
-      @kernel.key?(:c).must_equal false
+      assert_equal('A', @kernel.a)
+      assert_equal('B', @kernel.b)
+      assert_equal(false, @kernel.key?(:c))
     end
 
     describe "start/end" do
       it "allows for temporary setting of values" do
-        @kernel.a.must_equal 'A'
-        @kernel.b.must_equal 'B'
+        assert_equal('A', @kernel.a)
+        assert_equal('B', @kernel.b)
         @kernel.temp_start
         @kernel.a = 'AA'
         @kernel.c = 'C'
-        @kernel.a.must_equal 'AA'
-        @kernel.b.must_equal 'B'
-        @kernel.c.must_equal 'C'
+        assert_equal('AA', @kernel.a)
+        assert_equal('B', @kernel.b)
+        assert_equal('C', @kernel.c)
         @kernel.temp_end
-        @kernel.a.must_equal 'A'
-        @kernel.b.must_equal 'B'
-        @kernel.key?(:c).must_equal false
+        assert_equal('A', @kernel.a)
+        assert_equal('B', @kernel.b)
+        assert_equal(false, @kernel.key?(:c))
       end
     end
   end
@@ -64,34 +64,34 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
     end
 
     it "allows for temporary setting of values" do
-      @kernel.a.must_equal 'A'
-      @kernel.b.must_equal 'B'
+      assert_equal('A', @kernel.a)
+      assert_equal('B', @kernel.b)
       @kernel.temp do
         @kernel.a = 'AA'
         @kernel.c = 'C'
-        @kernel.a.must_equal 'AA'
-        @kernel.b.must_equal 'B'
-        @kernel.c.must_equal 'C'
+        assert_equal('AA', @kernel.a)
+        assert_equal('B', @kernel.b)
+        assert_equal('C', @kernel.c)
       end
-      @kernel.a.must_equal 'A'
-      @kernel.b.must_equal 'B'
-      @kernel.key?(:c).must_equal false
+      assert_equal('A', @kernel.a)
+      assert_equal('B', @kernel.b)
+      assert_equal(false, @kernel.key?(:c))
     end
 
     describe "start/end" do
       it "allows for temporary setting of values" do
-        @kernel.a.must_equal 'A'
-        @kernel.b.must_equal 'B'
+        assert_equal('A', @kernel.a)
+        assert_equal('B', @kernel.b)
         @kernel.temp_start
         @kernel.a = 'AA'
         @kernel.c = 'C'
-        @kernel.a.must_equal 'AA'
-        @kernel.b.must_equal 'B'
-        @kernel.c.must_equal 'C'
+        assert_equal('AA', @kernel.a)
+        assert_equal('B', @kernel.b)
+        assert_equal('C', @kernel.c)
         @kernel.temp_end
-        @kernel.a.must_equal 'A'
-        @kernel.b.must_equal 'B'
-        @kernel.key?(:c).must_equal false
+        assert_equal('A', @kernel.a)
+        assert_equal('B', @kernel.b)
+        assert_equal(false, @kernel.key?(:c))
       end
     end
   end
@@ -103,15 +103,19 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
     end
 
     it "raises an error when accessing non-existing values" do
-      @kernel.a.wont_be_nil
-      @kernel.a.b.wont_be_nil
-      @kernel.a.b.c.wont_be_nil
-      @kernel.a.b.c.d.must_equal "DD"
-      proc {@kernel.unknown}.must_raise(Configatron::UndefinedKeyError)
+      refute_nil(@kernel.a)
+      refute_nil(@kernel.a.b)
+      refute_nil(@kernel.a.b.c)
+      assert_equal("DD", @kernel.a.b.c.d)
+      assert_raises(Configatron::UndefinedKeyError) do
+        @kernel.unknown
+      end
     end
 
     it "raises an error when trying to set a non-existing key" do
-      proc {@kernel.unknown = "known"}.must_raise(Configatron::LockedError)
+      assert_raises(Configatron::LockedError) do
+        @kernel.unknown = "known"
+      end
     end
   end
 end
