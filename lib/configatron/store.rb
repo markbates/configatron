@@ -43,8 +43,7 @@ class Configatron
     end
 
     def key?(key)
-      val = self[key.to_sym]
-      !val.is_a?(Configatron::Store)
+      @attributes.key?(key.to_sym)
     end
 
     def configure_from_hash(hash)
