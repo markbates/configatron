@@ -56,6 +56,11 @@ class Configatron
       end
     end
 
+    # Needed to allow 'puts'ing of a configatron.
+    def to_ary
+      raise NoMethodError
+    end
+
     def inspect(name = 'configatron')
       f_out = []
       @attributes.each do |k, v|
