@@ -5,7 +5,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     let(:store) { Configatron::Store.new }
 
-    context "[]" do
+    describe "[]" do
 
       let(:store) { Configatron::Store.new(foo: "bar") }
 
@@ -19,7 +19,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
         store["unknown"].must_be_kind_of Configatron::Store
       end
 
-      context 'Configatron::Proc' do
+      describe 'Configatron::Proc' do
 
         it 'executes the proc' do
           store.a = Configatron::Proc.new {1+1}
@@ -30,7 +30,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "[]=" do
+    describe "[]=" do
 
       it "sets the value" do
         store[:foo] = "bar"
@@ -44,7 +44,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "fetch" do
+    describe "fetch" do
 
       let(:store) { Configatron::Store.new(foo: "bar") }
 
@@ -67,7 +67,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "nil?" do
+    describe "nil?" do
 
       it "returns true if there is no value set" do
         store.foo.must_be_nil
@@ -77,7 +77,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "empty?" do
+    describe "empty?" do
 
       it "returns true if there is no value set" do
         store.foo.must_be_empty
@@ -87,7 +87,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "key?" do
+    describe "key?" do
 
       it "returns true if there is a key" do
         store.key?(:foo).must_equal false
@@ -103,7 +103,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "has_key?" do
+    describe "has_key?" do
 
       it "returns true if there is a key" do
         store.has_key?(:foo).must_equal false
@@ -119,7 +119,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "method_missing" do
+    describe "method_missing" do
 
       let(:store) { Configatron::Store.new(foo: "bar") }
 
@@ -136,7 +136,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
         store.a.b.c.d.must_equal "DD"
       end
 
-      context 'with bang' do
+      describe 'with bang' do
 
         it "raises an exception if the key doesn't exist" do
           lambda {store.a.b!}.must_raise Configatron::UndefinedKeyError
@@ -151,7 +151,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "lock!" do
+    describe "lock!" do
 
       before do
         store.a.b.c.d = 'DD'
@@ -172,7 +172,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "temp" do
+    describe "temp" do
 
       before do
         store.a = 'A'
@@ -194,7 +194,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
         store.c.must_be_nil
       end
 
-      context "start/end" do
+      describe "start/end" do
 
         it "allows for temporary setting of values" do
           store.a.must_equal 'A'
@@ -215,9 +215,9 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context "configuring" do
+    describe "configuring" do
 
-      context "configure_from_hash" do
+      describe "configure_from_hash" do
 
         it "allows setup from a hash" do
           store.configure_from_hash(one: 1, a: {b: {c: {d: "DD"}}})
@@ -227,7 +227,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
       end
 
-      context "with a block" do
+      describe "with a block" do
 
         before do
           store.a.b = 'B'
@@ -245,7 +245,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     end
 
-    context '#inspect' do
+    describe '#inspect' do
 
       it 'returns a printable inspect' do
         store.a.b = 'B'
