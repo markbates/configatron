@@ -42,10 +42,6 @@ class Configatron
       return val
     end
 
-    def nil?
-      @attributes.empty?
-    end
-
     def key?(key)
       val = self[key.to_sym]
       !val.is_a?(Configatron::Store)
@@ -118,13 +114,11 @@ class Configatron
     end
 
     alias :[]= :store
-    alias :blank? :nil?
     alias :has_key? :key?
 
     def_delegator :@attributes, :values
     def_delegator :@attributes, :keys
     def_delegator :@attributes, :each
-    def_delegator :@attributes, :empty?
     def_delegator :@attributes, :to_h
     def_delegator :@attributes, :to_hash
     def_delegator :@attributes, :delete
