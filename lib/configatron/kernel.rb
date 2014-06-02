@@ -30,7 +30,7 @@ class Configatron::KernelStore
   end
 
   def temp_start
-    @temp = DeepClone.deep_clone(@attributes)
+    @temp = Configatron::DeepClone.deep_clone(@store)
   end
 
   def temp_end
