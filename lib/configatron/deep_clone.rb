@@ -35,9 +35,9 @@ module Configatron::DeepClone
   #  You can redistribute it and/or modify it under the same terms of Ruby's license;
   #  either the dual license version in 2003, or any later version.
   def self.deep_clone( obj=self, cloned={} )
-    if obj.kind_of?(Configatron::KernelStore)
+    if obj.kind_of?(Configatron::RootStore)
       # We never actually want to have multiple copies of our
-      # Configatron::KernelStore (and every Store has a reference).
+      # Configatron::RootStore (and every Store has a reference).
       return obj
     elsif cloned.has_key?( obj.object_id )
       return cloned[obj.object_id]

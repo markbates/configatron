@@ -2,7 +2,7 @@ require_relative '../_lib'
 
 class Critic::Unit::KernelTest < Critic::Unit::Test
   before do
-    @kernel = Configatron::KernelStore.new
+    @kernel = Configatron::RootStore.new
   end
 
   describe 'delegation' do
@@ -13,8 +13,8 @@ class Critic::Unit::KernelTest < Critic::Unit::Test
   end
 
   describe 'global configatron' do
-    it 'returns an instance of Configatron::KernelStore' do
-      assert_equal(true, configatron.kind_of?(Configatron::KernelStore))
+    it 'returns an instance of Configatron::RootStore' do
+      assert_equal(true, configatron.kind_of?(Configatron::RootStore))
     end
   end
 end

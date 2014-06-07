@@ -4,8 +4,8 @@ class Configatron
   class Store
     extend ::Forwardable
 
-    def initialize(kernel_store, name='configatron')
-      @kernel_store = kernel_store
+    def initialize(root_store, name='configatron')
+      @root_store = root_store
       @name = name
 
       @attributes = {}
@@ -13,16 +13,16 @@ class Configatron
 
     def [](key)
       val = fetch(key.to_sym) do
-        if @kernel_store.locked?
+        if @root_store.locked?
           raise Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
-        Configatron::Store.new(@kernel_store, "#{@name}.#{key}")
+        Configatron::Store.new(@root_store, "#{@name}.#{key}")
       end
       return val
     end
 
     def store(key, value)
-      if @kernel_store.locked?
+      if @root_store.locked?
         raise Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
       end
       @attributes[key.to_sym] = value

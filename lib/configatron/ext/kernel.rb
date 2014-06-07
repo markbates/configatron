@@ -1,5 +1,5 @@
 module Kernel
   def configatron
-    Configatron::KernelStore.instance
+    Configatron::RootStore.instance
   end
 end

@@ -2,7 +2,7 @@ require_relative '_lib'
 
 class Critic::Functional::ConfigatronTest < Critic::Functional::Test
   before do
-    @kernel = Configatron::KernelStore.new
+    @kernel = Configatron::RootStore.new
   end
 
   describe 'temp' do

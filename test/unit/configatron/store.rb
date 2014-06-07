@@ -2,7 +2,7 @@ require_relative '../_lib'
 
 class Critic::Unit::StoreTest < Critic::Unit::Test
   before do
-    @store = Configatron::Store.new(Configatron::KernelStore.new)
+    @store = Configatron::Store.new(Configatron::RootStore.new)
     @store.foo = 'bar'
   end
 
@@ -66,7 +66,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     it "returns true if the key is a Configatron::Store" do
       assert_equal(false, @store.key?(:bar))
-      @store.bar = Configatron::Store.new(Configatron::KernelStore)
+      @store.bar = Configatron::Store.new(Configatron::RootStore)
       assert_equal(true, @store.key?(:bar))
     end
   end
@@ -80,7 +80,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     it "returns true if the key is a Configatron::Store" do
       assert_equal(false, @store.has_key?(:bar))
-      @store.bar = Configatron::Store.new(Configatron::KernelStore)
+      @store.bar = Configatron::Store.new(Configatron::RootStore)
       assert_equal(true, @store.has_key?(:bar))
     end
   end
@@ -139,7 +139,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
   describe '#inspect' do
     it 'returns a printable inspect' do
-      store = Configatron::Store.new(Configatron::KernelStore.new)
+      store = Configatron::Store.new(Configatron::RootStore.new)
 
       store.a.b = 'B'
       store.c.d = 'C'

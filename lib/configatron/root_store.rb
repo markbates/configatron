@@ -1,11 +1,11 @@
 # This is the root configatron object, and contains methods which
 # operate on the entire configatron hierarchy.
-class Configatron::KernelStore
+class Configatron::RootStore
   include Singleton
 
   attr_reader :store
 
-  # Have one global KernelStore instance, but allow people to create
+  # Have one global RootStore instance, but allow people to create
   # their own parallel ones if they desire.
   class << self
     public :new

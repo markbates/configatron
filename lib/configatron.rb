@@ -3,7 +3,7 @@ require 'configatron/version'
 
 require 'configatron/deep_clone'
 require 'configatron/errors'
-require 'configatron/kernel_store'
+require 'configatron/root_store'
 require 'configatron/store'
 
 # Proc *must* load before dynamic/delayed, or else Configatron::Proc
