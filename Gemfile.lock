@@ -20,6 +20,7 @@ GEM
     mocha (1.0.0)
       metaclass (~> 0.0.1)
     rake (10.2.2)
+    subprocess (1.0.0)
 
 PLATFORMS
   ruby
@@ -30,3 +31,4 @@ DEPENDENCIES
   minitest (>= 5.2.3)
   mocha
   rake
+  subprocess

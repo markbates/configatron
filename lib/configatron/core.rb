@@ -1,2 +1,6 @@
-$stderr.puts "Warning: Loading 'configatron/core' has been deprecated. Please just load 'configatron directly."
+class Configatron
+  # Signals that we should not load the extensions.
+  NO_EXT = true
+end
+
 require 'configatron'

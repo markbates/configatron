@@ -50,9 +50,3 @@ class Configatron::KernelStore
     @locked = false
   end
 end
-
-module Kernel
-  def configatron
-    Configatron::KernelStore.instance
-  end
-end
