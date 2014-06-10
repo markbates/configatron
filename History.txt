@@ -1,3 +1,7 @@
+=== 4.0.1
+
+* Fix #inspect and #to_s methods on KernelStore to pass through to Store
+
 === 4.0.0
 
 This is largely a restructuring of existing functionality, making it
