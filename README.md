@@ -66,7 +66,7 @@ Notice how our other configuration parameters haven't changed? Cool, eh?
 
 ### Hash/YAML
 
-You can configure Configatron from a hash as well (this is really only useful in testing or for data driven configuration, it's not recommended for actual configuration):
+You can configure Configatron from a hash as well (this is particularly useful if you'd like to have configuration files):
 
 ```ruby
 configatron.configure_from_hash(email: {pop: {address: 'pop.example.com', port: 110}}, smtp: {address: 'smtp.example.com'})
@@ -75,10 +75,6 @@ configatron.email.pop.address # => 'pop.example.com'
 configatron.email.pop.port # => 110
 # and so on...
 ```
-
-#### YAML
-
-YAML is terrible and should be driven from the face of the Earth. Because of this Configatron V3 does not support it. Sorry.
 
 ### Namespaces
 
@@ -119,7 +115,7 @@ end
 
 ### Temp Configurations
 
-Sometimes in testing, or other situations, you want to temporarily change some settings. You can do this with the `temp` method:
+Sometimes in testing, or other situations, you want to temporarily change some settings. You can do this with the `temp` method (only available on the top-level configatron `RootStore`):
 
 ```ruby
 configatron.one = 1
@@ -191,15 +187,7 @@ Each time you call `configatron.current.time` it will return a new value to you.
 
 ### nil
 
-Even if parameters haven't been set, you can still call them, but you'll get a `Configatron::Store` object back. The `Configatron::Store` class, however, will respond true to `.nil?` or `.blank?` if there are no parameters configured on it.
-
-```ruby
-configatron.i.dont.exist.nil? # => true
-configatron.i.dont.exist.blank? # => true
-configatron.i.dont.exist # => Configatron::Store
-```
-
-You can use `.has_key?` to determine if a key already exists.
+Even if parameters haven't been set, you can still call them, but you'll get a `Configatron::Store` object back. You can use `.has_key?` to determine if a key already exists.
 
 ```ruby
 configatron.i.dont.has_key?(:exist) # => false
@@ -218,16 +206,14 @@ configatron.a.b.c! # => raise Configratron::UndefinedKeyError
 
 ### Kernel
 
-The `configatron` "helper" method is store in the `Kernel` module. Some people didn't like that in the V2 of Configatron, so in V3, while that hasn't changed, you don't have to use it.
-
-Instead of requiring `configatron` simply require `configatron/core`, but then you'll have to set up your own `Configatron::Store` object.
+The `configatron` "helper" method is stored in the `Kernel` module. You can opt-out of this global monkey-patching by requiring `configatron/core` rather than `configatron`. You'll have to set up your own `Configatron::RootStore` object.
 
 Example:
 
 ```ruby
 require 'configatron/core'
 
-store = Configatron::Store.new
+store = Configatron::RootStore.new
 store.foo = 'FOO'
 
 store.to_h #= {foo: 'FOO'}
