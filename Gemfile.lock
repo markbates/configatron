@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    configatron (3.2.0)
+    configatron (4.0.0)
 
 GEM
   remote: https://rubygems.org/
