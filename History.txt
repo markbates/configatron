@@ -1,0 +1,26 @@
+=== 4.0.0 (WIP)
+
+This is largely a restructuring of existing functionality, making it
+simpler and more consistent. The tests have also been fully
+refactored.
+
+Added the following:
+
+* A Minitest integration at Configatron::Integrations::Minitest
+* Key errors while locked return the name of the relevant configatron
+* Configatron::RootStore is now the intended way to start a new configatron hiearchy. (You should likely not initialize a Configatron::Store yourself.)
+
+Deprecated the following:
+
+* Initializing a Configatron::Store with a custom hash
+* Calling .nil?/.empty? on a Configatron::Store
+* Calling locking, temp, or reset methods directly on a Configatron::Store (moved instead to Configatron::RootStore)
+* A DeepClone module is no longer defined at the top-level
+* Removed Configatron::KernelStore
+
+Other backwards-incompatible changes:
+
+* Renamespaced Configatron::Rails under Configatron::Integrations::Rails.
+* Moved locking and temp methods to exist just on Configatron::RootStore.
+* Configatron::Store.inspect no longer takes a name
+* key? will now return true for sub-Configatron::Stores

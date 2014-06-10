@@ -1,36 +1,29 @@
 require 'forwardable'
 
 class Configatron
-  class Store# < BasicObject
+  class Store
     extend ::Forwardable
 
-    def initialize(attributes = {})
-      @__locked = false
-      @attributes = attributes || {}
-      @attributes.send(:extend, DeepClone)
-    end
+    def initialize(root_store, name='configatron')
+      @root_store = root_store
+      @name = name
 
-    def lock!(value=true)
-      @__locked = value
-    end
-
-    def reset!
-      @attributes.clear
+      @attributes = {}
     end
 
     def [](key)
       val = fetch(key.to_sym) do
-        if @__locked
-          raise Configatron::UndefinedKeyError.new("Key Not Found: #{key}")
+        if @root_store.locked?
+          raise Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
-        ::Configatron::Store.new
+        Configatron::Store.new(@root_store, "#{@name}.#{key}")
       end
       return val
     end
 
     def store(key, value)
-      if @__locked
-        raise Configatron::LockedError.new("Locked! Can not set key #{key}!")
+      if @root_store.locked?
+        raise Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
       end
       @attributes[key.to_sym] = value
     end
@@ -51,13 +44,8 @@ class Configatron
       return val
     end
 
-    def nil?
-      @attributes.empty?
-    end
-
     def key?(key)
-      val = self[key.to_sym]
-      !val.is_a?(Configatron::Store)
+      @attributes.key?(key.to_sym)
     end
 
     def configure_from_hash(hash)
@@ -70,22 +58,53 @@ class Configatron
       end
     end
 
-    def temp(&block)
-      temp_start
-      yield
-      temp_end
+    # Needed to allow 'puts'ing of a configatron.
+    def to_ary
+      raise NoMethodError
     end
 
-    def temp_start
-      @__temp = @attributes.deep_clone
+    def to_s
+      @name
     end
 
-    def temp_end
-      @attributes = @__temp
+    def inspect
+      f_out = []
+      @attributes.each do |k, v|
+        if v.is_a?(Configatron::Store)
+          v.inspect.each_line do |line|
+            if line.match(/\n/)
+              line.each_line do |l|
+                l.strip!
+                f_out << l
+              end
+            else
+              line.strip!
+              f_out << line
+            end
+          end
+        else
+          f_out << "#{@name}.#{k} = #{v.inspect}"
+        end
+      end
+      f_out.compact.sort.join("\n")
     end
 
     def method_missing(name, *args, &block)
-      if block_given?
+      # In case of Configatron bugs, prevent method_missing infinite
+      # loops.
+      if @method_missing
+        raise NoMethodError.new("Bug in configatron; ended up in method_missing while running: #{name.inspect}")
+      end
+      @method_missing = true
+      do_lookup(name, *args, &block)
+    ensure
+      @method_missing = false
+    end
+
+    private
+
+    def do_lookup(name, *args, &block)
+      if block
         yield self[name]
       else
         name = name.to_s
@@ -104,36 +123,12 @@ class Configatron
       end
     end
 
-    def inspect(name = 'configatron')
-      f_out = []
-      @attributes.each do |k, v|
-        if v.is_a?(Configatron::Store)
-          v.inspect("#{name}.#{k}").each_line do |line|
-            if line.match(/\n/)
-              line.each_line do |l|
-                l.strip!
-                f_out << l
-              end
-            else
-              line.strip!
-              f_out << line
-            end
-          end
-        else
-          f_out << "#{name}.#{k} = #{v.inspect}"
-        end
-      end
-      f_out.compact.sort.join("\n")
-  end
-
     alias :[]= :store
-    alias :blank? :nil?
     alias :has_key? :key?
 
     def_delegator :@attributes, :values
     def_delegator :@attributes, :keys
     def_delegator :@attributes, :each
-    def_delegator :@attributes, :empty?
     def_delegator :@attributes, :to_h
     def_delegator :@attributes, :to_hash
     def_delegator :@attributes, :delete

@@ -1,6 +1,6 @@
-require_relative "deep_clone"
-require_relative "store"
-require_relative "errors"
-require_relative "proc"
-require_relative "dynamic"
-require_relative "delayed"
+class Configatron
+  # Signals that we should not load the extensions.
+  NO_EXT = true
+end
+
+require 'configatron'
