@@ -58,11 +58,6 @@ class Configatron
       end
     end
 
-    # Needed to allow 'puts'ing of a configatron.
-    def to_ary
-      raise NoMethodError
-    end
-
     def to_s
       @name
     end
@@ -90,6 +85,11 @@ class Configatron
     end
 
     def method_missing(name, *args, &block)
+      # Needed to allow 'puts'ing of a configatron.
+      if name == :to_ary
+        raise NoMethodError.new("Called :to_ary")
+      end
+
       # In case of Configatron bugs, prevent method_missing infinite
       # loops.
       if @method_missing

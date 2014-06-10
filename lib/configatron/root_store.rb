@@ -2,6 +2,7 @@
 # operate on the entire configatron hierarchy.
 class Configatron::RootStore
   include Singleton
+  extend ::Forwardable
 
   attr_reader :store
 
@@ -49,4 +50,7 @@ class Configatron::RootStore
   def unlock!
     @locked = false
   end
+
+  def_delegator :@store, :to_s
+  def_delegator :@store, :inspect
 end
