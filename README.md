@@ -185,7 +185,7 @@ configatron.current.time = Configatron::Dynamic.new {Time.now}
 
 Each time you call `configatron.current.time` it will return a new value to you. While this seems a bit useless, it is pretty useful if you have ever changing configurations.
 
-### nil
+### Checking keys
 
 Even if parameters haven't been set, you can still call them, but you'll get a `Configatron::Store` object back. You can use `.has_key?` to determine if a key already exists.
 
