@@ -1,4 +1,4 @@
-=== 4.0.0 (WIP)
+=== 4.0.0
 
 This is largely a restructuring of existing functionality, making it
 simpler and more consistent. The tests have also been fully
