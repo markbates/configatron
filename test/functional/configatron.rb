@@ -73,4 +73,11 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal(name, 'configatron.foo.bar.baz')
     end
   end
+
+  describe 'puts' do
+    it 'does not cause an exception' do
+      puts @kernel
+      puts @kernel.hi
+    end
+  end
 end
