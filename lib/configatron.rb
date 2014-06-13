@@ -1,4 +1,3 @@
-require 'singleton'
 require 'configatron/version'
 
 require 'configatron/deep_clone'

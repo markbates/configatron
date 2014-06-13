@@ -1,7 +1,8 @@
 require 'forwardable'
 
 class Configatron
-  class Store
+  class Store < BasicObject
+    include ::Kernel
     extend ::Forwardable
 
     def initialize(root_store, name='configatron')
@@ -14,16 +15,16 @@ class Configatron
     def [](key)
       val = fetch(key.to_sym) do
         if @root_store.locked?
-          raise Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
+          raise ::Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
-        Configatron::Store.new(@root_store, "#{@name}.#{key}")
+        ::Configatron::Store.new(@root_store, "#{@name}.#{key}")
       end
       return val
     end
 
     def store(key, value)
       if @root_store.locked?
-        raise Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
+        raise ::Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
       end
       @attributes[key.to_sym] = value
     end
@@ -38,7 +39,7 @@ class Configatron
         end
         store(key, val)
       end
-      if val.is_a?(Configatron::Proc)
+      if val.is_a?(::Configatron::Proc)
         val = val.call
       end
       return val
@@ -50,7 +51,7 @@ class Configatron
 
     def configure_from_hash(hash)
       hash.each do |key, value|
-        if value.is_a?(Hash)
+        if value.is_a?(::Hash)
           self[key].configure_from_hash(value)
         else
           store(key, value)
@@ -65,7 +66,7 @@ class Configatron
     def inspect
       f_out = []
       @attributes.each do |k, v|
-        if v.is_a?(Configatron::Store)
+        if v.is_a?(::Configatron::Store)
           v.inspect.each_line do |line|
             if line.match(/\n/)
               line.each_line do |l|
@@ -87,13 +88,13 @@ class Configatron
     def method_missing(name, *args, &block)
       # Needed to allow 'puts'ing of a configatron.
       if name == :to_ary
-        raise NoMethodError.new("Called :to_ary")
+        raise ::NoMethodError.new("Called :to_ary")
       end
 
       # In case of Configatron bugs, prevent method_missing infinite
       # loops.
       if @method_missing
-        raise NoMethodError.new("Bug in configatron; ended up in method_missing while running: #{name.inspect}")
+        raise ::NoMethodError.new("Bug in configatron; ended up in method_missing while running: #{name.inspect}")
       end
       @method_missing = true
       do_lookup(name, *args, &block)
@@ -115,7 +116,7 @@ class Configatron
           if self.has_key?(key)
             return self[key]
           else
-            raise Configatron::UndefinedKeyError.new($1)
+            raise ::Configatron::UndefinedKeyError.new($1)
           end
         else
           return self[name]
