@@ -275,23 +275,24 @@ configatron.to_h # => {:letters=>{:a=>"A", :b=>"BB", :c=>"C"}}
 ## Contributors
 
 * Mark Bates
+* Greg Brockman
 * Kurtis Rainbolt-Greene
 * Rob Sanheim
-* Greg Brockman
 * Jérémy Lecour
 * Cody Maggard
 * Jean-Denis Vauguet
-* Torsten Schönebaum
-* Simon Menke
-* Gleb Pomykalov
 * chatgris
+* Simon Menke
 * Mat Brown
+* Torsten Schönebaum
+* Gleb Pomykalov
 * Casper Gripenberg
-* Dan Pickett
 * Artiom Diomin
-* Tim Riley
 * mattelacchiato
-* joe miller
-* Brandon Dimcheff
+* Dan Pickett
+* Tim Riley
 * Rick Fletcher
+* Jose Antonio Pio
+* Brandon Dimcheff
+* joe miller
 * Josh Nichols

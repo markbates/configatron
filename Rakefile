@@ -11,3 +11,5 @@ Rake::TestTask.new do |t|
     file.end_with?('_lib.rb') || file.include?('/_lib/')
   end
 end
+
+task :default => :test
