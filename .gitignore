@@ -15,6 +15,7 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+.ruby-version
 
 .DS_Store
 *.rbc

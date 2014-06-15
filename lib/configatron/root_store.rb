@@ -1,7 +1,9 @@
+require 'singleton'
+
 # This is the root configatron object, and contains methods which
 # operate on the entire configatron hierarchy.
-class Configatron::RootStore
-  include Singleton
+class Configatron::RootStore < BasicObject
+  include ::Singleton
   extend ::Forwardable
 
   attr_reader :store
@@ -22,7 +24,7 @@ class Configatron::RootStore
   end
 
   def reset!
-    @store = Configatron::Store.new(self)
+    @store = ::Configatron::Store.new(self)
   end
 
   def temp(&block)
@@ -32,7 +34,7 @@ class Configatron::RootStore
   end
 
   def temp_start
-    @temp = Configatron::DeepClone.deep_clone(@store)
+    @temp = ::Configatron::DeepClone.deep_clone(@store)
   end
 
   def temp_end

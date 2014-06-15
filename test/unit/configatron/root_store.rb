@@ -14,7 +14,7 @@ class Critic::Unit::RootTest < Critic::Unit::Test
 
   describe 'global configatron' do
     it 'returns an instance of Configatron::RootStore' do
-      assert_equal(true, configatron.kind_of?(Configatron::RootStore))
+      assert_equal(Configatron::RootStore.instance, configatron)
     end
   end
 
