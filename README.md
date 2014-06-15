@@ -3,7 +3,7 @@
 
 Configatron makes configuring your applications and scripts incredibly easy. No longer is a there a need to use constants or global variables. Now you can use a simple and painless system to configure your life. And, because it's all Ruby, you can do any crazy thing you would like to!
 
-One of the more important changes to V3 is that it now resembles more a `Hash` style interface. You can use `[]`, `fetch`, `each`, etc...
+One of the more important changes to V3 is that it now resembles more a `Hash` style interface. You can use `[]`, `fetch`, `each`, etc... Actually the hash notation is more robust since the dot notation won't work for some property names. See section "Differences between dot and hash notation" for more details.
 
 ## Installation
 
@@ -32,6 +32,22 @@ Once installed you just need to require it:
 ```ruby
 require 'configatron'
 ```
+
+### Differences between Dot and Hash notation
+
+Before you start, it worths noticing that the Dot notation does not work exactly like the Hash notation. While the Dot
+notation allows you to write shorter configuration, it won't work for property names that also happen to be the same
+name as methods defined in Object (see Object.methods).
+
+This is even more relevant if you are using some library that adds a DSL on the top object, like Rake or Capistrano.
+For instance, since Capistrano DSL includes a `server` declaration, it means you can't use something like
+`configatron.server.host` but you'd rather been forced to use `configatron[:server].host` in this case (assuming
+`host` is not a method defined on Object). You might want to always use the hash notation for consistency and not
+having to worry about some new library introducing more methods to Object that would conflict with your settings
+
+Or you may simple prefer to avoid property names that would class with existing Object methods. Your choice, but knowing
+how they differ will help you understanding why `configatron.p.a = 'a'` will not work. Now that you've been warned
+about the differences, we'll proceed using the dot notation for the remaining instructions.
 
 ### Simple
 
