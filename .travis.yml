@@ -4,5 +4,5 @@ rvm:
   - 2.0.0
   - 2.1.0
   - 2.1.1
-install: bundle install
+install: travis_retry bundle install
 script: bundle exec rake test
