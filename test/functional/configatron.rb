@@ -80,4 +80,14 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       puts @kernel.hi
     end
   end
+
+  describe 'private methods on kernel' do
+    it 'can be accessed through method accessors' do
+      @kernel.catch = 'hi'
+      @kernel.foo.catch = 'hi'
+
+      assert_equal('hi', @kernel.catch)
+      assert_equal('hi', @kernel.foo.catch)
+    end
+  end
 end

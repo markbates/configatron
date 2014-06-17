@@ -78,7 +78,7 @@ configatron.email.pop.port # => 110
 
 ### Method vs hash access
 
-As a note, method (`configatron.foo`) access will be shadowed by methods defined on the configatron object. (The configatron object descends from [`BasicObject`](http://apidock.com/ruby/BasicObject) and includes `Kernel`, so it should have a pretty bare set of methods.)
+As a note, method (`configatron.foo`) access will be shadowed by public methods defined on the configatron object. (The configatron object descends from [`BasicObject`](http://apidock.com/ruby/BasicObject) and includes `Kernel`, so it should have a pretty bare set of methods.)
 
 If you need to use keys that are themselves method names, you can just use hash access (`configatron['foo']`).
 

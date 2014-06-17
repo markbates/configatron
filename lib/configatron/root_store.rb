@@ -21,7 +21,7 @@ class Configatron::RootStore < BasicObject
   end
 
   def method_missing(name, *args, &block)
-    store.send(name, *args, &block)
+    store.public_send(name, *args, &block)
   end
 
   def reset!

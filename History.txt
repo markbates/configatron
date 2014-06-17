@@ -1,3 +1,16 @@
+=== 4.0.4
+
+* Fix bugs from BasicObject fallout
+* Have KernelStore proxy calls using `public_send` for consistent shadowing
+
+=== 4.0.3
+
+* Switch Store and RootStore to descend from BasicObject
+
+=== 4.0.2
+
+* Add missing require of Rails integration
+
 === 4.0.1
 
 * Fix #inspect and #to_s methods on KernelStore to pass through to Store
