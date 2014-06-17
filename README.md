@@ -33,22 +33,6 @@ Once installed you just need to require it:
 require 'configatron'
 ```
 
-### Differences between Dot and Hash notation
-
-Before you start, it worths noticing that the Dot notation does not work exactly like the Hash notation. While the Dot
-notation allows you to write shorter configuration, it won't work for property names that also happen to be the same
-name as methods defined in Object (see Object.methods).
-
-This is even more relevant if you are using some library that adds a DSL on the top object, like Rake or Capistrano.
-For instance, since Capistrano DSL includes a `server` declaration, it means you can't use something like
-`configatron.server.host` but you'd rather been forced to use `configatron[:server].host` in this case (assuming
-`host` is not a method defined on Object). You might want to always use the hash notation for consistency and not
-having to worry about some new library introducing more methods to Object that would conflict with your settings
-
-Or you may simple prefer to avoid property names that would class with existing Object methods. Your choice, but knowing
-how they differ will help you understanding why `configatron.p.a = 'a'` will not work. Now that you've been warned
-about the differences, we'll proceed using the dot notation for the remaining instructions.
-
 ### Simple
 
 ```ruby
@@ -91,6 +75,12 @@ configatron.email.pop.address # => 'pop.example.com'
 configatron.email.pop.port # => 110
 # and so on...
 ```
+
+### Method vs hash access
+
+As a note, method (`configatron.foo`) access will be shadowed by methods defined on the configatron object. (The configatron object descends from [`BasicObject`](http://apidock.com/ruby/BasicObject) and includes `Kernel`, so it should have a pretty bare set of methods.)
+
+If you need to use keys that are themselves method names, you can just use hash access (`configatron['foo']`).
 
 ### Namespaces
 
