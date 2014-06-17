@@ -1,7 +1,4 @@
-module Configatron
-  module Integrations
-  end
-end
+module Configatron::Integrations; end
 
 require 'configatron/integrations/minitest'
 require 'configatron/integrations/rails'
