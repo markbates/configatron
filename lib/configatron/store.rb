@@ -2,7 +2,6 @@ require 'forwardable'
 
 class Configatron
   class Store < BasicObject
-    include ::Kernel
     extend ::Forwardable
 
     def initialize(root_store, name='configatron', attributes={})
@@ -14,7 +13,7 @@ class Configatron
     def [](key)
       val = fetch(key.to_sym) do
         if @root_store.locked?
-          raise ::Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
+          ::Kernel.raise ::Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
         ::Configatron::Store.new(@root_store, "#{@name}.#{key}")
       end
@@ -23,22 +22,22 @@ class Configatron
 
     def store(key, value)
       if @root_store.locked?
-        raise ::Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
+        ::Kernel.raise ::Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
       end
       @attributes[key.to_sym] = value
     end
 
     def fetch(key, default_value = nil, &block)
       val = @attributes[key.to_sym]
-      if val.nil?
-        if block_given?
+      if val == nil
+        if block
           val = block.call
         elsif default_value
           val = default_value
         end
         store(key, val)
       end
-      if val.is_a?(::Configatron::Proc)
+      if ::Configatron::Proc === val
         val = val.call
       end
       return val
@@ -50,7 +49,7 @@ class Configatron
 
     def configure_from_hash(hash)
       hash.each do |key, value|
-        if value.is_a?(::Hash)
+        if ::Hash === value
           self[key].configure_from_hash(value)
         else
           store(key, value)
@@ -65,7 +64,7 @@ class Configatron
     def inspect
       f_out = []
       @attributes.each do |k, v|
-        if v.is_a?(::Configatron::Store)
+        if ::Configatron::Store === v
           v.inspect.each_line do |line|
             if line.match(/\n/)
               line.each_line do |l|
@@ -85,15 +84,10 @@ class Configatron
     end
 
     def method_missing(name, *args, &block)
-      # Needed to allow 'puts'ing of a configatron.
-      if name == :to_ary
-        raise ::NoMethodError.new("Called :to_ary")
-      end
-
       # In case of Configatron bugs, prevent method_missing infinite
       # loops.
       if @method_missing
-        raise ::NoMethodError.new("Bug in configatron; ended up in method_missing while running: #{name.inspect}")
+        ::Kernel.raise ::NoMethodError.new("Bug in configatron; ended up in method_missing while running: #{name.inspect}")
       end
       @method_missing = true
       do_lookup(name, *args, &block)
@@ -103,7 +97,18 @@ class Configatron
 
     # Needed for deep_clone to actually clone this object
     def clone
-      self.class.new(@root_store, @name, @attributes)
+      Store.new(@root_store, @name, @attributes.clone)
+    end
+
+    # So that puts works (it expects the object to respond to to_ary)
+    def to_ary
+      nil
+    end
+
+    # So that we keep backward-compatibility in case people are using nil? to check
+    # configatron settings:
+    def nil?
+      false
     end
 
     private
@@ -120,7 +125,7 @@ class Configatron
           if self.has_key?(key)
             return self[key]
           else
-            raise ::Configatron::UndefinedKeyError.new($1)
+            ::Kernel.raise ::Configatron::UndefinedKeyError.new($1)
           end
         else
           return self[name]

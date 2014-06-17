@@ -3,7 +3,6 @@ require 'singleton'
 # This is the root configatron object, and contains methods which
 # operate on the entire configatron hierarchy.
 class Configatron::RootStore < BasicObject
-  include ::Kernel
   include ::Singleton
   extend ::Forwardable
 
@@ -21,7 +20,7 @@ class Configatron::RootStore < BasicObject
   end
 
   def method_missing(name, *args, &block)
-    store.public_send(name, *args, &block)
+    store.__send__(name, *args, &block)
   end
 
   def reset!
