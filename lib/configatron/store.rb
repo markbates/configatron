@@ -5,11 +5,10 @@ class Configatron
     include ::Kernel
     extend ::Forwardable
 
-    def initialize(root_store, name='configatron')
+    def initialize(root_store, name='configatron', attributes={})
       @root_store = root_store
       @name = name
-
-      @attributes = {}
+      @attributes = attributes
     end
 
     def [](key)
@@ -100,6 +99,11 @@ class Configatron
       do_lookup(name, *args, &block)
     ensure
       @method_missing = false
+    end
+
+    # Needed for deep_clone to actually clone this object
+    def clone
+      self.class.new(@root_store, @name, @attributes)
     end
 
     private

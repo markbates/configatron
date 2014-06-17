@@ -3,6 +3,7 @@ require 'singleton'
 # This is the root configatron object, and contains methods which
 # operate on the entire configatron hierarchy.
 class Configatron::RootStore < BasicObject
+  include ::Kernel
   include ::Singleton
   extend ::Forwardable
 
