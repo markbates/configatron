@@ -1,4 +1,4 @@
-=== 4.0.4
+=== 4.1.0
 
 * Fix bugs from BasicObject fallout
 * Have KernelStore proxy calls using `public_send` for consistent shadowing
