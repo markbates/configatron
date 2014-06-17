@@ -35,30 +35,32 @@ module Configatron::DeepClone
   #  You can redistribute it and/or modify it under the same terms of Ruby's license;
   #  either the dual license version in 2003, or any later version.
   def self.deep_clone( obj=self, cloned={} )
-    if obj.kind_of?(Configatron::RootStore)
+    if Configatron::RootStore === obj
       # We never actually want to have multiple copies of our
       # Configatron::RootStore (and every Store has a reference).
       return obj
-    elsif cloned.has_key?( obj.object_id )
-      return cloned[obj.object_id]
+    elsif cloned.key?( obj.__id__ )
+      return cloned[obj.__id__]
     else
       begin
         cl = obj.clone
       rescue Exception
         # unclonnable (TrueClass, Fixnum, ...)
-        cloned[obj.object_id] = obj
+        cloned[obj.__id__] = obj
         return obj
       else
-        cloned[obj.object_id] = cl
-        cloned[cl.object_id] = cl
-        if cl.is_a?( Hash )
-          cl.clone.each { |k,v|
+        cloned[obj.__id__] = cl
+        cloned[cl.__id__] = cl
+        case
+        when Configatron::Store === cl then return cl
+        when Hash === cl
+          cl.clone.each do |k,v|
             cl[k] = deep_clone( v, cloned )
-          }
-        elsif cl.is_a?( Array )
-          cl.collect! { |v|
+          end
+        when Array === cl
+          cl.collect! do |v|
             deep_clone( v, cloned )
-          }
+          end
         end
         cl.instance_variables.each do |var|
           v = cl.instance_eval( var.to_s )

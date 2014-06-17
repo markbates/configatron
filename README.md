@@ -3,7 +3,7 @@
 
 Configatron makes configuring your applications and scripts incredibly easy. No longer is a there a need to use constants or global variables. Now you can use a simple and painless system to configure your life. And, because it's all Ruby, you can do any crazy thing you would like to!
 
-One of the more important changes to V3 is that it now resembles more a `Hash` style interface. You can use `[]`, `fetch`, `each`, etc... Actually the hash notation is more robust since the dot notation won't work for some property names. See section "Differences between dot and hash notation" for more details.
+One of the more important changes to V3 is that it now resembles more a `Hash` style interface. You can use `[]`, `fetch`, `each`, etc... Actually the hash notation is a bit more robust since the dot notation won't work for a few property names (a few public methods from `Configatron::Store` itself).
 
 ## Installation
 
@@ -78,7 +78,7 @@ configatron.email.pop.port # => 110
 
 ### Method vs hash access
 
-As a note, method (`configatron.foo`) access will be shadowed by public methods defined on the configatron object. (The configatron object descends from [`BasicObject`](http://apidock.com/ruby/BasicObject) and includes `Kernel`, so it should have a pretty bare set of methods.)
+As a note, method (`configatron.foo`) access will be shadowed by public methods defined on the configatron object. (The configatron object descends from [`BasicObject`](http://apidock.com/ruby/BasicObject) and adds a few methods to resemble the `Hash` API and to play nice with `puts`, so it should have a pretty bare set of methods.)
 
 If you need to use keys that are themselves method names, you can just use hash access (`configatron['foo']`).
 

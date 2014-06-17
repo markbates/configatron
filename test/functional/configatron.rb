@@ -51,13 +51,17 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
     end
 
     it 'raises an error when accessing non-existing values' do
-      refute_nil(@kernel.a)
-      refute_nil(@kernel.a.b)
-      refute_nil(@kernel.a.b.c)
+      assert @kernel.a != nil
+      assert @kernel.a.b != nil
+      assert @kernel.a.b.c != nil
       assert_equal('DD', @kernel.a.b.c.d)
       assert_raises(Configatron::UndefinedKeyError) do
         @kernel.unknown
       end
+    end
+    
+    it 'responds to nil? for backward compatibility' do
+      refute_nil @kernel.a
     end
 
     it 'raises an error when trying to set a non-existing key' do
