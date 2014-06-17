@@ -94,4 +94,17 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal('hi', @kernel.foo.catch)
     end
   end
+
+  describe 'to_h and to_hash' do
+    before do
+      @kernel.a = 1
+      @kernel.b.c = Configatron::Delayed.new{ @kernel.a + 3 }
+    end
+
+    it 'returns a hash representation' do
+      expected_hash = { a: 1, b: { c: 4 } }
+      assert_equal(expected_hash, @kernel.to_h)
+      assert_equal(expected_hash, @kernel.to_hash)
+    end
+  end
 end

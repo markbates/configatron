@@ -100,6 +100,13 @@ class Configatron
       Store.new(@root_store, @name, @attributes.clone)
     end
 
+    def to_h
+      @attributes.each_with_object({}) do |(k, v), h|
+        v = v.call if ::Configatron::Proc === v
+        h[k] = Store === v ? v.to_h : v
+      end
+    end
+
     # So that puts works (it expects the object to respond to to_ary)
     def to_ary
       nil
@@ -135,12 +142,11 @@ class Configatron
 
     alias :[]= :store
     alias :has_key? :key?
+    alias :to_hash :to_h
 
     def_delegator :@attributes, :values
     def_delegator :@attributes, :keys
     def_delegator :@attributes, :each
-    def_delegator :@attributes, :to_h
-    def_delegator :@attributes, :to_hash
     def_delegator :@attributes, :delete
     # def_delegator :@attributes, :fetch
     # def_delegator :@attributes, :has_key?
