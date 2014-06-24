@@ -84,15 +84,7 @@ class Configatron
     end
 
     def method_missing(name, *args, &block)
-      # In case of Configatron bugs, prevent method_missing infinite
-      # loops.
-      if @method_missing
-        ::Kernel.raise ::NoMethodError.new("Bug in configatron; ended up in method_missing while running: #{name.inspect}")
-      end
-      @method_missing = true
       do_lookup(name, *args, &block)
-    ensure
-      @method_missing = false
     end
 
     # Needed for deep_clone to actually clone this object

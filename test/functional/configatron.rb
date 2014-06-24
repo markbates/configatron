@@ -59,7 +59,7 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
         @kernel.unknown
       end
     end
-    
+
     it 'responds to nil? for backward compatibility' do
       refute_nil @kernel.a
     end
