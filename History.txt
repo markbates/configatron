@@ -1,3 +1,7 @@
+=== 4.1.1
+
+* Fix delayed attributes
+
 === 4.1.0
 
 * Fix bugs from BasicObject fallout
