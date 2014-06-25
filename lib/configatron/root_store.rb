@@ -1,4 +1,5 @@
 require 'singleton'
+require 'forwardable'
 
 # This is the root configatron object, and contains methods which
 # operate on the entire configatron hierarchy.
