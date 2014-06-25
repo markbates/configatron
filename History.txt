@@ -1,3 +1,7 @@
+=== 4.2.0
+
+* [backwards-incompatible] Make to_h/to_hash recursively hashify Configatron::Stores, and resolve Configatron::Procs.
+
 === 4.1.1
 
 * Fix delayed attributes
