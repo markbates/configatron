@@ -1,3 +1,7 @@
+=== 4.2.1
+
+* Fix a bug with deep cloning which caused temping to break for nested settings
+
 === 4.2.0
 
 * [backwards-incompatible] Make to_h/to_hash recursively hashify Configatron::Stores, and resolve Configatron::Procs.
