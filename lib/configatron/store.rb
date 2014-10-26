@@ -88,8 +88,12 @@ class Configatron
     end
 
     # Needed for deep_clone to actually clone this object
-    def clone
-      Store.new(@root_store, @name, @attributes.clone)
+    def clone(cloned={})
+      root_store = DeepClone.deep_clone(@root_store, cloned)
+      name = DeepClone.deep_clone(@name, cloned)
+      attributes = DeepClone.deep_clone(@attributes, cloned)
+
+      Store.new(root_store, name, attributes)
     end
 
     def to_h

@@ -37,8 +37,16 @@ module Configatron::DeepClone
   def self.deep_clone( obj=self, cloned={} )
     if Configatron::RootStore === obj
       # We never actually want to have multiple copies of our
-      # Configatron::RootStore (and every Store has a reference).
+      # Configatron::RootStore -- when making a temp, we just stick
+      # the state-to-revert-to into an ivar.
       return obj
+    elsif Configatron::Store === obj
+      # Need to special-case this since it's a BasicObject, meaning it
+      # doesn't respond to all the usual ivar magic methods
+      cl = obj.clone(cloned)
+      cloned[obj.__id__] = cl
+      cloned[cl.__id__] = cl
+      return cl
     elsif cloned.key?( obj.__id__ )
       return cloned[obj.__id__]
     else
@@ -52,7 +60,6 @@ module Configatron::DeepClone
         cloned[obj.__id__] = cl
         cloned[cl.__id__] = cl
         case
-        when Configatron::Store === cl then return cl
         when Hash === cl
           cl.clone.each do |k,v|
             cl[k] = deep_clone( v, cloned )

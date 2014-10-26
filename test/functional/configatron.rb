@@ -26,6 +26,15 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal(false, @kernel.key?(:c))
     end
 
+    it 'nested' do
+      @kernel.foo.bar = 'original'
+      @kernel.temp do
+        @kernel.foo.bar = 'temp'
+        assert_equal('temp', @kernel.foo.bar)
+      end
+      assert_equal('original', @kernel.foo.bar)
+    end
+
     describe 'start/end' do
       it 'allows for temporary setting of values' do
         assert_equal('A', @kernel.a)
