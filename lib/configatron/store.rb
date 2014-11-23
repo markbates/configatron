@@ -28,8 +28,10 @@ class Configatron
     end
 
     def fetch(key, default_value = nil, &block)
-      val = @attributes[key.to_sym]
-      if val == nil
+      key = key.to_sym
+      if key?(key)
+        val = @attributes[key]
+      else
         if block
           val = block.call
         elsif default_value

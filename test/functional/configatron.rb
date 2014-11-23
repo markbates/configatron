@@ -116,4 +116,11 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal(expected_hash, @kernel.to_hash)
     end
   end
+
+  describe 'nil value' do
+    it 'remembers a nil value' do
+      @kernel.a = nil
+      assert_equal(nil, @kernel.a)
+    end
+  end
 end
