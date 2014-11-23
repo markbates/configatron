@@ -1,3 +1,8 @@
+=== 4.3.0
+
+* [backwards-incompatible] Make nil into a valid config value
+* [backwards-incompatible] Make temp clean up after itself when an exception is thrown
+
 === 4.2.1
 
 * Fix a bug with deep cloning which caused temping to break for nested settings
