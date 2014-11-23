@@ -30,8 +30,12 @@ class Configatron::RootStore < BasicObject
 
   def temp(&block)
     temp_start
-    yield
-    temp_end
+
+    begin
+      yield
+    ensure
+      temp_end
+    end
   end
 
   def temp_start

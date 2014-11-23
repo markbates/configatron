@@ -35,6 +35,19 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal('original', @kernel.foo.bar)
     end
 
+    it 'cleans up after an exception' do
+      @kernel.foo.bar = 'original'
+
+      assert_raises(RuntimeError) do
+        @kernel.temp do
+          @kernel.foo.bar = 'temp'
+          raise RuntimeError.new('error')
+        end
+      end
+
+      assert_equal('original', @kernel.foo.bar)
+    end
+
     describe 'start/end' do
       it 'allows for temporary setting of values' do
         assert_equal('A', @kernel.a)
