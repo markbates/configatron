@@ -1,3 +1,7 @@
+=== 4.4.0
+
+* [backwards-incompatible] Make temp preserve locking state across invocations
+
 === 4.3.0
 
 * [backwards-incompatible] Make nil into a valid config value
