@@ -48,6 +48,14 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal('original', @kernel.foo.bar)
     end
 
+    it 'restores locking state' do
+      @kernel.lock!
+      @kernel.temp do
+        @kernel.unlock!
+      end
+      assert(@kernel.locked?)
+    end
+
     describe 'start/end' do
       it 'allows for temporary setting of values' do
         assert_equal('A', @kernel.a)
