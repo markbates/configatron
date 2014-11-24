@@ -40,10 +40,12 @@ class Configatron::RootStore < BasicObject
 
   def temp_start
     @temp = ::Configatron::DeepClone.deep_clone(@store)
+    @temp_locked = @locked
   end
 
   def temp_end
     @store = @temp
+    @locked = @temp_locked
   end
 
   def locked?
