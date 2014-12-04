@@ -1,3 +1,7 @@
+=== 4.4.1
+
+* Make lock!/unlock! support blocks
+
 === 4.4.0
 
 * [backwards-incompatible] Make temp preserve locking state across invocations
