@@ -52,12 +52,32 @@ class Configatron::RootStore < BasicObject
     @locked
   end
 
-  def lock!
-    @locked = true
+  def lock!(&blk)
+    if blk
+      orig = @locked
+      begin
+        @locked = true
+        blk.call
+      ensure
+        @locked = orig
+      end
+    else
+      @locked = true
+    end
   end
 
-  def unlock!
-    @locked = false
+  def unlock!(&blk)
+    if blk
+      orig = @locked
+      begin
+        @locked = false
+        blk.call
+      ensure
+        @locked = orig
+      end
+    else
+      @locked = false
+    end
   end
 
   def_delegator :@store, :to_s
