@@ -99,6 +99,24 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
         @kernel.unknown = 'known'
       end
     end
+
+    it 'locks during the block argument' do
+      @kernel.unlock!
+
+      @kernel.lock! do
+        assert(@kernel.locked?)
+      end
+
+      assert(!@kernel.locked?)
+    end
+
+    it 'executes a block argument' do
+      a = 1
+      @kernel.lock! do
+        a = 2
+      end
+      assert_equal(2, a)
+    end
   end
 
   describe 'name' do
