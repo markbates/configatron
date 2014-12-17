@@ -4,10 +4,38 @@ class Configatron
   class Store < BasicObject
     extend ::Forwardable
 
-    def initialize(root_store, name='configatron', attributes={})
+    def initialize(root_store, name='configatron', attributes={}, path=[])
       @root_store = root_store
       @name = name
       @attributes = attributes
+
+      # We could derive @name from @path, though this would break
+      # backwards-compatibility.
+      @path = path
+
+      @cow = root_store.__cow
+    end
+
+    def clone
+      Store.new(
+        @root_store,
+        @name,
+        @attributes.clone,
+        @path
+        )
+    end
+
+    def __cow
+      @cow
+    end
+
+    def __cow_clone
+      # A temp has started since the last time this was written
+      if @root_store.__cow != @cow
+        self.clone
+      else
+        self
+      end
     end
 
     def [](key)
@@ -15,7 +43,7 @@ class Configatron
         if @root_store.locked?
           ::Kernel.raise ::Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
-        ::Configatron::Store.new(@root_store, "#{@name}.#{key}")
+        ::Configatron::Store.new(@root_store, "#{@name}.#{key}", {}, @path + [key])
       end
       return val
     end
@@ -24,7 +52,16 @@ class Configatron
       if @root_store.locked?
         ::Kernel.raise ::Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
       end
-      @attributes[key.to_sym] = value
+
+      key = key.to_sym
+      if @root_store.__cow != @cow
+        copy = @root_store.__cow_path(@path)
+        # Cow should now match, so this won't recurse. (Note this is
+        # not particularly thread-safe.)
+        copy.store(key, value)
+      else
+        @attributes[key] = value
+      end
     end
 
     def fetch(key, default_value = nil, &block)
@@ -87,15 +124,6 @@ class Configatron
 
     def method_missing(name, *args, &block)
       do_lookup(name, *args, &block)
-    end
-
-    # Needed for deep_clone to actually clone this object
-    def clone(cloned={})
-      root_store = DeepClone.deep_clone(@root_store, cloned)
-      name = DeepClone.deep_clone(@name, cloned)
-      attributes = DeepClone.deep_clone(@attributes, cloned)
-
-      Store.new(root_store, name, attributes)
     end
 
     def to_h

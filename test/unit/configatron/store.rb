@@ -66,7 +66,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     it "returns true if the key is a Configatron::Store" do
       assert_equal(false, @store.key?(:bar))
-      @store.bar = Configatron::Store.new(Configatron::RootStore)
+      @store.bar = Configatron::Store.new(Configatron::RootStore.new)
       assert_equal(true, @store.key?(:bar))
     end
   end
@@ -80,7 +80,7 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
 
     it "returns true if the key is a Configatron::Store" do
       assert_equal(false, @store.has_key?(:bar))
-      @store.bar = Configatron::Store.new(Configatron::RootStore)
+      @store.bar = Configatron::Store.new(Configatron::RootStore.new)
       assert_equal(true, @store.has_key?(:bar))
     end
   end
