@@ -1,6 +1,5 @@
 require 'configatron/version'
 
-require 'configatron/deep_clone'
 require 'configatron/errors'
 require 'configatron/integrations'
 require 'configatron/root_store'

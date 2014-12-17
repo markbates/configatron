@@ -15,9 +15,39 @@ class Configatron::RootStore < BasicObject
     public :new
   end
 
+  @@cow = 0
+
   def initialize
     @locked = false
+    @cow = nil
     reset!
+  end
+
+  def __cow
+    @cow
+  end
+
+  def __cow_path(path)
+    start = @store.__cow_clone
+
+    node = start
+    branch = path.map do |key|
+      node = node[key]
+      node.__cow_clone
+    end
+    nodes = [start] + branch
+
+    # [node1, node2, node3] with
+    # [node2, node3, node4] and
+    # ['key1', 'key2, 'key3']
+    nodes[0...-1].zip(nodes[1..-1], path) do |parent, child, key|
+      # These are all cow_clones, so won't trigger a further cow
+      # modification.
+      parent[key] = child
+    end
+
+    @store = nodes.first
+    nodes.last
   end
 
   def method_missing(name, *args, &block)
@@ -39,13 +69,19 @@ class Configatron::RootStore < BasicObject
   end
 
   def temp_start
-    @temp = ::Configatron::DeepClone.deep_clone(@store)
     @temp_locked = @locked
+    @temp_cow = @cow
+
+    # Just need to have a unique Copy-on-Write generation ID
+    @cow = @@cow += 1
+    @temp = @store
   end
 
   def temp_end
-    @store = @temp
     @locked = @temp_locked
+    @cow = @temp_cow
+
+    @store = @temp
   end
 
   def locked?
