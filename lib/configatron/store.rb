@@ -151,10 +151,10 @@ class Configatron
         yield self[name]
       else
         name = name.to_s
-        if /(.+)=$/.match(name)
-          return store($1, args[0])
-        elsif /(.+)!/.match(name)
-          key = $1
+        if name.end_with?('=')
+          return store(name[0..-2], args[0])
+        elsif name.end_with?('!')
+          key = name[0..-2]
           if self.has_key?(key)
             return self[key]
           else
