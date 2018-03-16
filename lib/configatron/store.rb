@@ -38,16 +38,6 @@ class Configatron
       end
     end
 
-    def [](key)
-      val = fetch(key.to_sym) do
-        if @root_store.locked?
-          ::Kernel.raise ::Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
-        end
-        ::Configatron::Store.new(@root_store, "#{@name}.#{key}", {}, @path + [key])
-      end
-      return val
-    end
-
     def store(key, value)
       if @root_store.locked?
         ::Kernel.raise ::Configatron::LockedError.new("Cannot set key #{key} for locked #{self}")
@@ -69,11 +59,17 @@ class Configatron
       if key?(key)
         val = @attributes[key]
       else
-        if block
-          val = block.call
-        elsif default_value
-          val = default_value
+        if @root_store.locked?
+          ::Kernel.raise ::Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
+        val = ::Configatron::Store.new(@root_store, "#{@name}.#{key}", {}, @path + [key])
+        val = if block
+                yield
+              elsif default_value
+                default_value
+              else
+                nil
+              end
         store(key, val)
       end
       if ::Configatron::Proc === val
@@ -169,6 +165,7 @@ class Configatron
     alias :[]= :store
     alias :has_key? :key?
     alias :to_hash :to_h
+    alias :[] :fetch
 
     def_delegator :@attributes, :values
     def_delegator :@attributes, :keys
