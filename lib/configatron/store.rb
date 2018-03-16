@@ -63,11 +63,13 @@ class Configatron
           ::Kernel.raise ::Configatron::UndefinedKeyError.new("Key not found: #{key} (for locked #{self})")
         end
         val = ::Configatron::Store.new(@root_store, "#{@name}.#{key}", {}, @path + [key])
-        if block
-          val = block.call
-        elsif default_value
-          val = default_value
-        end
+        val = if block
+                yield
+              elsif default_value
+                default_value
+              else
+                nil
+              end
         store(key, val)
       end
       if ::Configatron::Proc === val
