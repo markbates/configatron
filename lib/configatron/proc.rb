@@ -11,7 +11,7 @@ class Configatron
     end
 
     def call
-      unless @val
+      unless defined? @val
         val = self.block.call
         self.execution_count += 1
         if finalize?

@@ -159,7 +159,7 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
   describe 'nil value' do
     it 'remembers a nil value' do
       @kernel.a = nil
-      assert_equal(nil, @kernel.a)
+      assert_nil @kernel.a
     end
   end
 end
