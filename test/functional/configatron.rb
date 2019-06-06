@@ -35,6 +35,17 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal('original', @kernel.foo.bar)
     end
 
+    it 'handles nested temps' do
+      @kernel.temp do
+        @kernel.a = 'Z'
+        @kernel.temp do
+          @kernel.a = 'Y'
+        end
+        assert_equal('Z', @kernel.a)
+      end
+      assert_equal('A', @kernel.a)
+    end
+
     it 'cleans up after an exception' do
       @kernel.foo.bar = 'original'
 

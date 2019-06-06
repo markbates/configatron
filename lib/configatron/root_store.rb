@@ -20,6 +20,8 @@ class Configatron::RootStore < BasicObject
   def initialize
     @locked = false
     @cow = nil
+    @temp_level = 0
+
     reset!
   end
 
@@ -71,17 +73,20 @@ class Configatron::RootStore < BasicObject
   def temp_start
     @temp_locked = @locked
     @temp_cow = @cow
+    @temp_level += 1
 
     # Just need to have a unique Copy-on-Write generation ID
     @cow = @@cow += 1
-    @temp = @store
+    ::Kernel.instance_variable_set("@temp_#{@temp_level}", @store)
   end
 
   def temp_end
     @locked = @temp_locked
     @cow = @temp_cow
 
-    @store = @temp
+    @store = ::Kernel.instance_variable_get("@temp_#{@temp_level}")
+
+    @temp_level -= 1
   end
 
   def locked?
