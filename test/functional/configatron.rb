@@ -35,6 +35,18 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       assert_equal('original', @kernel.foo.bar)
     end
 
+    it 'handles nested temps' do
+      @kernel.temp do
+        @kernel.a = 'Z'
+        @kernel.temp do
+          @kernel.a = 'Y'
+          assert_equal('Y', @kernel.a)
+        end
+        assert_equal('Z', @kernel.a)
+      end
+      assert_equal('A', @kernel.a)
+    end
+
     it 'cleans up after an exception' do
       @kernel.foo.bar = 'original'
 
@@ -52,6 +64,17 @@ class Critic::Functional::ConfigatronTest < Critic::Functional::Test
       @kernel.lock!
       @kernel.temp do
         @kernel.unlock!
+      end
+      assert(@kernel.locked?)
+    end
+
+    it 'restores locking state in nested temps' do
+      @kernel.lock!
+      @kernel.temp do
+        @kernel.unlock!
+        @kernel.temp do
+          @kernel.lock!
+        end
       end
       assert(@kernel.locked?)
     end

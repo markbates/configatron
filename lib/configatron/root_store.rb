@@ -20,6 +20,10 @@ class Configatron::RootStore < BasicObject
   def initialize
     @locked = false
     @cow = nil
+
+    @temporary_locks = []
+    @temporary_states = []
+
     reset!
   end
 
@@ -69,19 +73,20 @@ class Configatron::RootStore < BasicObject
   end
 
   def temp_start
-    @temp_locked = @locked
     @temp_cow = @cow
 
     # Just need to have a unique Copy-on-Write generation ID
     @cow = @@cow += 1
-    @temp = @store
+
+    @temporary_locks.push(@locked)
+    @temporary_states.push(@store)
   end
 
   def temp_end
-    @locked = @temp_locked
     @cow = @temp_cow
 
-    @store = @temp
+    @locked = @temporary_locks.pop
+    @store = @temporary_states.pop
   end
 
   def locked?
