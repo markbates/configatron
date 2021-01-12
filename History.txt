@@ -1,3 +1,7 @@
+=== 4.5.1
+
+* Replace regex with end_with? in lookup
+
 === 4.5.0
 
 * [backwards-incompatible] Switch from DeepClone to copy-on-write for temp. As part of the implementation, *values* are no longer cloned.
