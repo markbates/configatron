@@ -49,6 +49,11 @@ class Critic::Unit::StoreTest < Critic::Unit::Test
       assert_equal("bar!!", @store.bar)
     end
 
+    it "sets and returns default_value if default is falsey" do
+      assert_equal(false, @store.fetch(:bar, false))
+      assert_equal(false, @store.bar)
+    end
+
     it "sets and returns the value of the block if no value is found" do
       @store.fetch(:bar) do
         "bar!"
