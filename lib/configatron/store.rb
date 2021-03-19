@@ -71,7 +71,7 @@ class Configatron
       else
         if block
           val = block.call
-        elsif default_value
+        else
           val = default_value
         end
         store(key, val)
